@@ -1,0 +1,19 @@
+@import "./variables.css";
+
+@font-face {
+  font-family: "Nunito-extralight";
+  src: url("../assets/fonts/Nunito-ExtraLight.woff") format("woff"),
+    url("../assets/fonts/Nunito-ExtraLight.woff") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito-bold";
+  src: url("../assets/fonts/Nunito-Bold.woff") format("woff"),
+    url("../assets/fonts/Nunito-Bold.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

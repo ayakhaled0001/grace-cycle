@@ -1,0 +1,23 @@
+.aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+h1 {
+  font-weight: 700;
+  font-family: "Nunito-bold";
+}
+
+p {
+  font-weight: 400;
+  font-family: var(--font-family-Nunito-extralight);
+  color: var(--light-grey);
+}
+
+.orgEmail {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+}
