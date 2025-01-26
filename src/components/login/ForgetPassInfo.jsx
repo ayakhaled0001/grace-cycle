@@ -20,7 +20,7 @@ function ForgetPassInfo() {
           />
         </div>
         <button className="resetPass" type="submit">
-          <Link to="OTP" className="resetPassLink">
+          <Link to="/OTP" className="resetPassLink">
             Reset Password
           </Link>
         </button>
