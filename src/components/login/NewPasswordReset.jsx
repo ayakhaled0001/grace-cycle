@@ -55,7 +55,7 @@ function NewPasswordReset() {
         </div>
       </div>
       <button className="resetPass">
-        <Link to="/PaswordReseted" className="resetPassLink">
+        <Link to="/passwordReseted" className="resetPassLink">
           Reset Password
         </Link>
       </button>

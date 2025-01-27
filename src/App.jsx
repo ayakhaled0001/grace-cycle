@@ -4,8 +4,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PasswordReset from "./pages/log-in/PasswordReset";
 import NewPassword from "./pages/log-in/NewPassword";
 import PasswordReseted from "./pages/log-in/PasswordReseted";
+import Login from "./pages/log-in/Login";
 import Signup from "./pages/signup/Signup";
-import Login from './components/signup/Page_2'
+import Home from "./pages/Home";
 
 
 function App() {
@@ -18,6 +19,10 @@ function App() {
         <Route path="/setpassword" element={<NewPassword />} />
         <Route path="/PaswordReseted" element={<PasswordReseted />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
+        {/* <Route path="/" element={<Home/>} /> */}
+        {/* <Route path="/setPassword" element={<NewPassword />} />
+        <Route path="/passwordReseted" element={<PasswordReseted />} /> */}
+        {/* <Route path="/signup" element={<Signup />} /> */}
       </Routes>
     </Router>
   );

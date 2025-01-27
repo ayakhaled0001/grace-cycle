@@ -60,7 +60,7 @@ const MobileSteper = ({ activeStep, setActiveStep }) => {
           </Button>
           <p className="pt-4">
             Already hava an account ?
-            <Link to="/forgetpassword">
+            <Link to="/login">
               <span className="text-[#D57B21] underline cursor-pointer">
                 {" "}
                 login

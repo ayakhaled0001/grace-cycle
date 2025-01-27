@@ -3,7 +3,7 @@ import LogInImage from "../../components/login/LogInImage";
 import "./forgetpassword.module.css";
 function ForgetPassword() {
   return (
-    <div className="container">
+    <div className="flex flex-col lg:flex-row md:flex-row h-screen">
       <ForgetPassInfo />
       <LogInImage />
     </div>

@@ -54,7 +54,7 @@ function OTP() {
         </div>
         {error && <div className="error">{error}</div>}
         <button className="resetPass">
-          <Link to="/setpassword" className="resetPassLink">
+          <Link to="/setPassword" className="resetPassLink">
             Reset Password
           </Link>
         </button>
@@ -63,7 +63,6 @@ function OTP() {
         Didn’t receive the email ?{" "}
         <span className={styleOTP.span}>Click to resend</span>
       </p>
-      {/* shrouk =>log in page */}
       <BackToLogInBtn />
     </aside>
   );
