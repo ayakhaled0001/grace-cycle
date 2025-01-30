@@ -31,40 +31,42 @@ export default function Signup() {
       ...formData,
       [name]: value
     });
-    setErrors({ ...errors, [name]: "" }); // Clear errors on change
+    setErrors({ ...errors, [name]: "" });
   };
+
   const handleNext = async () => {
     if (activeStep === 0) {
       if (!formData.organizationType) {
         alert("Please select an organization type");
         return;
       }
-      setActiveStep(1); // الانتقال مباشرةً بعد الاختيار
+      setActiveStep(1);
       return;
     }
-  
+
     if (activeStep === 1) {
       const errors = await validatePage1(formData);
       if (Object.keys(errors).length === 0) {
-        setActiveStep(2); // الانتقال إذا لم يكن هناك أخطاء
-      } else {
-        setErrors(errors); // عرض الأخطاء
-      }
-      setActiveStep(2); 
-      return;
-    }
-  
-    if (activeStep === 2) {
-      const errors = await validatePage2(formData);
-      if (Object.keys(errors).length === 0) {
-        setActiveStep(3); // الانتقال للخطوة النهائية
+        setActiveStep(2);
       } else {
         setErrors(errors);
       }
-      console.log("User Data:", formData); // طباعة بيانات المستخدم عند النجاح
+      setActiveStep(2);
+      return;
+    }
+
+    if (activeStep === 2) {
+      const errors = await validatePage2(formData);
+      if (Object.keys(errors).length === 0) {
+        setActiveStep(3);
+        // عند الضغط على "Sign Up" نطبع البيانات في الـ console
+        console.log("User Data:", formData);
+      } else {
+        setErrors(errors);
+      }
     }
   };
-  
+
   const validatePage1 = async (data) => {
     const schema = Yup.object({
       location: Yup.string().required("Location is required"),
@@ -76,17 +78,17 @@ export default function Signup() {
         .required("Phone number is required")
         .matches(/^(010|011|012|015)\d{8}$/, "Phone number must start with 010, 011, 012, or 015 and be 11 digits long"),
     });
-  
+
     try {
       await schema.validate(data, { abortEarly: false });
-      return {}; // إذا كانت البيانات صحيحة، لا يوجد أخطاء
+      return {};
     } catch (err) {
       return err.inner.reduce((acc, error) => {
-        return { ...acc, [error.path]: error.message }; // إرجاع الأخطاء بنفس التنسيق
+        return { ...acc, [error.path]: error.message };
       }, {});
     }
   };
-  
+
   const validatePage2 = async (data) => {
     const schema = Yup.object({
       email: Yup.string()
@@ -99,17 +101,16 @@ export default function Signup() {
         .oneOf([Yup.ref("password"), null], "Passwords must match")
         .required("Confirm Password is required"),
     });
-  
+
     try {
       await schema.validate(data, { abortEarly: false });
-      return {}; // إذا كانت البيانات صحيحة، لا يوجد أخطاء
+      return {};
     } catch (err) {
       return err.inner.reduce((acc, error) => {
-        return { ...acc, [error.path]: error.message }; // إرجاع الأخطاء بنفس التنسيق
+        return { ...acc, [error.path]: error.message };
       }, {});
     }
   };
-  
 
   return (
     <div className="flex flex-col lg:flex-row md:flex-row h-screen">
@@ -124,7 +125,7 @@ export default function Signup() {
 
           {activeStep === 0 && <Page_0 onChange={handleChange} formData={formData} />}
           {activeStep === 1 && <Page_1 onChange={handleChange} formData={formData} errors={errors} />}
-          {activeStep === 2 && <Page_2 onChange={handleChange} formData={formData} errors={errors} />}
+          {activeStep === 2 && <Page_2 onChange={handleChange} formData={formData} errors={errors} onSubmit={handleNext} />}
 
           <MobileSteper activeStep={activeStep} setActiveStep={handleNext} onSubmit={handleNext} />
         </Box>
