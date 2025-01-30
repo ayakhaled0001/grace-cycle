@@ -1,13 +1,34 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-const Page_2 = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
+const Page_2 = ({ onChange, formData }) => {
+  const formik = useFormik({
+    initialValues: {
+      email: formData.email || "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Invalid email format")
+        .required("Email is required"),
+      password: Yup.string()
+        .required("Password is required")
+        .min(6, "Password must be at least 6 characters"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], "Passwords do not match")
+        .required("Confirm Password is required"),
+    }),
+    onSubmit: (values) => {
+      onChange({ target: { name: "email", value: values.email } });
+      onChange({ target: { name: "password", value: values.password } });
+    },
+  });
 
   return (
-    <>
+    <form onSubmit={formik.handleSubmit}>
       <TextField
         id="email"
         label="Organization Email"
@@ -15,40 +36,18 @@ const Page_2 = () => {
         type="text"
         variant="outlined"
         fullWidth
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        // multiline
+        name="email"
+        value={formik.values.email}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur} // يجب إضافة هذا السطر
+        error={formik.touched.email && Boolean(formik.errors.email)} // عرض الخطأ إذا كانت البيانات غير صحيحة
+        helperText={formik.touched.email && formik.errors.email} // عرض الرسالة إذا كان هناك خطأ
         style={{
           width: "100%",
           borderRadius: "20px",
           marginTop: "30px",
           marginBottom: "20px",
           backgroundColor: "#dee8e0",
-        }}
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "20px",
-            },
-            "&:hover fieldset": {
-              borderColor: "#225A4B",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#225A4B",
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: `0 0 0 1000px #dee8e0 inset`,
-              WebkitTextFillColor: "#000",
-              borderRadius: "20px",
-            },
-          },
-          "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: "18px",
-            },
-          },
         }}
       />
       <TextField
@@ -58,37 +57,16 @@ const Page_2 = () => {
         type="password"
         variant="outlined"
         fullWidth
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        name="password"
+        value={formik.values.password}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur} // يجب إضافة هذا السطر
+        error={formik.touched.password && Boolean(formik.errors.password)} // عرض الخطأ إذا كانت البيانات غير صحيحة
+        helperText={formik.touched.password && formik.errors.password} // عرض الرسالة إذا كان هناك خطأ
         style={{
           width: "100%",
           borderRadius: "20px",
           backgroundColor: "#dee8e0",
-        }}
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "20px",
-            },
-            "&:hover fieldset": {
-              borderColor: "#225A4B",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#225A4B",
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: `0 0 0 1000px #dee8e0 inset`,
-              WebkitTextFillColor: "#000",
-              borderRadius: "20px",
-            },
-          },
-          "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: "17px",
-            },
-          },
         }}
       />
       <TextField
@@ -98,8 +76,12 @@ const Page_2 = () => {
         type="password"
         variant="outlined"
         fullWidth
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
+        name="confirmPassword"
+        value={formik.values.confirmPassword}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur} // يجب إضافة هذا السطر
+        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)} // عرض الخطأ إذا كانت البيانات غير صحيحة
+        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword} // عرض الرسالة إذا كان هناك خطأ
         style={{
           width: "100%",
           borderRadius: "20px",
@@ -107,33 +89,9 @@ const Page_2 = () => {
           backgroundColor: "#dee8e0",
           marginBottom: "10px",
         }}
-        sx={{
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "20px",
-            },
-            "&:hover fieldset": {
-              borderColor: "#225A4B",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#225A4B",
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: `0 0 0 1000px #dee8e0 inset`,
-              WebkitTextFillColor: "#000",
-              borderRadius: "20px",
-            },
-          },
-          "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: "17px",
-            },
-          },
-        }}
       />
-    </>
+      <button type="submit" style={{ display: "none" }}>Continue</button>
+    </form>
   );
 };
 

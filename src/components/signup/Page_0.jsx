@@ -1,3 +1,4 @@
+// Page_0.jsx
 import React from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -5,7 +6,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-const Page_0 = () => {
+const Page_0 = ({ onChange, formData }) => {
   return (
     <>
       <h4 className="text-[20px] font-medium font-nunito">
@@ -27,46 +28,23 @@ const Page_0 = () => {
         </FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
-          name="radio-buttons-group"
+          name="organizationType"
+          value={formData.organizationType}
+          onChange={onChange}
         >
           <FormControlLabel
             value="vendor"
-            control={
-              <Radio
-                sx={{
-                  "&.Mui-checked": {
-                    color: "#5B5B5BCC",
-                  },
-                }}
-              />
-            }
+            control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
             label="Vendor"
           />
           <FormControlLabel
             value="factory"
-            control={
-              <Radio
-                sx={{
-                  "&.Mui-checked": {
-                    color: "#5B5B5BCC",
-                  },
-                }}
-              />
-            }
+            control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
             label="Factory"
           />
           <FormControlLabel
             value="charity"
-            control={
-              <Radio
-                sx={{
-                  "&.Mui-checked": {
-                    color: "#5B5B5BCC",
-                  },
-                }}
-              />
-            }
+            control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
             label="Charity"
           />
         </RadioGroup>
