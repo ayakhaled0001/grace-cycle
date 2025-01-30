@@ -5,6 +5,16 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const Page_1 = ({ onChange, formData }) => {
+  
+  const handleOpenMap = () => {
+    const latitude = 37.7749;
+    const longitude = -122.4194;
+    const zoom = 14;
+    const url = `https://www.google.com/maps/@${latitude},${longitude},${zoom}z`;
+
+    window.open(url, "_blank");
+  };
+  
   const formik = useFormik({
     initialValues: {
       location: formData.location || "",
@@ -30,7 +40,7 @@ const Page_1 = ({ onChange, formData }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="flex justify-end underline cursor-pointer mb-2 text-[#225A4B]">
+      <div className="flex justify-end underline cursor-pointer mb-2 text-[#225A4B]" onClick={handleOpenMap}>
         <img src={Vector} alt="Find" />
         <span>Find</span>
       </div>
