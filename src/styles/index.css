@@ -1,4 +1,6 @@
-@import "./variables.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @font-face {
   font-family: "Nunito-extralight";
@@ -16,4 +18,11 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: "OtomanopeeOne";
+  src: url("../assets/fonts/OtomanopeeOne-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
 }
