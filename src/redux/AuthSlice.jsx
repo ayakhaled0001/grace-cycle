@@ -1,46 +1,62 @@
-import {
-  createAsyncThunk,
-  createSlice,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BaseUrl = "https://ecommerce.routemisr.com";
+// =================== Initial State =======================
+const initialState = {
+  msg: "",
+  user: "",
+  token: "",
+  userType: "",
+  isLoading: false,
+  error: "",
+};
 
-export const loginUser = createAsyncThunk(
-  "auth/login",
-  async (userCredential) => {
-    const res = await axios.post(
-      `${BaseUrl}/api/v1/auth/signin`,
-      userCredential
-    );
-    const data = await res.data;
-    localStorage.setItem("userlogin", JSON.stringify(data));
-    return data;
-  }
-);
+// ===================== BaseUrl ============================
 
+const BaseUrl = "https://792f-156-206-23-128.ngrok-free.app/";
+
+// =================== Signup =======================
 export const signupUser = createAsyncThunk(
   "auth/signup",
-  async (userCredential) => {
-    const res = await axios.post(
-      `${BaseUrl}/api/v1/auth/signup`,
-      userCredential
-    );
-    const data = await res.data;
-    localStorage.setItem("userSignup", JSON.stringify(data));
-    return data;
+  async (userData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${BaseUrl}api/WebUser/register-web`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
   }
 );
+
+// =================== Login =======================
+export const loginUser = createAsyncThunk(
+  "auth/login",
+  async (userData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        `${BaseUrl}api/WebUser/login-web`,
+        userData
+      );
+      return response.data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data.message);
+    }
+  }
+);
+
+// =================== AuthSlice =======================
 
 export const AuthSlice = createSlice({
   name: "auth",
-  initialState: {
-    msg: "",
-    user: "",
-    token: "",
-    isLoading: false,
-    error: "",
-  },
+  initialState,
   reducers: {
     addToken: (state) => {
       state.token = localStorage.getItem("token");
@@ -50,6 +66,7 @@ export const AuthSlice = createSlice({
     },
     logout: (state) => {
       state.token = null;
+      state.userType = "";
       localStorage.clear();
     },
   },
@@ -62,8 +79,13 @@ export const AuthSlice = createSlice({
     });
     builder.addCase(signupUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.user = action.payload;
+      state.msg = action.payload.message;
+      state.token = action.payload.token;
+      state.userType = action.payload.userType;
       state.error = null;
+
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("userType", action.payload.userType);
     });
     builder.addCase(signupUser.rejected, (state, action) => {
       state.isLoading = false;
@@ -78,14 +100,12 @@ export const AuthSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.msg = action.payload.msg; // تأخذ الرسالة من payload
-      state.token = action.payload.token; // تأخذ التوكن من payload
-      state.user = action.payload.user; // تأخذ المستخدم من payload
-
-      localStorage.setItem("msg", action.payload.msg);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.token);
+      state.token = action.payload.token;
+      state.userType = action.payload.userType;
       state.error = null;
+
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("userType", action.payload.userType);
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoading = false;

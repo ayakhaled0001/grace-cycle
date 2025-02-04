@@ -1,4 +1,3 @@
-// Page_0.jsx
 import React from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -6,7 +5,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 
-const Page_0 = ({ onChange, formData }) => {
+const Page_0 = ({ onChange, formData, errors }) => {
   return (
     <>
       <h4 className="text-[20px] font-medium font-nunito">
@@ -48,6 +47,13 @@ const Page_0 = ({ onChange, formData }) => {
             label="Charity"
           />
         </RadioGroup>
+        {errors.organizationType && (
+          <div className="flex justify-center items-center mb-2 h-3">
+            <span className="text-red-600 font-semibold">
+              {errors.organizationType}
+            </span>
+          </div>
+        )}
       </FormControl>
     </>
   );

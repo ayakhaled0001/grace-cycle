@@ -1,12 +1,12 @@
-// MobileSteper.jsx
 import React from "react";
 import { Divider } from "antd";
 import { Link } from "react-router-dom";
 import google from "../../assets/icons/google.svg";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress"; 
 
-const MobileSteper = ({ activeStep, setActiveStep, onSubmit }) => {
+const MobileSteper = ({ activeStep, setActiveStep, onSubmit, loading }) => {
   return (
     <MobileStepper
       variant="dots"
@@ -32,12 +32,11 @@ const MobileSteper = ({ activeStep, setActiveStep, onSubmit }) => {
             size="small"
             onClick={() => {
               if (activeStep === 2) {
-                onSubmit(); // استدعاء دالة التسجيل
+                onSubmit(); 
               } else {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
               }
             }}
-            // disabled={activeStep === 2}
             style={{
               marginTop: "10px",
               backgroundColor: "#225A4B",
@@ -48,10 +47,17 @@ const MobileSteper = ({ activeStep, setActiveStep, onSubmit }) => {
               textTransform: "capitalize",
               fontSize: "18px",
               borderRadius: "8px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
+            disabled={loading} 
           >
-            {activeStep === 2 ? "Sign Up" : "Continue"}
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} /> 
+            ) : activeStep === 2 ? (
+              "Sign Up"
+            ) : (
+              "Continue"
+            )}
           </Button>
           <p className="pt-4">
             Already have an account?
