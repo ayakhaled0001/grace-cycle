@@ -1,0 +1,10 @@
+h1 {
+  padding-bottom: 10px;
+}
+
+.otpInputs {
+  display: flex;
+}
+.inputOTP {
+  width: 50px;
+}

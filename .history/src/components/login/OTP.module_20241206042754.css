@@ -1,0 +1,35 @@
+.otpInputs {
+  display: flex;
+  margin: 19px 0;
+  justify-content: center;
+}
+.inputOTP {
+  width: 50px;
+  height: 50px;
+  margin: 0 8px;
+  color: var(--btns-green);
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  border-radius: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border: 1px solid var(--light-grey);
+}
+.inputOTP:focus {
+  border: 1px solid var(--btns-green);
+  outline: none;
+}
+.inputOTP:focus-visible {
+  outline: none;
+}
+form {
+  width: 100%;
+}
+p {
+  padding: 17px 0 0 0;
+}
+.span {
+}

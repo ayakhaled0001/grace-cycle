@@ -1,0 +1,6 @@
+.active {
+  color: var(--light-brown-yellow);
+}
+.mainSec {
+  background-image: url("/public/homeMedia/main_background.png");
+}

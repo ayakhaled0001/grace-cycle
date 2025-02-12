@@ -1,0 +1,16 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.active {
+  color: var(--light-brown-yellow);
+}
+.mainSec {
+  background-image: url("/public/homeMedia/main_background.png");
+  background-size: cover;
+  /* background-position: center; */
+  background-repeat: no-repeat;
+  margin: 0;
+}

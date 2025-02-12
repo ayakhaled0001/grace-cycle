@@ -1,0 +1,11 @@
+.aside {
+  display: grid;
+  grid-template-columns: ;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Nunito";
+}
