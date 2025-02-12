@@ -1,5 +1,5 @@
-import LogInImage from "../../components/login/LogInImage";
-import OTP from "../../components/login/OTP";
+import LogInImage from "../../components/loginCom/LogInImage";
+import OTP from "../../components/loginCom/OTP";
 
 function PasswordReset() {
   return (

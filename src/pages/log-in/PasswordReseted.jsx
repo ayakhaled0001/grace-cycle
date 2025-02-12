@@ -1,5 +1,5 @@
-import LogInImage from "../../components/login/LogInImage";
-import AllDone from "../../components/login/AllDone";
+import LogInImage from "../../components/loginCom/LogInImage";
+import AllDone from "../../components/loginCom/AllDone";
 function PasswordReseted() {
   return (
     <div className="flex flex-col lg:flex-row md:flex-row h-screen">
