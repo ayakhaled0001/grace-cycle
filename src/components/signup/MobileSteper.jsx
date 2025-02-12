@@ -4,21 +4,9 @@ import { Link } from "react-router-dom";
 import google from "../../assets/icons/google.svg";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress"; 
 
-const MobileSteper = ({ activeStep, setActiveStep }) => {
-
-    const [name, setName] = React.useState("");
-
-
-  const handleNext = () => {
-    if (activeStep < 2) {
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    } else {
-      //  Signup logic
-      console.log("Logging in with", { name, email, password });
-    }
-  };
-
+const MobileSteper = ({ activeStep, setActiveStep, onSubmit, loading }) => {
   return (
     <MobileStepper
       variant="dots"
@@ -42,8 +30,13 @@ const MobileSteper = ({ activeStep, setActiveStep }) => {
         <>
           <Button
             size="small"
-            onClick={handleNext}
-            disabled={activeStep === 2}
+            onClick={() => {
+              if (activeStep === 2) {
+                onSubmit(); 
+              } else {
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+              }
+            }}
             style={{
               marginTop: "10px",
               backgroundColor: "#225A4B",
@@ -54,12 +47,20 @@ const MobileSteper = ({ activeStep, setActiveStep }) => {
               textTransform: "capitalize",
               fontSize: "18px",
               borderRadius: "8px",
+              cursor: "pointer",
             }}
+            disabled={loading} 
           >
-            {activeStep === 2 ? "Sign Up" : "Continue"}
+            {loading ? (
+              <CircularProgress size={24} sx={{ color: "white" }} /> 
+            ) : activeStep === 2 ? (
+              "Sign Up"
+            ) : (
+              "Continue"
+            )}
           </Button>
           <p className="pt-4">
-            Already hava an account ?
+            Already have an account?
             <Link to="/login">
               <span className="text-[#D57B21] underline cursor-pointer">
                 {" "}
@@ -82,7 +83,7 @@ const MobileSteper = ({ activeStep, setActiveStep }) => {
               borderRadius: "8px",
             }}
           >
-            <img src={google} />
+            <img src={google} alt="Google" />
             Google
           </Button>
         </>

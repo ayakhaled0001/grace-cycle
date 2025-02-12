@@ -1,11 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 
-const Page_2 = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-
+const Page_2 = ({ onChange, formData, errors }) => {
   return (
     <>
       <TextField
@@ -15,42 +11,34 @@ const Page_2 = () => {
         type="text"
         variant="outlined"
         fullWidth
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        // multiline
-        style={{
-          width: "100%",
-          borderRadius: "20px",
-          marginTop: "30px",
-          marginBottom: "20px",
-          backgroundColor: "#dee8e0",
-        }}
+        name="email"
+        value={formData.email}
+        onChange={onChange}
+        error={Boolean(errors.email)}
         sx={{
+          backgroundColor: "#dee8e0",
+          borderRadius: "20px",
+          marginTop:"20px",
           "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "20px",
-            },
-            "&:hover fieldset": {
-              borderColor: "#225A4B",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#225A4B",
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: `0 0 0 1000px #dee8e0 inset`,
-              WebkitTextFillColor: "#000",
-              borderRadius: "20px",
-            },
+            borderRadius: "20px", 
+            "& fieldset": { borderRadius: "20px" },
+            "&:hover fieldset": { borderColor: "#225A4B" },
+            "&.Mui-focused fieldset": { borderColor: "#225A4B" },
           },
           "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: "18px",
-            },
+            "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+          },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset", 
+            WebkitTextFillColor: "#000", 
+            transition: "background-color 5000s ease-in-out 0s",
+            borderRadius: "20px",  
+            clipPath: "inset(0 0 0 0 round 20px)",
           },
         }}
       />
+      {errors.email && <span className="text-red-600 text-sm">{errors.email}</span>}
+
       <TextField
         id="password"
         label="Password"
@@ -58,39 +46,34 @@ const Page_2 = () => {
         type="password"
         variant="outlined"
         fullWidth
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{
-          width: "100%",
-          borderRadius: "20px",
-          backgroundColor: "#dee8e0",
-        }}
+        name="password"
+        value={formData.password}
+        onChange={onChange}
+        error={Boolean(errors.password)}
         sx={{
+          backgroundColor: "#dee8e0",
+          borderRadius: "20px",
+          marginTop:"20px",
           "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "20px",
-            },
-            "&:hover fieldset": {
-              borderColor: "#225A4B",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#225A4B",
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: `0 0 0 1000px #dee8e0 inset`,
-              WebkitTextFillColor: "#000",
-              borderRadius: "20px",
-            },
+            borderRadius: "20px", 
+            "& fieldset": { borderRadius: "20px" },
+            "&:hover fieldset": { borderColor: "#225A4B" },
+            "&.Mui-focused fieldset": { borderColor: "#225A4B" },
           },
           "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: "17px",
-            },
+            "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+          },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset", 
+            WebkitTextFillColor: "#000", 
+            transition: "background-color 5000s ease-in-out 0s",
+            borderRadius: "20px",  
+            clipPath: "inset(0 0 0 0 round 20px)",
           },
         }}
       />
+      {errors.password && <span className="text-red-600 text-sm">{errors.password}</span>}
+
       <TextField
         id="confirm-password"
         label="Confirm Password"
@@ -98,41 +81,33 @@ const Page_2 = () => {
         type="password"
         variant="outlined"
         fullWidth
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        style={{
-          width: "100%",
-          borderRadius: "20px",
-          marginTop: "20px",
-          backgroundColor: "#dee8e0",
-          marginBottom: "10px",
-        }}
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={onChange}
+        error={Boolean(errors.confirmPassword)}
         sx={{
+          backgroundColor: "#dee8e0",
+          borderRadius: "20px",
+          marginTop:"20px",
           "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderRadius: "20px",
-            },
-            "&:hover fieldset": {
-              borderColor: "#225A4B",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#225A4B",
-            },
-            "& input:-webkit-autofill": {
-              WebkitBoxShadow: `0 0 0 1000px #dee8e0 inset`,
-              WebkitTextFillColor: "#000",
-              borderRadius: "20px",
-            },
+            borderRadius: "20px", 
+            "& fieldset": { borderRadius: "20px" },
+            "&:hover fieldset": { borderColor: "#225A4B" },
+            "&.Mui-focused fieldset": { borderColor: "#225A4B" },
           },
           "& .MuiInputLabel-root": {
-            "&.Mui-focused": {
-              color: "#000",
-              fontWeight: "bold",
-              fontSize: "17px",
-            },
+            "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+          },
+          "& input:-webkit-autofill": {
+            WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset", 
+            WebkitTextFillColor: "#000", 
+            transition: "background-color 5000s ease-in-out 0s",
+            borderRadius: "20px",  
+            clipPath: "inset(0 0 0 0 round 20px)",
           },
         }}
       />
+      {errors.confirmPassword && <span className="text-red-600 text-sm">{errors.confirmPassword}</span>}
     </>
   );
 };
