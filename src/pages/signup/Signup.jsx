@@ -9,7 +9,7 @@ import Page_2 from "../../components/signup/Page_2";
 import { signupUser } from "../../redux/AuthSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
@@ -58,26 +58,32 @@ export default function Signup() {
 
   const validatePage1 = () => {
     const newErrors = {};
+  
     if (!formData.location) newErrors.location = "Location is required";
     if (!formData.name) newErrors.name = "Organization name is required";
     if (!formData.phone) newErrors.phone = "Phone number is required";
-
-    if (
-      formData.name &&
-      (formData.name.length < 8 || !/^[a-zA-Z\s]*$/.test(formData.name))
-    ) {
-      newErrors.name =
-        "Name must be at least 8 characters and cannot contain numbers or special characters";
+  
+    if (formData.name && formData.name.length < 8) {
+      newErrors.name = "Name must be at least 8 characters long";
     }
-
-    if (formData.phone && !/^(010|011|012|015)\d{8}$/.test(formData.phone)) {
-      newErrors.phone =
-        "Phone number must start with 010, 011, 012, or 015 and be 11 digits long";
+  
+    if (formData.name && /^\d+$/.test(formData.name)) {
+      newErrors.name = "Name cannot contain only numbers; it must include letters";
     }
-
+  
+    if (formData.phone && !/^01/.test(formData.phone)) {
+      newErrors.phone = "Phone number must start with '01'";
+    }
+  
+    if (formData.phone && formData.phone.length !== 11) {
+      newErrors.phone = "Phone number must be exactly 11 digits long";
+    }
+  
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+  
+
 
   const validatePage2 = () => {
     const newErrors = {};
