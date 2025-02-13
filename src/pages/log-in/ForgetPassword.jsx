@@ -1,5 +1,5 @@
-import ForgetPassInfo from "../../components/login/ForgetPassInfo";
-import LogInImage from "../../components/login/LogInImage";
+import ForgetPassInfo from "../../components/loginCom/ForgetPassInfo";
+import LogInImage from "../../components/loginCom/LogInImage";
 import "./forgetpassword.module.css";
 function ForgetPassword() {
   return (

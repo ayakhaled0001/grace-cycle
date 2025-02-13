@@ -1,0 +1,14 @@
+.aside {
+  display: grid;
+  grid-template-columns: 1fr 389px 1fr;
+  grid-template-rows: 1fr auto 1fr;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Nunito";
+  grid-column-start: 2;
+  grid-row-start: 2;
+}

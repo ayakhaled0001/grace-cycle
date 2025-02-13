@@ -1,11 +1,11 @@
 import * as React from "react";
 import ArrowBack from "@mui/icons-material/ArrowBack";
-import MobileSteper from "../../components/signup/MobileSteper";
+import MobileSteper from "../../components/signupCom/MobileSteper";
 import Box from "@mui/material/Box";
 import signupphoto from "../../assets/images/signupphoto.png";
-import Page_0 from "../../components/signup/Page_0";
-import Page_1 from "../../components/signup/Page_1";
-import Page_2 from "../../components/signup/Page_2";
+import Page_0 from "../../components/signupCom/Page_0";
+import Page_1 from "../../components/signupCom/Page_1";
+import Page_2 from "../../components/signupCom/Page_2";
 import { signupUser } from "../../redux/AuthSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

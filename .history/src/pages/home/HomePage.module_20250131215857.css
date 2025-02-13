@@ -1,0 +1,35 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.active {
+  color: var(--light-brown-yellow);
+}
+.mainSec {
+  background-image: url("/public/homeMedia/main_background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+}
+.mainImgContainer {
+  width: 350px;
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+}
+.mainImg {
+  border-radius: 30px;
+  -webkit-border-radius: 30px;
+  -moz-border-radius: 30px;
+  -ms-border-radius: 30px;
+  -o-border-radius: 30px;
+}
+
+.mainSecAnimateBox {
+  width: 66.666667%;
+  height: ;
+}
