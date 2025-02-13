@@ -32,16 +32,20 @@ function HomeNav() {
       </ul>
 
       <div className="flex gap-3 w-4/12 h-12">
-        <button
+        <NavLink
+          to="/signup"
           className="font-sans border-solid border-btnsGreen border-2 bg-btnsGreen
-         w-6/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen  transition-all">
+         w-6/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen  transition-all text-center my-auto py-2"
+        >
           Organization Sign up
-        </button>
-        <button
+        </NavLink>
+        <NavLink
+          to="/login"
           className="font-sans border-solid border-btnsGreen border-2 w-6/12
-         text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all">
+         text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center my-auto py-2"
+        >
           Log in
-        </button>
+        </NavLink>
       </div>
     </nav>
   );
