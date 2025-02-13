@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         offWhite: "#FFFCF6",
+        darkgray: "#5b5e5b",
         gray: "#5B5B5BCC",
         btnsGreen: "#225a4b",
         bgBeigeWhite: "#fffcf6",
@@ -17,6 +18,7 @@ export default {
         lightBasicGreen: "#47685e",
         lightBiege: "#cccac54a",
         darkBiege: " #EEEADF",
+        darkGreen: "#5C8277",
       },
 
       fontFamily: {
@@ -25,6 +27,11 @@ export default {
         nunito: ["Nunito", "sans-serif"],
         sans: ["Nunito", "sans-serif"],
         otoma: ["OtomanopeeOne"],
+      },
+
+      filter: {
+        'gray': 'grayscale(100%)',
+        'none': 'grayscale(0)', 
       },
     },
   },
