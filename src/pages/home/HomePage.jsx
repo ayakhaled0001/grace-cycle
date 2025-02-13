@@ -3,6 +3,7 @@ import styles from "./HomePage.module.css";
 import HomeMainSec from "../../components/homeCom/HomeMainSec";
 import HomeProblemsSec from "../../components/homeCom/HomeProblemsSec";
 import HomeProvidingSec from "../../components/homeCom/HomeProvidingSec";
+import HomeSteps from "../../components/homeCom/HomeSteps";
 function HomePage() {
   return (
     <>
@@ -12,6 +13,7 @@ function HomePage() {
       </div>
       <HomeProblemsSec />
       <HomeProvidingSec />
+      <HomeSteps/>
     </>
   );
 }
