@@ -13,7 +13,7 @@ const initialState = {
 
 // ===================== BaseUrl ============================
 
-const BaseUrl = "https://48d0-156-206-17-23.ngrok-free.app/";
+const BaseUrl = "https://792f-156-206-23-128.ngrok-free.app/";
 
 // =================== Signup =======================
 export const signupUser = createAsyncThunk(

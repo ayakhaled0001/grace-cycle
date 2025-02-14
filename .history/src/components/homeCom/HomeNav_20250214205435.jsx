@@ -15,23 +15,17 @@ function HomeNav() {
           </NavLink>
         </li>
         <li className="m-auto">
-          <NavLink
-            to="/services"
-            className={`text-lg hover:text-lightBrownYellow`}>
+          <NavLink to="/services" className={`text-lg`}>
             Services
           </NavLink>
         </li>
         <li className="m-auto">
-          <NavLink
-            to="/about"
-            className={`text-lg hover:text-lightBrownYellow`}>
+          <NavLink to="/about" className={`text-lg`}>
             About us
           </NavLink>
         </li>
         <li className="m-auto">
-          <NavLink
-            to="/contact"
-            className={`text-lg hover:text-lightBrownYellow`}>
+          <NavLink to="/contact" className={`text-lg`}>
             Contact us
           </NavLink>
         </li>
