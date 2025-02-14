@@ -1,0 +1,104 @@
+import React from "react";
+import facebook from "../../assets/icons/facebook.svg";
+import instgram from "../../assets/icons/instgram.svg";
+import linkedin from "../../assets/icons/linkedin.svg";
+import twitter from "../../assets/icons/twitter.svg";
+import send from "../../assets/icons/send.svg";
+
+function HomeFooter() {
+  return (
+    <footer>
+      <div className="footer-content bg-darkGreen w-[100%] h-96 flex justify-around flex-col md:flex-row lg:flex">
+        <div className="footer-section p-8">
+          <div className="footer-logo">
+            <img src="logo.png" alt="Logo" className="w-40" />
+            <p className="font-nunitoBold text-bgBeigeWhite">
+              We will help you reduce your food waste
+            </p>
+            <div className="social-icons flex justify-around items-center w-[80%] p-4">
+              <a
+                href="https://facebook.com"
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
+                <img src={facebook} alt="Facebook" className="w-4 h-4" />
+              </a>
+              <a
+                href="https://instagram.com"
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
+                <img src={instgram} alt="instgram" className="w-4 h-4" />
+              </a>
+              <a
+                href="https://linkedin.com"
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
+                <img src={linkedin} alt="linkedin" className="w-4 h-4" />
+              </a>
+              <a
+                href="https://twitter.com"
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
+                <img src={twitter} alt="twitter" className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="footer-section p-4 pt-8 ">
+          <h3 className="font-nunitoBold text-xl">Browes</h3>
+          <ul className="py-5 text-offWhite">
+            <li className="py-2">
+              <a href="#link1">Home</a>
+            </li>
+            <li className="py-2">
+              <a href="#link2">Services</a>
+            </li>
+            <li className="py-2">
+              <a href="#link3">About Us</a>
+            </li>
+            <li className="py-2">
+              <a href="#link4">Contact Us</a>
+            </li>
+            <li className="py-2">
+              <a href="#link4">Reviews</a>
+            </li>
+            <li className="py-2">
+              <a href="#link4">FAQ</a>
+            </li>
+          </ul>
+        </div>
+        <div className="footer-section p-4 pt-8 ">
+          <h3 className="font-nunitoBold text-xl">Helpful Links</h3>
+          <ul className="py-5 text-offWhite">
+            <li className="py-2">
+              <a href="#link5">Support</a>
+            </li>
+            <li className="py-2">
+              <a href="#link6">Terms&Condition</a>
+            </li>
+            <li className="py-2">
+              <a href="#link7">Privacy policy</a>
+            </li>
+          </ul>
+        </div>
+        <div className="footer-section p-10 pt-8">
+          <h3 className="font-nunitoBold text-xl">Subscribe</h3>
+          <p className="font-nunitoBold text-bgBeigeWhite">
+            Subscribe to our community to get important news
+          </p>
+          <div className="flex justify-between items-center w-[65%] mt-4">
+            <input
+              type="email"
+              placeholder="Email address"
+              className="border border-offWhite bg-transparent placeholder:font-light placeholder-offWhite text-sm font-nunitoBold p-2 rounded"
+            />
+            <button className="w-10 h-10 bg-bgBeigeWhite rounded-lg flex justify-center items-center">
+              <img src={send} alt="instgram" className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+export default HomeFooter;
