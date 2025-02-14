@@ -30,7 +30,7 @@ function HomeAccordion() {
     setOpenIndex(openIndex === index ? null : index);
   };
   return (
-    <section className="flex py-16">
+    <section className="flex py-14">
       <img src="/public/homeMedia/salad.png" alt="" className="w-2/5" />
       <div className="px-10 mt-16">
         <h1 className="font-otoma text-6xl">Frequently Asked Questions</h1>

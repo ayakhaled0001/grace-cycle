@@ -18,29 +18,33 @@ function HomeFooter() {
             <div className="social-icons flex justify-around items-center w-[80%] p-4">
               <a
                 href="https://facebook.com"
-                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
                 <img src={facebook} alt="Facebook" className="w-4 h-4" />
               </a>
               <a
                 href="https://instagram.com"
-                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
                 <img src={instgram} alt="instgram" className="w-4 h-4" />
               </a>
               <a
                 href="https://linkedin.com"
-                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
                 <img src={linkedin} alt="linkedin" className="w-4 h-4" />
               </a>
               <a
                 href="https://twitter.com"
-                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center"
+              >
                 <img src={twitter} alt="twitter" className="w-4 h-4" />
               </a>
             </div>
           </div>
         </div>
         <div className="footer-section p-4 pt-8 ">
-          <h3 className="font-nunitoBold text-xl">Browses</h3>
+          <h3 className="font-nunitoBold text-xl">Browes</h3>
           <ul className="py-5 text-offWhite">
             <li className="py-2">
               <a href="#link1">Home</a>
