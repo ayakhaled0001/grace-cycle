@@ -4,6 +4,7 @@ import HomeMainSec from "../../components/homeCom/HomeMainSec";
 import HomeProblemsSec from "../../components/homeCom/HomeProblemsSec";
 import HomeProvidingSec from "../../components/homeCom/HomeProvidingSec";
 import HomeSteps from "../../components/homeCom/HomeSteps";
+import HomeFooter from "../../components/homeCom/HomeFooter";
 function HomePage() {
   return (
     <>
@@ -14,6 +15,7 @@ function HomePage() {
       <HomeProblemsSec />
       <HomeProvidingSec />
       <HomeSteps/>
+      <HomeFooter/>
     </>
   );
 }
