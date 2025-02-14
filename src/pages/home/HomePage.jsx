@@ -6,6 +6,7 @@ import HomeProvidingSec from "../../components/homeCom/HomeProvidingSec";
 import HomeSteps from "../../components/homeCom/HomeSteps";
 import HomeAccordion from "../../components/homeCom/HomeAccordion";
 import HomeReview from "../../components/homeCom/HomeReview";
+import HomeFooter from "../../components/homeCom/HomeFooter";
 function HomePage() {
   return (
     <div className="bg-offWhite">
@@ -18,6 +19,7 @@ function HomePage() {
       <HomeSteps />
       <HomeReview />
       <HomeAccordion />
+      <HomeFooter />
     </div>
   );
 }
