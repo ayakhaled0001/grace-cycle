@@ -44,15 +44,7 @@ function HomeReview() {
             </div>
           </div>
         </motion.div>
-        <motion.div
-          initial={{ translateY: "-60px" }}
-          whileInView={{ translateY: "0px" }}
-          viewport={{ margin: "0px 0px -10px 0px" }}
-          transition={{
-            duration: 1,
-            ease: "easeInOut",
-          }}
-          className="flex items-between w-3/12 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
+        <div className="flex items-between w-3/12 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
           <div>
             <img src="/public/icons/commaGroup.svg" alt="" />
             <p className=" border-b py-12 mb-2 ">
@@ -76,16 +68,8 @@ function HomeReview() {
               </div>
             </div>
           </div>
-        </motion.div>
-        <motion.div
-          initial={{ translateY: "-60px" }}
-          whileInView={{ translateY: "0px" }}
-          viewport={{ margin: "0px 0px -10px 0px" }}
-          transition={{
-            duration: 1,
-            ease: "easeInOut",
-          }}
-          className="flex w-3/12 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
+        </div>
+        <div className="flex w-3/12 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
           <div>
             <img src="/public/icons/commaGroup.svg" alt="" />
             <p className="border-b py-12 mb-2">
@@ -110,7 +94,7 @@ function HomeReview() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
       <button className="font-sans bg-palewLightBrownYellow text-offWhite py-2 px-3 rounded-lg mt-10 ">
         View More Reviews {`>`}

@@ -45,7 +45,7 @@ function HomeReview() {
           </div>
         </motion.div>
         <motion.div
-          initial={{ translateY: "-60px" }}
+          initial={{ translateY: "-100px" }}
           whileInView={{ translateY: "0px" }}
           viewport={{ margin: "0px 0px -10px 0px" }}
           transition={{
