@@ -8,7 +8,7 @@ import send from "../../assets/icons/send.svg";
 function HomeFooter() {
   return (
     <footer>
-      <div className="footer-content bg-darkGreen w-[100%] h-96 flex justify-around flex-col md:flex-row lg:flex">
+      <div className="footer-content bg-darkGreen w-[100%] min-h-96 flex justify-around flex-col md:flex-row lg:flex">
         <div className="footer-section p-8">
           <div className="footer-logo">
             <img src="logo.png" alt="Logo" className="w-40" />
