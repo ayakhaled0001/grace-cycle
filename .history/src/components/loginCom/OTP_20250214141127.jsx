@@ -59,13 +59,11 @@ function OTP() {
           </Link>
         </button>
       </form>
-      <div className="flex flex-col items-center gap-y-3">
-        <p className={styles.p}>
-          Didn’t receive the email ?{" "}
-          <span className={styleOTP.span}>Click to resend</span>
-        </p>
-        <BackToLogInBtn />
-      </div>
+      <p className={styles.p}>
+        Didn’t receive the email ?{" "}
+        <span className={styleOTP.span}>Click to resend</span>
+      </p>
+      <BackToLogInBtn />
     </aside>
   );
 }

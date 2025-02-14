@@ -2,7 +2,9 @@ import { Link } from "react-router-dom";
 import arrow from "../../assets/icons/arrow.svg";
 function BackToLogInBtn() {
   return (
-    <Link to="/login" className=" flex gap-x-3 font-bold text-btnsGreen ">
+    <Link
+      to=""
+      className="absolute -bottom-10 flex gap-x-3 mx-auto font-bold text-btnsGreen ">
       <img src={arrow} /> Back to Log in
     </Link>
   );
