@@ -7,8 +7,7 @@ import PasswordReseted from "./pages/log-in/PasswordReseted";
 import Login from "./pages/log-in/Login";
 import Signup from "./pages/signup/Signup";
 import HomePage from "./pages/home/HomePage";
-import ContactPage from "./pages/contact-us/ContactUs";
-import AboutUs from "./pages/about/AboutUs";
+import AboutUS from "./pages/about/AboutUs";
 
 function App() {
   return (
@@ -16,12 +15,11 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/OTP" element={<PasswordReset />} />
         <Route path="/setpassword" element={<NewPassword />} />
         <Route path="/PaswordReseted" element={<PasswordReseted />} />
-        <Route path="/about" element={<AboutUs />} />
+        <Route path="/about" element={<About />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
       </Routes>
     </Router>
