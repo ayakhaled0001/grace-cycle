@@ -7,6 +7,7 @@ import PasswordReseted from "./pages/log-in/PasswordReseted";
 import Login from "./pages/log-in/Login";
 import Signup from "./pages/signup/Signup";
 import HomePage from "./pages/home/HomePage";
+import ContactPage from "./pages/contact-us/ContactUs";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/OTP" element={<PasswordReset />} />
         <Route path="/setpassword" element={<NewPassword />} />

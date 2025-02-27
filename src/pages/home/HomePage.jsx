@@ -11,7 +11,7 @@ function HomePage() {
   return (
     <div className="bg-offWhite">
       <div className={styles.mainSec}>
-        <HomeNav styles={styles} />
+        <HomeNav styles={styles} backgroundColor="bg-[#eeeadf]"/>
         <HomeMainSec />
       </div>
       <HomeProblemsSec />
