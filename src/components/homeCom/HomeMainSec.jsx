@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import styles from "../../pages/home/HomePage.module.css";
 function HomeMainSec() {
   return (
-    <main className="w-10/12 mx-auto mt-10 mb-12 flex justify-between pb-14 pt-5 ">
+    <main className="w-10/12 mx-auto mt-24 mb-12 flex justify-between pb-14 pt-12">
       <motion.section
         initial={{ translateX: "-10px" }}
         whileInView={{ translateX: "10px" }}

@@ -1,6 +1,6 @@
 function AboutMainSec() {
   return (
-    <main>
+    <main className="mt-40">
       <h1 className="font-otoma text-center text-5xl my-12">About Us</h1>
 
       <img className="" src="about/aboutmain.png" alt="" />

@@ -1,12 +1,14 @@
 import { NavLink } from "react-router-dom";
 
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 
-function HomeNav() {
+function HomeNav({backgroundColor}) {
+
   return (
-    <nav className="flex justify-between m-auto w-11/12 py-7">
+    <nav className={`fixed z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 py-7 w-full shadow-md`}>
       <div className="w-2/12">
-        <img src="logo.png" alt="grace cycle" className="w-41" />
+        <img src="logo.png" alt="grace cycle" className="w-40" />
       </div>
       <ul className="flex justify-between w-4/12 content-center ml-5">
         <li className="m-auto">
