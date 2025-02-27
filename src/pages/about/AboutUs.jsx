@@ -6,7 +6,7 @@ import HomeFooter from "../../components/homeCom/HomeFooter";
 function AboutUs() {
   return (
     <section className="bg-offWhite">
-      <HomeNav />
+      <HomeNav backgroundColor="bg-offWhite"/>
       <AboutMainSec />
       <AboutWhatWeDo />
       <AboutAmbitions />
