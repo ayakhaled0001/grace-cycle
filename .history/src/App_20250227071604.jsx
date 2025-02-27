@@ -7,7 +7,6 @@ import PasswordReseted from "./pages/log-in/PasswordReseted";
 import Login from "./pages/log-in/Login";
 import Signup from "./pages/signup/Signup";
 import HomePage from "./pages/home/HomePage";
-import AboutUs from "./pages/about/AboutUs";
 
 function App() {
   return (
@@ -19,7 +18,7 @@ function App() {
         <Route path="/OTP" element={<PasswordReset />} />
         <Route path="/setpassword" element={<NewPassword />} />
         <Route path="/PaswordReseted" element={<PasswordReseted />} />
-        <Route path="/about" element={<AboutUs />} />
+        <Route path="/about" element={<About />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
       </Routes>
     </Router>

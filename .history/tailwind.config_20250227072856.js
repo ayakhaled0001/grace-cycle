@@ -17,7 +17,7 @@ export default {
         black: "#000000",
         lightBasicGreen: "#47685e",
         lightBiege: "#cccac54a",
-        darkBiege: "#EEEADF",
+        darkBiege: " #EEEADF",
         darkGreen: "#5C8277",
         paleWhite: "#D9D9D9",
         paleWhiteGrey: "#EFF0E9",
