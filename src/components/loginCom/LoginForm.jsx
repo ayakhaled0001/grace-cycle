@@ -208,7 +208,7 @@ export default function LoginForm() {
             </Button>
 
             <p className="pt-4">
-              Don't have an account?
+              Don&apos;t have an account?
               <Link to="/signup">
                 <span className="text-[#D57B21] underline cursor-pointer font-nunito">
                   Signup

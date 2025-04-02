@@ -1,65 +1,97 @@
 import styles from "./NewPassword.module.css";
 import eye from "../../assets/icons/eye.svg";
-import { Link } from "react-router-dom";
-import BackToLogInBtn from "./BackToLogInBtn";
 import { useState } from "react";
-function NewPasswordReset() {
-  const [inputType, setInputType] = useState("password");
+import { useDispatch, useSelector } from "react-redux";
+import { resetPassword } from "../../redux/ForgetPassSlice";
+import { useNavigate } from "react-router-dom";
 
-  // Handlers to toggle input type
+function NewPasswordReset() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const email = useSelector((state) => state.forgetPassword.email);
+  const token = useSelector((state) => state.forgetPassword.token);
+
+  console.log(email, token);
+
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [inputType, setInputType] = useState("password");
+  const [error, setError] = useState("");
+
   const showPassword = () => setInputType("text");
   const hidePassword = () => setInputType("password");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!password || !confirmPassword) {
+      setError("Please fill in all fields");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    try {
+      await dispatch(resetPassword({ email, newPassword:password, token })).unwrap();
+      navigate("/PasswordReseted");
+    } catch (err) {
+      setError(typeof err === 'object' ? "Something went wrong. Please try again." : err);
+    }
+  };
+
   return (
     <aside className="aside">
       <h1 className={styles.paddingB}>Set new Password</h1>
-      <div className={styles.inputPass}>
-        <label htmlFor="InputPass" className={styles.labelPass}>
-          New Password
-        </label>
-        <div className={styles.positioned}>
-          <input
-            id="InputPass"
-            className={styles.pass}
-            placeholder="example123##anything"
-            name="orgPass"
-            type={inputType}
-          />
-          <img
-            src={eye}
-            className={styles.eye}
-            alt="seen"
-            onMouseEnter={showPassword}
-            onMouseLeave={hidePassword}
-          />
+      <form onSubmit={handleSubmit}>
+        <div className={styles.inputPass}>
+          <label htmlFor="InputPass" className={styles.labelPass}>
+            New Password
+          </label>
+          <div className={styles.positioned}>
+            <input
+              id="InputPass"
+              className={styles.pass}
+              placeholder="example123##anything"
+              name="password"
+              type={inputType}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <img
+              src={eye}
+              className={styles.eye}
+              alt="seen"
+              onMouseEnter={showPassword}
+              onMouseLeave={hidePassword}
+            />
+          </div>
         </div>
-      </div>
-      <div className={styles.inputPass}>
-        <label htmlFor="InputPassConfirm" className={styles.labelPass}>
-          Confirm Password
-        </label>
-        <div className={styles.positioned}>
-          <input
-            id="InputPassConfirm"
-            className={styles.pass}
-            placeholder="example123##anything"
-            name="orgPass"
-            type={inputType}
-          />
-          <img
-            src={eye}
-            className={styles.eye}
-            alt="seen"
-            onMouseEnter={showPassword}
-            onMouseLeave={hidePassword}
-          />
+        <div className={styles.inputPass}>
+          <label htmlFor="InputPassConfirm" className={styles.labelPass}>
+            Confirm Password
+          </label>
+          <div className={styles.positioned}>
+            <input
+              id="InputPassConfirm"
+              className={styles.pass}
+              placeholder="example123##anything"
+              name="confirmPassword"
+              type={inputType}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <img
+              src={eye}
+              className={styles.eye}
+              alt="seen"
+              onMouseEnter={showPassword}
+              onMouseLeave={hidePassword}
+            />
+          </div>
         </div>
-      </div>
-      <button className="resetPass">
-        <Link to="/passwordReseted" className="resetPassLink">
-          Reset Password
-        </Link>
-      </button>
-      <BackToLogInBtn />
+        {error && <div className="error text-red-600 text-md font-nunitoBold mb-2">{error}</div>}
+        <button type="submit" className="resetPass">Reset Password</button>
+      </form>
     </aside>
   );
 }
