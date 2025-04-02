@@ -125,7 +125,7 @@ export default function Signup() {
           navigate("/");
           Swal.fire({
             icon: "success",
-            title: "🎉 تم التسجيل بنجاح!",
+            title: "🎉 Signup Successful!",
             showConfirmButton: false,
             timer: 3000,
           });

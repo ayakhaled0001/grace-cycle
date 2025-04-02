@@ -40,6 +40,7 @@ const Page_1 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+            // "&.Mui": { color: "#000", fontWeight: "bold" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",

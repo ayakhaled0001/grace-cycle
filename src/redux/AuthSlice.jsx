@@ -13,7 +13,7 @@ const initialState = {
 
 // ===================== BaseUrl ============================
 
-const BaseUrl = "https://48d0-156-206-17-23.ngrok-free.app/";
+const BaseUrl = "https://gracecycleapi.azurewebsites.net/";
 
 // =================== Signup =======================
 export const signupUser = createAsyncThunk(
@@ -42,7 +42,7 @@ export const loginUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       const response = await axios.post(
-        `${BaseUrl}api/WebUser/login-web`,
+        `${BaseUrl}api/WebUser/login`,
         userData
       );
       return response.data;
