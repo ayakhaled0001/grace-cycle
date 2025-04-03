@@ -1,7 +1,7 @@
 function AboutAmbitions() {
   return (
     <section className="p-10 mb-20">
-      <h3 className="font-otoma text-3xl my-16">
+      <h3 className="font-otoma text-3xl my-16 text-center">
         Our ambitions are embodied in
       </h3>
       <article className="flex justify-evenly my-12">

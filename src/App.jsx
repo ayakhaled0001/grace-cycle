@@ -9,6 +9,7 @@ import Signup from "./pages/signup/Signup";
 import HomePage from "./pages/home/HomePage";
 import ContactPage from "./pages/contact-us/ContactUs";
 import AboutUs from "./pages/about/AboutUs";
+import CharityPage from "./pages/charity/CharityPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/services" element={<CharityPage />} />
         <Route path="/OTP" element={<PasswordReset />} />
         <Route path="/setpassword" element={<NewPassword />} />
         <Route path="/PasswordReseted" element={<PasswordReseted />} />
