@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 function HomeNav({backgroundColor}) {
 
   return (
-    <nav className={`fixed z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 py-7 w-full shadow-md`}>
+    <nav className={`fixed z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 py-7 w-full font-nunitoBold`}>
       <div className="w-2/12">
         <img src="logo.png" alt="grace cycle" className="w-40" />
       </div>
@@ -42,13 +42,13 @@ function HomeNav({backgroundColor}) {
       <div className="flex gap-3 w-4/12 h-12">
         <NavLink
           to="/signup"
-          className="font-sans border-solid border-btnsGreen border-2 bg-btnsGreen
+          className="font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen
          w-6/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen  transition-all text-center my-auto py-2">
           Organization Sign up
         </NavLink>
         <NavLink
           to="/login"
-          className="font-sans border-solid border-btnsGreen border-2 w-6/12
+          className="font-nunitoBold border-solid border-btnsGreen border-2 w-6/12
          text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center my-auto py-2">
           Log in
         </NavLink>
