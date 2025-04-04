@@ -19,19 +19,19 @@ function MainDishes() {
     fetchFoods();
   }, []);
   return (
-    <section className="w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg">
+    <section className="w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
       <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4 ">
-        <span className="bg-white p-1 rounded-md font-sans text-lg  font-semibold">
+        <span className="bg-white p-1 rounded-md text-lg  font-semibold">
           Main dishes
         </span>
-        <span className="bg-white p-1 rounded-md  font-sans text-lg text-lightBrownYellow underline ">
+        <span className="bg-white p-1 rounded-md  text-lg text-lightBrownYellow underline ">
           {/* will be a Link to a route */}
           <a href="#">Shop More</a>
         </span>
       </div>
       {mainDishes.map((food) => (
         <div
-          className="m-3 w-3/12 font-sans border border-stone-700 rounded-xl relative "
+          className="m-3 w-3/12 border border-stone-700 rounded-xl relative "
           key={food.id}>
           <div className="flex absolute justify-between m-3 left-0 right-0 ">
             <span className=" bg-semiDarkBeige px-2 py-1 rounded-md">
@@ -65,7 +65,7 @@ function MainDishes() {
                 %{food.discountPercentage}
               </span>
             </div>
-            <h1 className="font-sans text-xl font-medium ">{food.name}</h1>
+            <h1 className="text-xl font-medium ">{food.name}</h1>
             <span>{food.vName}</span> <span>(opened)</span>
             <div className="flex justify-between py-2">
               <span className="text-lg">Price</span>
