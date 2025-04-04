@@ -21,6 +21,7 @@ export default {
         lightBiege: "#cccac54a",
         darkBiege: "#EEEADF",
         darkGreen: "#5C8277",
+        lightGreen: "#577A71",
         paleWhite: "#D9D9D9",
         paleWhiteGrey: "#EFF0E9",
         darkYellow: "#BC870B",
@@ -45,7 +46,6 @@ export default {
         nunitoExtralight: ["Nunito-extralight", "sans-serif"],
         nunitoBold: ["Nunito-bold", "sans-serif"],
         nunito: ["Nunito", "sans-serif"],
-        sans: ["Nunito", "sans-serif"],
         otoma: ["OtomanopeeOne"],
       },
 

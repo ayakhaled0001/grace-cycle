@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import EastIcon from "@mui/icons-material/East";
 import WestIcon from "@mui/icons-material/West";
+import { Link } from "react-router-dom";
 
 const slides = [
   {
@@ -66,7 +67,7 @@ const slides = [
     image: "homeMedia/slide3.png",
     title: (
       <>
-        We will deliver <br /> {" "}
+        We will deliver <br />{" "}
         <span
           className="text-darkOrange"
           style={{
@@ -74,7 +75,7 @@ const slides = [
             fontSize: "1.2em",
           }}
         >
-         Everything you need
+          Everything you need
         </span>{" "}
         <br />
         from the Best stores
@@ -123,7 +124,20 @@ function HomeProvidingSlider() {
           >
             {slides[currentIndex].title}
           </h2>
-          <button className="mt-6 bg-btnsGreen text-white font-nunitoBold px-8 py-2 rounded-lg text-xl hover:bg-green-950  transition">
+          <button
+           onClick={() => {
+            const section = document.getElementById("bags-section");
+            if (section) {
+              const offset = 120; 
+              const sectionPosition = section.getBoundingClientRect().top + window.scrollY;
+              window.scrollTo({
+                top: sectionPosition - offset,
+                behavior: "smooth",
+              });
+            }
+          }}
+            className="mt-6 bg-btnsGreen text-white font-nunitoBold px-8 py-2 rounded-lg text-xl hover:bg-green-950  transition"
+          >
             Order Bags Now
           </button>
         </div>
@@ -131,14 +145,14 @@ function HomeProvidingSlider() {
 
       {/* dots */}
       <div className="flex items-center gap-x-6 mt-5 ">
-        {/* السهم اليسار */}
+        {/* Left arrow*/}
         <WestIcon
           onClick={prevSlide}
           fontSize="large"
           className="cursor-pointer text-gray-700 hover:text-darkGreen transition-colors duration-500 text-5xl"
         />
 
-        {/* الدوتس */}
+        {/* Dots */}
         <div className="flex gap-x-3">
           {slides.map((_, index) => (
             <div
@@ -150,7 +164,7 @@ function HomeProvidingSlider() {
           ))}
         </div>
 
-        {/* السهم اليمين */}
+        {/* right arrow*/}
         <EastIcon
           onClick={nextSlide}
           fontSize="large"

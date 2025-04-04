@@ -5,6 +5,10 @@ import MainDishes from "../../components/charityCom/MainDishes";
 import BakedGoods from "../../components/charityCom/BakedGoods";
 import Dessert from "../../components/charityCom/Dessert";
 import Drinks from "../../components/charityCom/Drinks";
+import BagsVideo from "../../components/charityCom/BagsVideo";
+import MagicBags from "../../components/charityCom/MagicBags";
+import Footer from "../../components/homeCom/HomeFooter";
+import React from "react";
 const CharityPage = () => {
   return (
     <>
@@ -16,6 +20,9 @@ const CharityPage = () => {
         <BakedGoods />
         <Dessert />
         <Drinks />
+        <BagsVideo/>
+        <MagicBags />
+        <Footer/>
       </div>
     </>
   );
