@@ -1,0 +1,65 @@
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import { useState } from "react";
+function MainDishes() {
+  const [isFav, setIsFav] = useState(false);
+  return (
+    <section className="w-10/12 mx-auto bg-semiDarkBeige my-5">
+      <div className="relative -top-5 flex justify-between w-12/12 mx-4">
+        <span className="bg-white p-1 rounded-md font-sans text-lg  font-semibold">
+          Main dishes
+        </span>
+        <span className="bg-white p-1 rounded-md  font-sans text-lg text-lightBrownYellow underline ">
+          {/* will be a Link to a route */}
+          <a href="#">Shop More</a>
+        </span>
+      </div>
+      <div className="m-3 w-3/12 font-sans border border-stone-700 rounded-xl overflow-hidden relative">
+        <div className="flex absolute justify-between m-3 left-0 right-0 ">
+          <span className=" bg-semiDarkBeige px-2 py-1 rounded-md">
+            5+ left
+          </span>
+          <span className="flex items-center bg-semiDarkBeige px-2 py-1 rounded-md">
+            <img
+              src="icons/star.svg"
+              alt="star"
+              className="w-3 text-center mr-1"
+            />
+            4.5
+          </span>
+        </div>
+        <img src="services/foodlistingtest.png" alt="" className="" />
+        <div className="p-2">
+          <div className="flex justify-between">
+            {" "}
+            <span className="bg">
+              <FavoriteOutlinedIcon
+
+              className={` ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
+                sx={{ color:  }}
+              />
+            </span>
+            <span className="bg-semiBrightYellow py-3 px-1.5 rounded-full text-xl font-bold">
+              15%
+            </span>
+          </div>
+          <h1 className="font-sans text-xl font-medium ">grilled salmon</h1>
+          <span>Al Shallal Restaurant</span> <span>(opened)</span>
+          <div className="flex justify-between py-2">
+            <span className="text-lg">Price</span>
+            <div className="">
+              <span className="text-sm px-1 line-through ">EGP160 </span>
+              <span className="text-btnsGreen font-semibold text-lg ">
+                EGP136
+              </span>
+            </div>
+          </div>
+          <button className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default MainDishes;
