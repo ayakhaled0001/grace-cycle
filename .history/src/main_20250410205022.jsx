@@ -5,7 +5,7 @@ import App from "./App";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { store } from "./redux/Store";
-import "./styles/loader.css";
+
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <StrictMode>
@@ -14,9 +14,5 @@ createRoot(document.getElementById("root")).render(
   </Provider>
 );
 
-window.addEventListener("load", () => {
-  const loader = document.getElementById("global-loader");
-  if (loader) {
-    loader.style.display = "none";
-  }
-});
+const loader = document.getElementById("loader");
+if (loader) loader.remove();

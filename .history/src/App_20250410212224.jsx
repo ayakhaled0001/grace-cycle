@@ -10,8 +10,8 @@ import HomePage from "./pages/home/HomePage";
 import ContactPage from "./pages/contact-us/ContactUs";
 import AboutUs from "./pages/about/AboutUs";
 import CharityPage from "./pages/charity/CharityPage";
-// import GlobalLoader from "./components/loadersCom/GlobalLoader";
-// import { useEffect, useState } from "react";
+import GlobalLoader from "./components/loadersCom/GlobalLoader";
+import { useEffect, useState } from "react";
 
 function App() {
   return (

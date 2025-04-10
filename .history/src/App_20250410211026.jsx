@@ -10,12 +10,30 @@ import HomePage from "./pages/home/HomePage";
 import ContactPage from "./pages/contact-us/ContactUs";
 import AboutUs from "./pages/about/AboutUs";
 import CharityPage from "./pages/charity/CharityPage";
-// import GlobalLoader from "./components/loadersCom/GlobalLoader";
-// import { useEffect, useState } from "react";
 
 function App() {
-  return (
-    <Router>
+
+
+   : <MainApp />;
+}
+
+function App() {
+  const [loading, setLoading] = useState(true); // Starts true on first mount
+
+  useEffect(() => {
+    // Run after everything is loaded
+    const onReady = () => {
+      setTimeout(() => setLoading(false), 0);
+    };
+
+    if (document.readyState === "complete") {
+      onReady();
+    } else {
+      window.addEventListener("load", onReady);
+      return () => window.removeEventListener("load", onReady);
+    }
+  }, []);
+  return loading ? <Loader /> :<Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<Signup />} />

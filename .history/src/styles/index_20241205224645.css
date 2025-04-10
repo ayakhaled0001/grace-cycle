@@ -1,8 +1,0 @@
-@font-face {
-  font-family: "Nunito";
-  src: url("../assets/fonts/Nunito-ExtraLight.woff") format("woff"),
-    url("Nunito-ExtraLight.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
