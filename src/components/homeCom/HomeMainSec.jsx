@@ -21,7 +21,7 @@ function HomeMainSec() {
           facilities.
         </p>
         <button
-          className="text-base py-1 px-2 font-sans border-solid border-btnsGreen border-2 bg-btnsGreen
+          className="text-base py-2 px-4 font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen
          w-4/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen  transition-all ">
           Download Now
         </button>

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 function HomeNav({backgroundColor}) {
 
   return (
-    <nav className={`fixed z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 py-7 w-full font-nunitoBold`}>
+    <nav className={`fixed z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 py-7 w-full font-nunitoBold shadow-md`}>
       <div className="w-2/12">
         <img src="logo.png" alt="grace cycle" className="w-40" />
       </div>
