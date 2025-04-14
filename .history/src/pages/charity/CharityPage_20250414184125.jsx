@@ -8,7 +8,7 @@ import Drinks from "../../components/charityCom/Drinks";
 import BagsVideo from "../../components/charityCom/BagsVideo";
 import MagicBags from "../../components/charityCom/MagicBags";
 import Footer from "../../components/homeCom/HomeFooter";
-import Categories from "../../components/charityCom/Categories";
+
 const CharityPage = () => {
   return (
     <>
