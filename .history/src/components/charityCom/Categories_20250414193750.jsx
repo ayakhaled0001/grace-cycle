@@ -13,7 +13,7 @@ const data = [
 
 function Categories() {
   return (
-    <div className="my-14 w-10/12 mx-auto">
+    <div className="my-14 w-9/12 mx-auto">
       <h1 className="font-sans text-xl font-bold my-5">All Categories </h1>
       <div className="flex gap-5 justify-center my-5">
         {data.map((cat) => (

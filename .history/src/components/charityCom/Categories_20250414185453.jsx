@@ -13,8 +13,8 @@ const data = [
 
 function Categories() {
   return (
-    <div className="">
-      <h1 className="">All Categories </h1>
+    <div>
+      <h1>All Categories </h1>
       <div className="flex gap-5 justify-center">
         {data.map((cat) => (
           <div key={cat.label}>
