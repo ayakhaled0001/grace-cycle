@@ -10,6 +10,12 @@ import HomePage from "./pages/home/HomePage";
 import ContactPage from "./pages/contact-us/ContactUs";
 import AboutUs from "./pages/about/AboutUs";
 import CharityPage from "./pages/charity/CharityPage";
+import VendorPage from "./pages/vendor/VendorPage";
+import Overview from "./components/vendorCom/Overview";
+import AddNewItem from "./components/vendorCom/AddNewItem";
+import MyListings from "./components/vendorCom/MyListings";
+import Orders from "./components/vendorCom/Orders";
+import Settings from "./components/vendorCom/Settings";
 // import GlobalLoader from "./components/loadersCom/GlobalLoader";
 // import { useEffect, useState } from "react";
 
@@ -21,7 +27,16 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/services" element={<CharityPage />} />
+        <Route path="/CharityPage" element={<CharityPage />} />
+
+        <Route path="/VendorPage" element={<VendorPage />}>
+          <Route path="overview" element={<Overview />} />
+          <Route path="addNewItem" element={<AddNewItem />} />
+          <Route path="myListings" element={<MyListings />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+
         <Route path="/OTP" element={<PasswordReset />} />
         <Route path="/setpassword" element={<NewPassword />} />
         <Route path="/PasswordReseted" element={<PasswordReseted />} />
