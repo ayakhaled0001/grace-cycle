@@ -29,7 +29,7 @@ const AddNewItem = () => {
     };
 
     return (
-        <div className='bg-yellow-50 w-full bg-gray-100 flex flex-col items-center justify-center min-h-screen'>
+        <div className='bg-blue-100 flex flex-col items-center justify-center min-h-screen'>
             <h2>Add New Item</h2>
             <form onSubmit={handleSubmit} className="bg-red-500 w-full max-w-2xl p-6 rounded-lg shadow-md flex flex-col gap-4">
                 <div>
