@@ -48,38 +48,38 @@ const Dashboard = () => {
         <h2 className="sidebar-header text-xl font-bold p-4">Dashboard</h2>
         <ul className="sidebar-menu space-y-4 p-4 w-full">
           <li onClick={() => handleMenuClick("Overview", "/VendorPage/overview")}>
-            <div className="flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300">
+            <div className={`flex items-center space-x-2 px-6 py-2 ${activePage === "Overview" ? "bg-[#C1BFB3]" : "hover:bg-[#C1BFB3]"} cursor-pointer transition-all duration-300`}>
               <img src="../../../public/DashboardIcons/vector1.svg" className="w-6" alt="Overview" />
               <span>Overview</span>
             </div>
           </li>
           <li onClick={() => handleMenuClick("Add New Item", "/VendorPage/addNewItem")}>
-            <div className="flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300">
+            <div className={`flex items-center space-x-2 px-6 py-2 ${activePage === "Add New Item" ? "bg-[#C1BFB3]" : "hover:bg-[#C1BFB3]"} cursor-pointer transition-all duration-300`}>
               <img src="../../../public/DashboardIcons/vector2.svg" className="w-6" alt="Add" />
               <span>Add New Item</span>
             </div>
           </li>
           <li onClick={() => handleMenuClick("My Listings", "/VendorPage/myListings")}>
-            <div className="flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300">
+            <div className={`flex items-center space-x-2 px-6 py-2 ${activePage === "My Listings" ? "bg-[#C1BFB3]" : "hover:bg-[#C1BFB3]"} cursor-pointer transition-all duration-300`}>
               <img src="../../../public/DashboardIcons/vector3.svg" className="w-6" alt="Listings" />
               <span>My Listings</span>
             </div>
           </li>
           <li onClick={() => handleMenuClick("Orders", "/VendorPage/orders")}>
-            <div className="flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300">
+            <div className={`flex items-center space-x-2 px-6 py-2 ${activePage === "Orders" ? "bg-[#C1BFB3]" : "hover:bg-[#C1BFB3]"} cursor-pointer transition-all duration-300`}>
               <img src="../../../public/DashboardIcons/vector4.svg" className="w-6" alt="Orders" />
               <span>Orders</span>
             </div>
           </li>
           <hr className="border-t my-4" />
           <li onClick={() => handleMenuClick("Settings", "/VendorPage/settings")}>
-            <div className="flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300">
+            <div className={`flex items-center space-x-2 px-6 py-2 ${activePage === "Settings" ? "bg-[#C1BFB3]" : "hover:bg-[#C1BFB3]"} cursor-pointer transition-all duration-300`}>
               <img src="../../../public/DashboardIcons/vector5.svg" className="w-6" alt="Settings" />
               <span>Settings</span>
             </div>
           </li>
           <li onClick={handleLogout}>
-            <div className="flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300">
+            <div className={`flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300`}>
               <img src="../../../public/DashboardIcons/vector6.svg" className="w-6" alt="Logout" />
               <span>Logout</span>
             </div>
