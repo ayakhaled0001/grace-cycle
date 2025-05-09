@@ -37,11 +37,11 @@ function HomeMainSec() {
             duration: 1,
             ease: "easeInOut",
           }}
-          className={`${styles.mainImgContainer} `}>
+          className={`${styles.mainImgContainer}  `}>
           <img
             src="/public/homeMedia/delivery.png"
             alt="delivery"
-            className={styles.mainImg}
+            className={`${styles.mainImg} `}
           />
         </motion.div>
         <motion.div

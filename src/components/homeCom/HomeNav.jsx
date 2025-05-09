@@ -1,8 +1,12 @@
+
 import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
+
+import PropTypes from "prop-types";
+
 
 function HomeNav({ backgroundColor }) {
   const [isOpen, setIsOpen] = useState(false);
