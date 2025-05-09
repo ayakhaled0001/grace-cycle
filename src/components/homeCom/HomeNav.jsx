@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
 
-import PropTypes from "prop-types";
 
 
 function HomeNav({ backgroundColor }) {
