@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Join Grace Cycle in reducing food waste! Connect with local factories, cafes, supermarkets, and your community to share surplus food, foster sustainability, and build a greener future together " />
+    <link rel="icon" href="favicon/favicon.ico" />
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .loader {
+        position: fixed;
+        inset: 0;
+        width: 100px;
+        height: 100px;
+        border: 6px solid #ddd;
+        border-top: 6px solid #225a4b;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #global-loader {
+      }
+      .loader img {
+        width: 65px !important;
+        height: 65px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <title>GraceCycle</title>
+  </head>
+  <body>
+    <div class="loader" id="global-loader">
+      <img src="public/solidGraceCycleLogo.svg" alt="" />
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
