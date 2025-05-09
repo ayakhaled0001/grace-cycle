@@ -45,6 +45,7 @@ export const loginUser = createAsyncThunk(
         `${BaseUrl}api/WebUser/login`,
         userData
       );
+      console.log("Login API Response: ", response.data);
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response.data.message);
