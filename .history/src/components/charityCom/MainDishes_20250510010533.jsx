@@ -11,7 +11,6 @@ function MainDishes() {
   useEffect(() => {
     dispatch(fetchAllFoods());
   }, [dispatch]);
-  console.log("loading state :", loading);
   return (
     <section className="w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
       <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4 ">
@@ -40,7 +39,7 @@ function MainDishes() {
               {food.rating}
             </span>
           </div>
-          {loading || mainDishes.length === 0 ? (
+          {loading ? (
             <Skeleton
               sx={{ bgcolor: "grey.900", borderRadius: "12px 12px 0 0" }}
               variant="rectangular"

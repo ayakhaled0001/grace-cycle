@@ -9,6 +9,6 @@ export const store = configureStore({
     auth: AuthSlice,
     forgetPassword: ForgetPasswordSlice,
     bags: bagsReducer,
-    servicesFood: foodReducer,
+    food: foodReducer,
   },
 });

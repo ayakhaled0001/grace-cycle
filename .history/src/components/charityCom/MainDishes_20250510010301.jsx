@@ -1,31 +1,32 @@
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFoods } from "../../redux/FoodSlice";
-function Drinks() {
+import { Skeleton } from "@mui/material";
+function MainDishes() {
   const dispatch = useDispatch();
-  const { drinks, isFav, setIsFav } = useSelector(
+  const { mainDishes, isFav, setIsFav, loading } = useSelector(
     (state) => state.servicesFood
   );
   useEffect(() => {
     dispatch(fetchAllFoods());
   }, [dispatch]);
   return (
-    <section className="w-10/12 mx-auto bg-semiDarkBeige my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+    <section className="w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
       <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4 ">
         <span className="bg-white p-1 rounded-md text-lg  font-semibold">
-          Drinks
+          Main dishes
         </span>
         <span className="bg-white p-1 rounded-md  text-lg text-lightBrownYellow underline ">
           {/* will be a Link to a route */}
           <a href="#">Shop More</a>
         </span>
       </div>
-      {drinks.map((food) => (
+      {mainDishes.map((food) => (
         <div
-          className="m-3 w-3/12 border border-stone-700 rounded-xl relative "
+          className="m-3 w-3/12 border border-stone-700 rounded-xl relative"
           key={food.id}>
-          <div className="flex absolute justify-between m-3 left-0 right-0 ">
+          <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
             <span className=" bg-semiDarkBeige px-2 py-1 rounded-md">
               {food.quantity}+ left
             </span>
@@ -38,14 +39,23 @@ function Drinks() {
               {food.rating}
             </span>
           </div>
-          <img
-            src={food.picUrl}
-            alt=""
-            className=" w-full rounded-se-xl rounded-ss-xl h-48"
-          />
+          {loading ? (
+            <Skeleton
+              sx={{ bgcolor: "grey.900", borderRadius: "12px 12px 0 0" }}
+              variant="rectangular"
+              width="100%"
+              height={128}
+            />
+          ) : (
+            <img
+              src={food.picUrl}
+              alt=""
+              className=" w-full rounded-se-xl rounded-ss-xl h-48"
+            />
+          )}
+
           <div className="p-2 relative">
             <div className="flex justify-between">
-              {" "}
               <span className="shadow-xl rounded-full bg-semiDarkBeige  p-3 absolute -left-4 -top-10">
                 <FavoriteOutlinedIcon
                   className={` cursor-pointer
@@ -53,9 +63,13 @@ function Drinks() {
                   onClick={() => setIsFav(!isFav)}
                 />
               </span>
-              <span className="bg-semiBrightYellow py-3 px-1.5 rounded-full text-xl font-bold absolute right-2 -top-16">
-                %{food.discountPercentage}
-              </span>
+              {loading ? (
+                <Skeleton variant="circular" width={40} height={40} />
+              ) : (
+                <span className="bg-semiBrightYellow py-3 px-1.5 rounded-full text-xl font-bold absolute right-2 -top-16">
+                  %{food.discountPercentage}
+                </span>
+              )}
             </div>
             <h1 className="text-xl font-medium ">{food.name}</h1>
             <span>{food.vName}</span> <span>(opened)</span>
@@ -80,4 +94,4 @@ function Drinks() {
   );
 }
 
-export default Drinks;
+export default MainDishes;

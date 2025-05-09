@@ -1,12 +1,8 @@
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchAllFoods } from "../../redux/FoodSlice";
+import { useServices } from "../../context/ServicesProvider";
 function Drinks() {
   const dispatch = useDispatch();
-  const { drinks, isFav, setIsFav } = useSelector(
-    (state) => state.servicesFood
-  );
+  const { drinks, isFav } = useSelector((state) => state.servicesFood);
   useEffect(() => {
     dispatch(fetchAllFoods());
   }, [dispatch]);

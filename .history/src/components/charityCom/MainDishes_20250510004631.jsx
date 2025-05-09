@@ -1,27 +1,27 @@
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchAllFoods } from "../../redux/FoodSlice";
-function Drinks() {
+function MainDishes() {
   const dispatch = useDispatch();
-  const { drinks, isFav, setIsFav } = useSelector(
+  const { mainDishes, isFav, setIsFav, loading } = useSelector(
     (state) => state.servicesFood
   );
   useEffect(() => {
     dispatch(fetchAllFoods());
   }, [dispatch]);
   return (
-    <section className="w-10/12 mx-auto bg-semiDarkBeige my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+    <section className="w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
       <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4 ">
         <span className="bg-white p-1 rounded-md text-lg  font-semibold">
-          Drinks
+          Main dishes
         </span>
         <span className="bg-white p-1 rounded-md  text-lg text-lightBrownYellow underline ">
           {/* will be a Link to a route */}
           <a href="#">Shop More</a>
         </span>
       </div>
-      {drinks.map((food) => (
+      {mainDishes.map((food) => (
         <div
           className="m-3 w-3/12 border border-stone-700 rounded-xl relative "
           key={food.id}>
@@ -38,6 +38,7 @@ function Drinks() {
               {food.rating}
             </span>
           </div>
+          {loading}
           <img
             src={food.picUrl}
             alt=""
@@ -80,4 +81,4 @@ function Drinks() {
   );
 }
 
-export default Drinks;
+export default MainDishes;

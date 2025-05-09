@@ -9,24 +9,27 @@ import BagsVideo from "../../components/charityCom/BagsVideo";
 import MagicBags from "../../components/charityCom/MagicBags";
 import Footer from "../../components/homeCom/HomeFooter";
 import Categories from "../../components/charityCom/Categories";
-
+import { ServicesProvider } from "../../context/ServicesProvider";
+import { Provider } from "react-redux";
 const CharityPage = () => {
   return (
-    <div className="relative">
-      <HomeNav backgroundColor="bg-offWhite" />
-      <div className="mt-28">
-        <SearchBar />
-        <Slider />
-        <Categories />
-        <MainDishes />
-        <BakedGoods />
-        <Dessert />
-        <Drinks />
-        <BagsVideo />
-        <MagicBags />
-        <Footer />
+    <Provider store>
+      <div className="relative">
+        <HomeNav backgroundColor="bg-offWhite" />
+        <div className="mt-28">
+          <SearchBar />
+          <Slider />
+          <Categories />
+          <MainDishes />
+          <BakedGoods />
+          <Dessert />
+          <Drinks />
+          <BagsVideo />
+          <MagicBags />
+          <Footer />
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 };
 
