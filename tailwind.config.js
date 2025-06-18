@@ -65,6 +65,7 @@ export default {
         // md: "768px",
         // lg: "976px",
         // xl: "1440px",
+        mob560: "560px",
         lgHome: "1095px",
         minScreen: "298px",
         xlHome: "1115px",

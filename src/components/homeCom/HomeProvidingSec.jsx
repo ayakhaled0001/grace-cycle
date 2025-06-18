@@ -28,11 +28,13 @@ function Section({ currentIndex, data, prevSlide, nextSlide }) {
       {data.map((item, index) => (
         <div
           key={index}
-          className={`bg-darkBiege absolute w-9/12 h-[420px] px-24 py-24 transition-opacity duration-500 rounded-3xl ${
+          className={`bg-darkBiege absolute w-12/12 mob560:w-11/12 md:w-9/12 h-[400px] md:h-[420px]  p-14 mob560:px-20 mob560:py-20 md:px-24 md:py-24 transition-opacity duration-500 rounded-3xl ${
             index === currentIndex ? "opacity-100" : "opacity-0"
           }`}>
           <h2 className="text-3xl font-bold text-gray-800">{item.title}</h2>
-          <p className="mt-2 text-2xl text-gray-600">{item.body}</p>
+          <p className="mt-2 text-xl mob560:text-2xl text-gray-600">
+            {item.body}
+          </p>
         </div>
       ))}
 
@@ -46,10 +48,10 @@ function Section({ currentIndex, data, prevSlide, nextSlide }) {
         }}
         src="icons/rectGroup.svg"
         alt=""
-        className="w-32 absolute bottom-32 right-0"
+        className=" mob560:block hidden w-32 absolute bottom-32 right-0"
       />
 
-      <div className="text-5xl flex justify-between w-5/12 absolute lgHome:-bottom-2 -bottom-6 stransform -translate-y-1/2 ">
+      <div className="text-3xl md:text-5xl flex justify-between w-5/12 absolute -botton-3 lgHome:-bottom-2 md:-bottom-1 -bottom-0  transform -translate-y-1/2 ">
         <WestIcon
           onClick={prevSlide}
           fontSize="inherit"
@@ -59,7 +61,7 @@ function Section({ currentIndex, data, prevSlide, nextSlide }) {
           {data.map((item, index) => (
             <div
               key={index}
-              className={`w-4 h-4 rounded-full my-auto ${
+              className={` w-3 h-3 md:w-4 md:h-4 rounded-full my-auto ${
                 index === currentIndex ? "bg-darkGreen" : "bg-paleWhite"
               } `}></div>
           ))}
@@ -105,7 +107,7 @@ function HomeProvidingSec() {
           duration: 1,
           ease: "easeInOut",
         }}
-        className="bg-darkGreen w-64 h-36 rounded-tr-3xl rounded-br-3xl z-20 absolute top-30"></motion.div>
+        className="bg-darkGreen w-48 h-32 mob560:block hidden md:w-64 md:h-36 rounded-tr-3xl rounded-br-3xl z-20 absolute top-30"></motion.div>
       <div className="flex w-12/12 h-96 justify-center relative bottom-0">
         <Section
           currentIndex={currentIndex}

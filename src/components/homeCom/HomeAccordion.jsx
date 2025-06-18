@@ -36,23 +36,35 @@ function HomeAccordion() {
         className="w-2/5 hidden lgHome:block"
       />
       <div className="px-10 mt-16">
-        <h1 className="font-otoma text-6xl">Frequently Asked Questions</h1>
+        <h1 className="font-otoma text-3xl mob560:text-4xl md:text-5xl lgHome:text-6xl">
+          Frequently Asked Questions
+        </h1>
         <div className="my-8">
           {accordionItems.map((item, index) => (
             <div key={index} className=" rounded-lg overflow-hidden py-4">
               <button
                 onClick={() => toggleAccordion(index)}
                 className="flex justify-between items-center w-full  py-2 text-left bg-gray-100 hover:bg-gray-200">
-                <span className="font-bold text-2xl lg">{item.title}</span>
+                <span className="font-bold text-xl mob560:text-2xl ">
+                  {item.title}
+                </span>
                 {/* <ChevronDown
                   className={`transition-transform duration-300 ${
                     openIndex === index ? "rotate-180" : ""
                   }`}
                 /> */}
                 {openIndex === index ? (
-                  <img src="/public/icons/close.svg" alt="" className="w-7" />
+                  <img
+                    src="/public/icons/close.svg"
+                    alt=""
+                    className="w-5 mob560:w-7"
+                  />
                 ) : (
-                  <img src="/public/icons/open.svg" alt="" className="w-7" />
+                  <img
+                    src="/public/icons/open.svg"
+                    alt=""
+                    className="w-5 mob560:w-7"
+                  />
                 )}
               </button>
               {openIndex === index && (

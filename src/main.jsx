@@ -8,8 +8,6 @@ import { store } from "./redux/Store";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <StrictMode>
-      <App />
-    </StrictMode>
+    <App />
   </Provider>
 );

@@ -18,7 +18,7 @@ function HomeReview() {
             duration: 1,
             ease: "easeInOut",
           }}
-          className="flex lgHome:w-3/12 uppersm:w-72 w-80 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
+          className="flex w-12/12 mob560:w-4/12 lgHome:w-3/12 uppersm:w-72  bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
           <div>
             <img src="/public/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-[70px]">

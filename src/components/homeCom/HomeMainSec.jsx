@@ -13,7 +13,7 @@ function HomeMainSec() {
         }}
         className="w-11/12 lgHome:w-6/12 py-8 flex items-center flex-col lgHome:items-start">
         <h1
-          className={`font-otoma lgHome:text-6xl uppersm:text-5xl py-4 my-2 text-center lgHome:text-left  ${styles.line12}`}>
+          className={`font-otoma lgHome:text-6xl text-4xl uppersm:text-5xl py-4 my-2 text-center lgHome:text-left  ${styles.line12}`}>
           Stop food waste, Save our planet
         </h1>
         <p
@@ -23,8 +23,8 @@ function HomeMainSec() {
           facilities.
         </p>
         <button
-          className="text-base py-2 px-4 font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen
-         w-4/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen  transition-all ">
+          className="text-base py-2 px-4 font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen w-7/12
+         mob560:w-4/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen  transition-all ">
           Download Now
         </button>
       </motion.section>
