@@ -4,6 +4,7 @@ import { getBags } from "../../redux/BagsSlice";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
+import { color } from "framer-motion";
 import { Link } from "react-router-dom";
 
 export default function MagicBags() {
@@ -48,7 +49,7 @@ export default function MagicBags() {
                   <FavoriteOutlinedIcon
                     className={` cursor-pointer
                 ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
-                    onClick={() => setIsFav(!isFav)}
+                    onClick={(e) => setIsFav(!isFav)}
                   />
                 </span>
               </div>

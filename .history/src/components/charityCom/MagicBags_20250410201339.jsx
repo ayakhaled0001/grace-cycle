@@ -4,7 +4,7 @@ import { getBags } from "../../redux/BagsSlice";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
-import { Link } from "react-router-dom";
+import { color } from "framer-motion";
 
 export default function MagicBags() {
   const [isFav, setIsFav] = useState(false);
@@ -33,7 +33,8 @@ export default function MagicBags() {
         {bags.map((bag, index) => (
           <div
             key={index}
-            className="flex items-center hover:border-4 cursor-pointer hover:border-btnsGreen transition-bg duration-200 rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border">
+            className="flex items-center hover:border-4 cursor-pointer hover:border-btnsGreen transition-bg duration-200 rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border"
+          >
             <div className="flex w-[50%] h-[100%] bg-cover bg-center">
               <div className="relative w-[40%] h-[100%] rounded-xl">
                 <img
@@ -48,7 +49,7 @@ export default function MagicBags() {
                   <FavoriteOutlinedIcon
                     className={` cursor-pointer
                 ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
-                    onClick={() => setIsFav(!isFav)}
+                    onClick={(e) => setIsFav(!isFav)}
                   />
                 </span>
               </div>
@@ -63,7 +64,8 @@ export default function MagicBags() {
                   <p
                     className={`${
                       bag.opened ? "text-[#008000]" : "text-red-500"
-                    } font-semibold`}>
+                    } font-semibold`}
+                  >
                     {" "}
                     {bag.opened ? " (opened)" : " (closed)"}
                   </p>
@@ -86,11 +88,9 @@ export default function MagicBags() {
                     EGP{bag.newPrice}
                   </span>
                 </div>
-                <Link
-                  to={`/CharityPage/cart/${bag.id}`}
-                  className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block">
-                  Add to Cart
-                </Link>
+                  <button className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold">
+                    Add to Cart
+                  </button>
               </div>
             </div>
           </div>

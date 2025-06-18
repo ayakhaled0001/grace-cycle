@@ -1,5 +1,6 @@
 import BtnGreen from "../../Ui/BtnGreen";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 function DishInfo({ dishId }) {
   const { mainDishes, bakedGoods, dessert, drinks } = useSelector(
