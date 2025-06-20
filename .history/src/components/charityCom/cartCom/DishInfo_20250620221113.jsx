@@ -1,5 +1,4 @@
 import BtnGreen from "../../Ui/BtnGreen";
-
 import { useSelector } from "react-redux";
 import StarRoundedIcon from "@mui/icons-material/StarRounded";
 import StarBorderRoundedIcon from "@mui/icons-material/StarBorderRounded";
@@ -161,12 +160,12 @@ function DishInfo({ dishId }) {
       <div className="mt-10 pt-10">
         <div className="flex flex-col md:flex-row gap-10">
           {/* Left Column: Ratings Overview */}
-          <div className="w-full md:w-5/6">
+          <div className="w-full md:w-1/3">
             <h3 className="text-2xl font-bold font-nunitoBold text-lightBrownYellow mb-4">
               Ratings and Reviews
             </h3>
-            <div className="flex gap-4">
-              <div className="flex flex-col gap-4 mb-4 w-2/6">
+            <div className="flexgap-4">
+              <div className="flex flex-col gap-4 mb-4">
                 <span className="text-5xl font-bold">4.5</span>
                 <div className="flex flex-col">
                   <div>
@@ -179,7 +178,7 @@ function DishInfo({ dishId }) {
                 </div>
               </div>
               {/* Rating Bars */}
-              <div className="space-y-1 w-full">
+              <div className="space-y-1">
                 {[
                   { rating: 5, value: 90 },
                   { rating: 4, value: 60 },
@@ -190,7 +189,7 @@ function DishInfo({ dishId }) {
                   <div key={rating} className="flex items-center gap-2">
                     <span className="w-4 font-nunito">{rating}</span>
                     <progress
-                      className="w-full h-3 rounded-full overflow-hidden [&::-webkit-progress-bar]:bg-zinc-400 [&::-webkit-progress-value]:bg-btnsGreen [&::-webkit-progress-value]:rounded-full [&::-moz-progress-bar]:bg-btnsGreen"
+                      className="w-full h-2.5 rounded-full [&::-webkit-progress-bar]:bg-gray-200 [&::-webkit-progress-value]:bg-btnsGreen [&::-moz-progress-bar]:bg-btnsGreen"
                       value={value}
                       max="100"></progress>
                   </div>
@@ -205,26 +204,11 @@ function DishInfo({ dishId }) {
               </h4>
               <p className="text-gray-600 mb-2">Tell others what you think</p>
               <div className="flex items-center gap-2 text-gray-300 mb-4">
-                <StarRoundedIcon
-                  style={{ fontSize: "4rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "4rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "4rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "4rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow"
-                />{" "}
-                <StarRoundedIcon
-                  style={{ fontSize: "4rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow"
-                />
+                <StarBorderRoundedIcon style={{ fontSize: "2.5rem" }} />
+                <StarBorderRoundedIcon style={{ fontSize: "2.5rem" }} />
+                <StarBorderRoundedIcon style={{ fontSize: "2.5rem" }} />
+                <StarBorderRoundedIcon style={{ fontSize: "2.5rem" }} />
+                <StarBorderRoundedIcon style={{ fontSize: "2.5rem" }} />
               </div>
               <button className="w-full border border-btnsGreen text-btnsGreen font-semibold py-2 rounded-lg hover:bg-btnsGreen hover:text-white transition">
                 Write a review

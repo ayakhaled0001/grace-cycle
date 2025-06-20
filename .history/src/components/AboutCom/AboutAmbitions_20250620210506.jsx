@@ -8,7 +8,7 @@ function AboutAmbitions() {
         <img
           src="about/aboutlist1.png"
           alt="Reducing Food Waste"
-          className="w-full md:w-1/4 rounded-lg"
+          className="w-full md:w-1/4 rounded-lg shadow-md"
         />
         <div className="my-auto w-full md:w-2/6 mt-6 md:mt-0">
           <h5 className="text-xl md:text-3xl font-semibold my-3 md:my-5">
@@ -45,14 +45,14 @@ function AboutAmbitions() {
         <img
           src="about/aboutlist2.png"
           alt="Enhancing Economic Efficiency"
-          className="w-full md:w-1/4 rounded-lg"
+          className="w-full md:w-1/4 rounded-lg shadow-md"
         />
       </article>
       <article className="flex flex-col md:flex-row justify-evenly my-8 md:my-12 items-center">
         <img
           src="about/aboutlist3.png"
           alt="Promoting Social Solidarity"
-          className="w-full md:w-1/4 rounded-lg"
+          className="w-full md:w-1/4 rounded-lg shadow-md"
         />
         <div className="my-auto w-full md:w-2/6 mt-6 md:mt-0">
           <h5 className="text-xl md:text-3xl font-semibold my-3 md:my-5">
