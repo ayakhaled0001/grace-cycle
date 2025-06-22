@@ -13,13 +13,13 @@ const data = [
 
 function Categories() {
   return (
-    <div className="my-14 w-10/12 mx-auto">
-      <h1 className="font-sans text-xl font-bold my-5">All Categories </h1>
+    <div className="my-14 w-[90%] rounded-xl py-2 mx-auto bg-[#EEEADF] px-8">
+      <h1 className="text-xl font-bold my-5  font-nunitoBold">All Categories </h1>
       <div className="flex gap-5 justify-center my-5">
         {data.map((cat) => (
           <div key={cat.label} className="flex flex-col items-center">
-            <img src={cat.img} alt={cat.label} className=" w-40" />
-            <span className=" font-medium my-2">{cat.label}</span>
+            <img src={cat.img} alt={cat.label} className=" w-32" />
+            <span className=" font-medium my-2 font-nunitoBold">{cat.label}</span>
           </div>
         ))}
       </div>
