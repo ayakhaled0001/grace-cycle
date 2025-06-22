@@ -2,7 +2,7 @@ import styles from "../../pages/home/HomePage.module.css";
 import { motion } from "framer-motion";
 function HomeProblemsSec() {
   return (
-    <section className={`${styles} m-12 bg-offWhite`}>
+    <section className={`${styles} my-12 md:mx-10 mx-5 bg-offWhite`}>
       <motion.h1
         initial={{ opacity: 0, translateY: "-10px" }}
         whileInView={{ opacity: 1, translateY: "0px" }}
@@ -25,7 +25,8 @@ function HomeProblemsSec() {
         className={`font-otoma text-3xl `}>
         food waste
       </motion.h1>
-      <article className={`w-11/12 mx-auto flex justify-between `}>
+      <article
+        className={` w-12/12 md:w-11/12 mx-auto flex lgHome:justify-between justify-center `}>
         <motion.div
           initial={{ translateX: "-40px" }}
           whileInView={{ translateX: "-10px" }}
@@ -34,7 +35,7 @@ function HomeProblemsSec() {
             ease: "easeInOut",
           }}
           viewport={{ margin: "0px 0px 10px 0px" }}
-          className={`${styles.imgsFlow} w-5/12 my-10 flex justify-center`}>
+          className={`${styles.imgsFlow} hidden lgHome:flex w-5/12 my-10  justify-center`}>
           <img
             src="../../../public/homeMedia/probImg1.png"
             alt="wasted food"
@@ -65,19 +66,19 @@ function HomeProblemsSec() {
           viewport={{
             margin: "0px 0px 10px 0px",
           }}
-          className={`${styles.asideFlow} w-6/12 `}>
+          className={`${styles.asideFlow} lgHome:w-6/12 w-11/12 my-12`}>
           <div className={`${styles.asideItem} flex relative justify-end my-4`}>
             <img
               src="icons/environment.svg"
               alt=""
               width="92"
               height="92"
-              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute left-12 top-0 bottom-0 my-auto`}
+              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute md:left-12 -left-4 top-0 bottom-0 my-auto`}
             />
             <div
-              className={`bg-lightBiege text-center font-sans w-10/12 p-3 rounded-full`}>
+              className={`bg-lightBiege text-center font-sans  w-12/12 md:w-10/12 py-3 px-7 rounded-full`}>
               <h3 className={`font-bold text-lg`}>Environmental impact: </h3>
-              <p className={`text-base py-2 px-8`}>
+              <p className={`text-base py-2 md:px-8 px-14`}>
                 Food waste contributes to greenhouse gas emissions and
                 deforestation
               </p>
@@ -89,12 +90,12 @@ function HomeProblemsSec() {
               alt=""
               width="92"
               height="92"
-              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute left-12 top-0 bottom-0 my-auto`}
+              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute md:left-12 -left-4 top-0 bottom-0 my-auto`}
             />
             <div
-              className={`bg-lightBiege text-center font-sans w-10/12 p-3 rounded-full`}>
+              className={`bg-lightBiege text-center font-sans w-12/12 md:w-10/12 py-3 px-7  rounded-full`}>
               <h3 className={`font-bold text-lg`}>Economic loss: </h3>
-              <p className={`text-base py-2 px-8`}>
+              <p className={`text-base py-2 md:px-8 px-14`}>
                 Wasting food means throwing away money spent on ingredients,
                 labor, and energy
               </p>
@@ -106,12 +107,12 @@ function HomeProblemsSec() {
               alt=""
               width="92"
               height="92"
-              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute left-12 top-0 bottom-0 my-auto`}
+              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute md:left-12 -left-4 top-0 bottom-0 my-auto`}
             />
             <div
-              className={`bg-lightBiege text-center font-sans w-10/12 p-3 rounded-full `}>
+              className={`bg-lightBiege text-center font-sans w-12/12 md:w-10/12  py-3 px-7  rounded-full `}>
               <h3 className={`font-bold text-lg`}>Social impact: </h3>
-              <p className={`text-base py-2  px-8`}>
+              <p className={`text-base py-2  md:px-8 px-14`}>
                 Food waste contributes to global hunger and food insecurity in
                 many parts of the world
               </p>
@@ -123,12 +124,12 @@ function HomeProblemsSec() {
               alt=""
               width="92"
               height="92"
-              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute left-12 top-0 bottom-0 my-auto`}
+              className={`${styles.asideItemImg} px-5 py-5 bg-lightBasicGreen rounded-full absolute md:left-12 -left-4 top-0 bottom-0 my-auto`}
             />
             <div
-              className={`bg-lightBiege text-center font-sans w-10/12 p-3 rounded-full`}>
+              className={`bg-lightBiege text-center font-sans w-12/12 md:w-10/12 py-3 px-7  rounded-full`}>
               <h3 className={`font-bold text-lg`}>Regulatory challenges: </h3>
-              <p className={`text-base py-2 px-8`}>
+              <p className={`text-base py-2 md:px-8 px-14`}>
                 Food waste can lead to increased regulatory scrutiny and
                 potential fines for businesses
               </p>
