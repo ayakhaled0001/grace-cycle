@@ -4,9 +4,9 @@ import { Outlet } from "react-router-dom";
 
 const VendorPage = () => {
   return (
-    <div className="flex flex-1">
+    <div className="min-h-screen">
       <Dashboard />
-      <div className="flex-1">
+      <div className="pt-14 sm:pt-0 sm:ml-[250px] lg:ml-[250px]">
         <Outlet />
       </div>
     </div>
