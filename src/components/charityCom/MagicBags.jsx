@@ -31,7 +31,8 @@ export default function MagicBags() {
           {Array.from({ length: 2 }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border">
+              className="flex items-center rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border"
+            >
               <Skeleton
                 variant="rectangular"
                 width="40%"
@@ -71,7 +72,8 @@ export default function MagicBags() {
         {bags.map((bag, index) => (
           <div
             key={index}
-            className="flex items-center hover:border-4 cursor-pointer hover:border-btnsGreen transition-bg duration-200 rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border">
+            className="flex items-center rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border"
+          >
             <div className="flex w-[50%] h-[100%] bg-cover bg-center">
               <div className="relative w-[40%] h-[100%] rounded-xl">
                 <img
@@ -101,7 +103,8 @@ export default function MagicBags() {
                   <p
                     className={`${
                       bag.opened ? "text-[#008000]" : "text-red-500"
-                    } font-semibold`}>
+                    } font-semibold`}
+                  >
                     {" "}
                     {bag.opened ? " (opened)" : " (closed)"}
                   </p>
@@ -126,7 +129,8 @@ export default function MagicBags() {
                 </div>
                 <Link
                   to={`/CharityPage/cart/${bag.id}`}
-                  className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block">
+                  className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block"
+                >
                   Add to Cart
                 </Link>
               </div>
