@@ -26,7 +26,7 @@ function MainDishes() {
       </div>
       {mainDishes.map((food) => (
         <div
-          className="m-2 mob470:m-3 w-full mob470:w-[48%] mob560:w-[47%] md:w-[31%] lg:w-[23%] xl:w-[23%] 1500:w-[31%] border border-stone-700 rounded-xl relative"
+          className="m-2 mob470:m-3 w-full mob470:w-[48%] mob560:w-[47%] md:w-[31%] lg:w-[31%] xl:w-[23%] border border-stone-700 rounded-xl relative"
           key={food.id}>
           <div className="flex absolute justify-between m-2 mob470:m-3 left-0 right-0 overflow-hidden">
             <span className="bg-semiDarkBeige px-1 mob470:px-2 py-1 rounded-md text-xs mob470:text-sm">

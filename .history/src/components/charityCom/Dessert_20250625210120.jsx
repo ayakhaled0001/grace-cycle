@@ -1,31 +1,33 @@
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchDrinks, toggleFav } from "../../redux/FoodSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDessert, toggleFav } from "../../redux/FoodSlice";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@mui/material";
 
-function Drinks() {
+function Dessert() {
   const dispatch = useDispatch();
-  const { drinks, isFav, loading } = useSelector((state) => state.servicesFood);
+  const { dessert, isFav, loading } = useSelector(
+    (state) => state.servicesFood
+  );
   useEffect(() => {
-    dispatch(fetchDrinks());
+    dispatch(fetchDessert());
   }, [dispatch]);
   return (
     <section className="w-[95%] mob470:w-[92%] mob560:w-[90%] md:w-10/12 mx-auto bg-semiDarkBeige my-4 mob470:my-6 mob560:my-8 flex flex-wrap justify-center py-3 mob470:py-4 relative rounded-lg font-nunitoBold">
       <div className="absolute -top-3 mob470:-top-4 mob560:-top-5 left-1 right-1 flex justify-between mx-2 mob470:mx-3 mob560:mx-4">
         <span className="bg-white p-1 rounded-md text-sm mob470:text-base mob560:text-lg font-semibold">
-          Drinks
+          Desserts
         </span>
         <span className="bg-white p-1 rounded-md text-sm mob470:text-base mob560:text-lg text-lightBrownYellow underline">
           {/* will be a Link to a route */}
           <a href="#">Shop More</a>
         </span>
       </div>
-      {loading || drinks.length === 0
+      {loading || dessert.length === 0
         ? Array.from({ length: 3 }).map((_, idx) => (
             <div
-              className="m-2 mob470:m-3 w-full mob470:w-[48%] mob560:w-[47%] md:w-[31%] lg:w-[23%] xl:w-[23%] 1500:w-[31%] border border-stone-700 rounded-xl relative"
+              className="m-2 mob470:m-3 w-full mob470:w-[48%] mob560:w-[47%] md:w-[31%] lg:w-[31%] xl:w-[23%] border border-stone-700 rounded-xl relative"
               key={idx}>
               <Skeleton
                 variant="rectangular"
@@ -47,9 +49,9 @@ function Drinks() {
               </div>
             </div>
           ))
-        : drinks.map((food) => (
+        : dessert.map((food) => (
             <div
-              className="m-2 mob470:m-3 w-full mob470:w-[48%] mob560:w-[47%] md:w-[31%] lg:w-[23%] xl:w-[23%] 1500:w-[31%] border border-stone-700 rounded-xl relative"
+              className="m-2 mob470:m-3 w-full mob470:w-[48%] mob560:w-[47%] md:w-[31%] lg:w-[31%] xl:w-[23%] border border-stone-700 rounded-xl relative"
               key={food.id}>
               <div className="flex absolute justify-between m-2 mob470:m-3 left-0 right-0">
                 <span className="bg-semiDarkBeige px-1 mob470:px-2 py-1 rounded-md text-xs mob470:text-sm">
@@ -77,7 +79,7 @@ function Drinks() {
                       className={`cursor-pointer text-lg mob470:text-xl
                 ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
                       onClick={(id) => {
-                        dispatch(toggleFav(id.id));
+                        dispatch(toggleFav({ id }));
                       }}
                     />
                   </span>
@@ -115,4 +117,4 @@ function Drinks() {
   );
 }
 
-export default Drinks;
+export default Dessert;

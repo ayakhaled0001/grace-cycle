@@ -17,7 +17,7 @@ function Categories() {
       <h1 className="font-sans text-lg mob470:text-xl md:text-xl font-bold my-3 mob470:my-4 mob560:my-5">
         All Categories{" "}
       </h1>
-      <div className="grid grid-cols-2 mob470:grid-cols-3 mob560:grid-cols-4 md:grid-cols-5 lg:grid-cols-8 xl:grid-cols-8 2xl:grid-cols-8 gap-3 mob470:gap-4 mob560:gap-5 justify-center my-3 mob470:my-4 mob560:my-5">
+      <div className="grid grid-cols-2 mob470:grid-cols-3 mob560:grid-cols-4 md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-8 gap-3 mob470:gap-4 mob560:gap-5 justify-center my-3 mob470:my-4 mob560:my-5">
         {data.map((cat) => (
           <div key={cat.label} className="flex flex-col items-center">
             <img
