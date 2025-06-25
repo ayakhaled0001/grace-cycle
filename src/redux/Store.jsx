@@ -5,6 +5,8 @@ import bagsReducer from "./BagsSlice";
 import foodReducer from "./FoodSlice";
 import foodFilterReducer from "./FoodFilterSlice";
 import categoriesReducer from "./CategoriesSlice";
+import vendorFilterReducer from "./VendorFilterSlice";
+import vendorCategoriesReducer from "./VendorCategoriesSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +16,7 @@ export const store = configureStore({
     servicesFood: foodReducer,
     foodFilter: foodFilterReducer,
     categories: categoriesReducer,
+    vendorFilter: vendorFilterReducer,
+    vendorCategories: vendorCategoriesReducer,
   },
 });

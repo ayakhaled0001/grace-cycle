@@ -5,9 +5,11 @@
 This guide covers testing the search, filter, and sort functionality implemented in the CharityPage. The system now includes:
 
 - Food search with backend integration
+- Vendor search with backend integration
 - Category filtering using dynamic categories from API
-- Price filtering
-- Sorting by rating, discount rate (descending), most popular, and price (ascending)
+- Price filtering (for food only)
+- Sorting by rating, discount rate (descending), most popular, and price (ascending) for food
+- Sorting by rating, most popular, and distance for vendors
 - Pagination support (9 items per page)
 - Automatic filter application (no Apply/Cancel buttons needed)
 
@@ -19,14 +21,16 @@ This guide covers testing the search, filter, and sort functionality implemented
 
 ## API Endpoints Used
 
-- **Categories**: `GET /api/categories` - Fetches available food categories
+- **Food Categories**: `GET /api/categories` - Fetches available food categories
+- **Vendor Categories**: `GET /api/Vendors/vendortypes` - Fetches available vendor categories
 - **Food Search**: `GET /api/web/discover/foods` - Searches and filters foods
+- **Vendor Search**: `GET /api/web/discover/vendors` - Searches and filters vendors
 
 ## Test Cases
 
 ### 1. Categories Loading
 
-**Objective**: Verify that categories are loaded from the backend and displayed in the filter modal.
+**Objective**: Verify that both food and vendor categories are loaded from the backend.
 
 **Steps**:
 
@@ -37,14 +41,13 @@ This guide covers testing the search, filter, and sort functionality implemented
 **Expected Results**:
 
 - Categories should load automatically when the page loads
-- Category dropdown should show categories from the API (Main Dishes, Healthy, Drinks, Baked goods, Dessert)
+- Category dropdown should show appropriate categories based on search type
 - Loading state should be shown while categories are being fetched
-- Categories should be selectable by their IDs
 
 **Console Logs to Check**:
 
 - "Fetching categories from: https://gracecycleapi.azurewebsites.net/api/categories"
-- "Categories response: [...]"
+- "Fetching vendor categories from: https://gracecycleapi.azurewebsites.net/api/Vendors/vendortypes"
 
 ### 2. Food Search Type Selection
 
@@ -66,14 +69,35 @@ This guide covers testing the search, filter, and sort functionality implemented
 - "Fetching foods from: https://gracecycleapi.azurewebsites.net/api/web/discover/foods?..."
 - "Foods response: [...]"
 
-### 3. Search Functionality
+### 3. Vendor Search Type Selection
 
-**Objective**: Test the search input with different search terms.
+**Objective**: Verify that selecting "Vendor" search type triggers immediate backend call.
 
 **Steps**:
 
-1. Select "Food" search type
-2. Enter a search term (e.g., "pizza", "salad", "drink")
+1. Navigate to the CharityPage
+2. In the search bar, change the search type from "All" to "Vendor"
+
+**Expected Results**:
+
+- Backend call should be made immediately when "Vendor" is selected
+- Vendor results should be displayed (9 items per page)
+- Search bar should show "Vendor" as selected type
+- Sort options should change to vendor-specific options
+
+**Console Logs to Check**:
+
+- "Fetching vendors from: https://gracecycleapi.azurewebsites.net/api/web/discover/vendors?..."
+- "Vendors response: [...]"
+
+### 4. Search Functionality
+
+**Objective**: Test the search input with different search terms for both food and vendors.
+
+**Steps**:
+
+1. Select "Food" or "Vendor" search type
+2. Enter a search term (e.g., "pizza", "restaurant", "cafe")
 3. Click the search button or press Enter
 
 **Expected Results**:
@@ -85,11 +109,12 @@ This guide covers testing the search, filter, and sort functionality implemented
 **Test Cases**:
 
 - Search for existing food items
+- Search for existing vendors
 - Search for non-existent items (should return empty results)
 - Search with special characters
 - Search with numbers
 
-### 4. Category Filtering (Automatic)
+### 5. Category Filtering (Automatic)
 
 **Objective**: Test filtering by specific categories with automatic application.
 
@@ -103,30 +128,29 @@ This guide covers testing the search, filter, and sort functionality implemented
 - Selected category ID should be sent to the backend immediately
 - Results should be filtered to show only items from that category
 - No need to click "Apply Filters" - it works automatically
+- Category name should appear in the results header
 
 **Test Cases**:
 
-- Filter by "Main Dishes" (ID: 1)
-- Filter by "Healthy" (ID: 2)
-- Filter by "Drinks" (ID: 3)
-- Filter by "Baked goods" (ID: 4)
-- Filter by "Dessert" (ID: 5)
+- Filter food by food categories (Main Dishes, Healthy, Drinks, etc.)
+- Filter vendors by vendor categories
 - Select "All Categories" (should show all items)
 
-### 5. Price Filtering (Automatic)
+### 6. Price Filtering (Food Only)
 
-**Objective**: Test filtering by maximum price with automatic application.
+**Objective**: Test filtering by maximum price (food only).
 
 **Steps**:
 
-1. Click the "Filter" button
-2. Select a maximum price from the dropdown
+1. Select "Food" search type
+2. Click the "Filter" button
+3. Select a maximum price from the dropdown
 
 **Expected Results**:
 
+- Price filter should only appear for food search
 - Selected max price should be sent to the backend immediately
 - Results should show only items within the price range
-- No need to click "Apply Filters" - it works automatically
 
 **Test Cases**:
 
@@ -137,37 +161,44 @@ This guide covers testing the search, filter, and sort functionality implemented
 - Filter by "Less than 200"
 - Select "Any" (should show all items regardless of price)
 
-### 6. Sorting Functionality
+### 7. Sorting Functionality
 
 **Objective**: Test all sorting options with correct order.
 
 **Steps**:
 
-1. Select "Food" search type to get results
+1. Select "Food" or "Vendor" search type to get results
 2. Change the sort option in the dropdown
 
 **Expected Results**:
 
 - Backend call should be made immediately when sort changes
 - Results should be sorted according to the selected criteria
+- Sort options should be different for food vs vendors
 
-**Test Cases**:
+**Test Cases for Food**:
 
 - **Rating**: Sort by rating (highest first)
 - **Discount Rate**: Sort by discount rate (highest discount first - descending)
 - **Most Popular**: Sort by popularity
 - **Price**: Sort by price (lowest first - ascending)
 
-### 7. Combined Filters
+**Test Cases for Vendors**:
+
+- **Rating**: Sort by rating (highest first)
+- **Most Popular**: Sort by popularity
+- **Distance**: Sort by distance (closest first)
+
+### 8. Combined Filters
 
 **Objective**: Test multiple filters working together.
 
 **Steps**:
 
-1. Select "Food" search type
+1. Select "Food" or "Vendor" search type
 2. Enter a search term
 3. Apply category filter (automatic)
-4. Apply price filter (automatic)
+4. Apply price filter (food only)
 5. Change sort order
 
 **Expected Results**:
@@ -176,7 +207,7 @@ This guide covers testing the search, filter, and sort functionality implemented
 - Backend should receive all filter parameters
 - Results should match all applied criteria
 
-### 8. Pagination (9 items per page)
+### 9. Pagination (9 items per page)
 
 **Objective**: Test pagination functionality with 9 items per page.
 
@@ -191,23 +222,44 @@ This guide covers testing the search, filter, and sort functionality implemented
 - Navigation between pages should work
 - Current page should be maintained when applying additional filters
 
-### 9. Filter Modal UI
+### 10. Filter Modal UI
 
 **Objective**: Verify the filter modal interface.
 
 **Steps**:
 
 1. Click the "Filter" button
-2. Check the modal interface
+2. Check the modal interface for different search types
 
 **Expected Results**:
 
-- Modal should open with category and price filters
+- Modal should open with appropriate filters based on search type
+- Food search: Category and Price filters
+- Vendor search: Category filter only
 - No "Apply Filters" or "Cancel" buttons should be present
 - Filters should apply immediately when changed
 - Close button (×) should be present to close the modal
+- Clicking outside modal should close it
 
-### 10. Error Handling
+### 11. Search Type Switching
+
+**Objective**: Test switching between different search types.
+
+**Steps**:
+
+1. Start with "Food" search type
+2. Switch to "Vendor" search type
+3. Switch back to "Food"
+4. Switch to "All"
+
+**Expected Results**:
+
+- Sort options should change appropriately
+- Filter options should change appropriately
+- Results should clear when switching to "All"
+- State should be maintained when switching between "Food" and "Vendor"
+
+### 12. Error Handling
 
 **Objective**: Test error scenarios.
 
@@ -222,7 +274,7 @@ This guide covers testing the search, filter, and sort functionality implemented
 - Application should not crash
 - Loading states should be handled properly
 
-### 11. UI/UX Testing
+### 13. UI/UX Testing
 
 **Objective**: Verify the user interface and experience.
 
