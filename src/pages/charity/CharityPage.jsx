@@ -1,3 +1,4 @@
+import React from "react";
 import HomeNav from "../../components/homeCom/HomeNav";
 import SearchBar from "../../components/charityCom/SearchBar";
 import Slider from "../../components/charityCom/Slider";
