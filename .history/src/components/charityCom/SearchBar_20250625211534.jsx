@@ -1,3 +1,4 @@
+import React from "react";
 import { Search, Favorite } from "@mui/icons-material";
 import TuneIcon from "@mui/icons-material/Tune";
 
