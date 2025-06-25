@@ -54,8 +54,10 @@ const FoodResults = ({ onClear }) => {
 
   if (error) {
     return (
-      <div className="w-10/12 mx-auto bg-semiDarkBeige my-5 p-8 text-center rounded-lg">
-        <p className="text-red-600 font-nunitoBold text-lg">Error: {error}</p>
+      <div className="w-11/12 md:w-10/12 mx-auto bg-semiDarkBeige my-5 p-4 md:p-8 text-center rounded-lg">
+        <p className="text-red-600 font-nunitoBold text-base md:text-lg">
+          Error: {error}
+        </p>
         <button
           onClick={onClear}
           className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors"
@@ -67,25 +69,25 @@ const FoodResults = ({ onClear }) => {
   }
 
   return (
-    <section className="w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-col py-4 relative rounded-lg font-nunitoBold">
-      <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4">
-        <span className="bg-white p-1 rounded-md text-lg font-semibold">
+    <section className="w-11/12 md:w-10/12 lg:w-[80%] mx-auto bg-semiDarkBeige my-5 flex flex-col py-4 relative rounded-lg font-nunitoBold">
+      <div className="absolute -top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-4 gap-2">
+        <span className="bg-white p-1 rounded-md text-base md:text-lg font-semibold text-center sm:text-left">
           {getCategoryName()} ({totalCount} items)
         </span>
         <button
           onClick={onClear}
-          className="bg-white p-1 rounded-md text-lg text-lightBrownYellow underline hover:text-btnsGreen"
+          className="bg-white p-1 rounded-md text-base md:text-lg text-lightBrownYellow underline hover:text-btnsGreen"
         >
           Clear Search
         </button>
       </div>
 
       {loading ? (
-        <div className="flex flex-wrap justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center w-full lg:w-[80%]">
           {[...Array(9)].map((_, index) => (
             <div
               key={index}
-              className="m-3 w-3/12 border border-stone-700 rounded-xl relative"
+              className="w-full max-w-xs border border-stone-700 rounded-xl relative"
             >
               <Skeleton
                 sx={{ bgcolor: "grey.900", borderRadius: "12px 12px 0 0" }}
@@ -115,10 +117,10 @@ const FoodResults = ({ onClear }) => {
         </div>
       ) : (
         <>
-          <div className="flex flex-wrap justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center w-full lg:w-[80%] mx-auto">
             {allFoods.map((food) => (
               <div
-                className="m-3 w-3/12 border border-stone-700 rounded-xl relative"
+                className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
                 key={food.id}
               >
                 <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
@@ -207,22 +209,42 @@ const FoodResults = ({ onClear }) => {
           </div>
 
           {totalPages > 1 && (
-            <div className="flex justify-center items-center mt-6 gap-2">
+            <div className="flex flex-wrap justify-center items-center mt-4 md:mt-6 gap-1 md:gap-2 px-4">
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-3 py-2 border border-lightGrey rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="px-2 sm:px-3 py-1.5 sm:py-2 border border-lightGrey rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 text-xs sm:text-sm md:text-base"
               >
                 Previous
               </button>
 
               {[...Array(totalPages)].map((_, index) => {
                 const page = index + 1;
+                // Show only current page, first page, last page, and pages around current
+                const shouldShow =
+                  page === 1 ||
+                  page === totalPages ||
+                  (page >= currentPage - 1 && page <= currentPage + 1);
+
+                if (!shouldShow) {
+                  if (page === currentPage - 2 || page === currentPage + 2) {
+                    return (
+                      <span
+                        key={page}
+                        className="px-1 sm:px-2 py-1.5 sm:py-2 text-xs sm:text-sm"
+                      >
+                        ...
+                      </span>
+                    );
+                  }
+                  return null;
+                }
+
                 return (
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`px-3 py-2 border rounded-md ${
+                    className={`px-2 sm:px-3 py-1.5 sm:py-2 border rounded-md text-xs sm:text-sm md:text-base ${
                       currentPage === page
                         ? "bg-btnsGreen text-white border-btnsGreen"
                         : "border-lightGrey hover:bg-gray-50"
@@ -236,7 +258,7 @@ const FoodResults = ({ onClear }) => {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="px-3 py-2 border border-lightGrey rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
+                className="px-2 sm:px-3 py-1.5 sm:py-2 border border-lightGrey rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 text-xs sm:text-sm md:text-base"
               >
                 Next
               </button>

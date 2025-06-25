@@ -18,34 +18,34 @@ export default function MagicBags() {
 
   if (isLoading)
     return (
-      <section className="w-10/12 mx-auto bg-offWhite my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
-        <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4">
-          <span className="bg-white p-1 rounded-md text-lg  font-semibold">
-            Magin Bags
+      <section className="w-11/12 md:w-10/12 mx-auto bg-offWhite my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+        <div className="absolute -top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-4 gap-2">
+          <span className="bg-white p-1 rounded-md text-base md:text-lg font-semibold text-center sm:text-left">
+            Magic Bags
           </span>
-          <span className="bg-white p-1 rounded-md text-lg text-lightBrownYellow underline ">
+          <span className="bg-white p-1 rounded-md text-base md:text-lg text-lightBrownYellow underline text-center sm:text-right">
             <a href="#">Shop More</a>
           </span>
         </div>
-        <div className="flex flex-col gap-4 w-full mx-auto mt-10 font-nunitoBold ">
+        <div className="flex flex-col gap-4 w-full mx-auto mt-10 font-nunitoBold">
           {Array.from({ length: 2 }).map((_, idx) => (
             <div
               key={idx}
-              className="flex items-center rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border"
+              className="flex flex-col sm:flex-row items-center rounded-xl p-4 w-full min-h-44 bg-semiDarkBeige box-border gap-4"
             >
               <Skeleton
                 variant="rectangular"
-                width="40%"
+                width="100%"
                 height={160}
-                className="rounded-xl"
+                className="rounded-xl sm:w-[40%] flex-shrink-0"
               />
-              <div className="flex flex-col p-4 w-[60%]">
+              <div className="flex flex-col p-4 w-full sm:w-[60%]">
                 <Skeleton width="60%" height={32} />
                 <Skeleton width="40%" height={24} />
                 <Skeleton width="80%" height={24} />
                 <Skeleton width="100%" height={36} />
               </div>
-              <div className="flex flex-col justify-center items-center w-[50%]">
+              <div className="flex flex-col justify-center items-center w-full sm:w-[50%]">
                 <Skeleton width={80} height={32} />
                 <Skeleton width={100} height={32} />
                 <Skeleton width={120} height={36} />
@@ -58,41 +58,40 @@ export default function MagicBags() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <section className="w-10/12 mx-auto bg-offWhite my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
-      <div className="absolute -top-5 left-1 right-1 flex justify-between mx-4">
-        <span className="bg-white p-1 rounded-md text-lg  font-semibold">
-          Magin Bags
+    <section className="w-11/12 md:w-10/12 mx-auto bg-offWhite my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+      <div className="absolute -top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-4 gap-2">
+        <span className="bg-white p-1 rounded-md text-base md:text-lg font-semibold text-center sm:text-left">
+          Magic Bags
         </span>
-        <span className="bg-white p-1 rounded-md text-lg text-lightBrownYellow underline ">
-          {/* will be a Link to a route */}
+        <span className="bg-white p-1 rounded-md text-base md:text-lg text-lightBrownYellow underline text-center sm:text-right">
           <a href="#">Shop More</a>
         </span>
       </div>
-      <div className="flex flex-col gap-4 w-full mx-auto mt-10 font-nunitoBold ">
+      <div className="flex flex-col gap-4 w-full mx-auto mt-10 font-nunitoBold">
         {bags.map((bag, index) => (
           <div
             key={index}
-            className="flex items-center rounded-xl p-4 w-[100%] h-44 bg-semiDarkBeige box-border"
+            className="flex flex-col sm:flex-row items-center rounded-xl p-4 w-full min-h-44 bg-semiDarkBeige box-border gap-4"
           >
-            <div className="flex w-[50%] h-[100%] bg-cover bg-center">
-              <div className="relative w-[40%] h-[100%] rounded-xl">
+            <div className="flex flex-col sm:flex-row w-full h-full bg-cover bg-center gap-4">
+              <div className="relative w-full sm:w-[40%] h-48 rounded-xl flex-shrink-0">
                 <img
                   src={bag.picUrl}
                   alt=""
-                  className=" w-full h-full rounded-xl"
+                  className="w-full h-full rounded-xl object-cover"
                 />
-                <span className="absolute text-semiDarkBeige text-sm px-4 rounded-md top-2 left-2 bg-lightGreen ">
+                <span className="absolute text-semiDarkBeige text-sm px-4 rounded-md top-2 left-2 bg-lightGreen">
                   {bag.quantity}+ bag left
                 </span>
-                <span className="absolute shadow-xl rounded-full bg-semiDarkBeige  p-2 -left-2 -bottom-2">
+                <span className="absolute shadow-xl rounded-full bg-semiDarkBeige p-2 -left-2 -bottom-2">
                   <FavoriteOutlinedIcon
-                    className={` cursor-pointer
+                    className={`cursor-pointer
                 ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
                     onClick={() => setIsFav(!isFav)}
                   />
                 </span>
               </div>
-              <div className="flex flex-col p-4 w-[60%]">
+              <div className="flex flex-col p-4 w-full sm:w-[60%]">
                 <h3 className="text-lg">
                   {bag.name}(
                   <StarIcon style={{ width: "20px", color: "#BC870B" }} />
@@ -114,16 +113,16 @@ export default function MagicBags() {
                 </div>
               </div>
             </div>
-            <div className="flex w-[50%] h-[100%] justify-end">
-              <div className="flex flex-col justify-center items-center w-[50%]">
+            <div className="flex w-full sm:w-[50%] h-full justify-center sm:justify-end">
+              <div className="flex flex-col justify-center items-center w-full sm:w-[50%]">
                 <span className="bg-[#F8BD00] px-6 rounded-lg">
                   {bag.discount}% OFF
                 </span>
                 <div className="flex justify-center items-center my-2">
-                  <span className="text-sm px-1 line-through ">
+                  <span className="text-sm px-1 line-through">
                     EGP{bag.price}
                   </span>
-                  <span className="text-btnsGreen font-semibold text-lg ">
+                  <span className="text-btnsGreen font-semibold text-lg">
                     EGP{bag.newPrice}
                   </span>
                 </div>

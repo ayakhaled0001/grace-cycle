@@ -258,25 +258,25 @@ export default function SearchBar({
 
   return (
     <>
-      <div className="flex flex-col gap-2 w-[90%] mx-auto mt-10 p-4 font-nunitoBold">
-        <div className="flex items-center gap-4">
-          <div className="flex-6 flex items-center border border-lightGrey rounded-xl pr-2 w-[60%] relative overflow-hidden">
+      <div className="flex flex-col gap-2 w-[95%] md:w-[90%] mx-auto mt-10 p-2 md:p-4 font-nunitoBold">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+          <div className="flex items-center border border-lightGrey rounded-xl pr-2 w-full sm:w-[60%] relative overflow-hidden">
             <button
               onClick={handleSearch}
-              className="bg-btnsGreen text-white p-2 w-14 rounded-l-md hover:bg-green-900 transition-colors"
+              className="bg-btnsGreen text-white p-2 w-12 sm:w-14 rounded-l-md hover:bg-green-900 transition-colors"
             >
               <Search className="w-4 h-4" />
             </button>
             <input
               type="text"
               placeholder="Find what you want..."
-              className="border-none outline-none flex-1 pl-2"
+              className="border-none outline-none flex-1 pl-2 text-sm sm:text-base"
               value={currentSearchTerm}
               onChange={handleSearchChange}
               onKeyPress={handleKeyPress}
             />
             <select
-              className="bg-verylightGrey border border-lightGrey rounded-md cursor-pointer px-2 h-full mr-2"
+              className="bg-verylightGrey border border-lightGrey rounded-md cursor-pointer px-1 sm:px-2 h-full mr-2 text-sm sm:text-base"
               value={currentSearchType}
               onChange={handleSearchTypeChange}
             >
@@ -287,24 +287,24 @@ export default function SearchBar({
             </select>
           </div>
           <button
-            className="flex-2 flex items-center justify-center border border-lightGrey rounded-xl p-2 w-[20%] hover:bg-gray-50"
+            className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[20%] hover:bg-gray-50 text-sm sm:text-base"
             onClick={() => setIsFilterModalOpen(true)}
           >
             <TuneIcon className="mr-2" />
             Filter
           </button>
-          <div className="flex-1 flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-[5%] bg-btnsGreen text-white cursor-pointer">
+          <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
             <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
           </div>
-          <div className="flex-1 flex items-center justify-center border border-lightGrey rounded-xl p-2 w-[5%] bg-btnsGreen text-white cursor-pointer">
+          <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
             <Favorite />
           </div>
         </div>
         <div className="flex items-center">
-          <div className="rounded-md px-2 py-2 w-[25%] bg-verylightGrey">
-            <span className="w-[20%]">Sort by: </span>
+          <div className="rounded-md px-2 py-2 w-full sm:w-[25%] bg-verylightGrey">
+            <span className="text-sm sm:text-base">Sort by: </span>
             <select
-              className="bg-verylightGrey border border-lightGrey rounded-md px-2 cursor-pointer w-[80%]"
+              className="bg-verylightGrey border border-lightGrey rounded-md px-2 cursor-pointer w-full sm:w-[80%] text-sm sm:text-base"
               value={currentSortBy}
               onChange={handleSortChange}
             >
