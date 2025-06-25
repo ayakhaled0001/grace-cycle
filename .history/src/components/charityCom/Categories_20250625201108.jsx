@@ -23,7 +23,7 @@ function Categories() {
             <img
               src={cat.img}
               alt={cat.label}
-              className="w-16 h-16 mob470:w-20 mob470:h-20 mob560:w-24 mob560:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 object-cover"
+              className="w-24 h-24 mob470:w-28 mob470:h-28 mob560:w-32 mob560:h-32 md:w-36 md:h-36 lg:w-40 lg:h-40 object-cover"
             />
             <span className="font-medium my-1 mob470:my-2 text-xs mob470:text-sm mob560:text-base text-center">
               {cat.label}

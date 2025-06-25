@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import EastIcon from "@mui/icons-material/East";
 import WestIcon from "@mui/icons-material/West";
+import { Link } from "react-router-dom";
 
 const slides = [
   {

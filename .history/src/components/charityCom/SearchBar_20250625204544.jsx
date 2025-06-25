@@ -5,7 +5,7 @@ export default function SearchBar() {
   return (
     <div className="flex flex-col gap-2 w-[95%] mob470:w-[92%] mob560:w-[90%] md:w-[85%] lg:w-[80%] xl:w-[75%] mx-auto mt-6 mob470:mt-8 mob560:mt-10 p-3 mob470:p-4 font-nunitoBold">
       <div className="flex flex-col mob470:flex-row mob470:flex-wrap items-center gap-3 mob470:gap-4 w-full">
-        <div className="flex items-center border border-lightGrey rounded-xl p-2 flex-grow w-full min-w-0 mob470:w-auto mob470:flex-grow mob470:min-w-0 lg:w-auto lg:flex-grow lg:min-w-0 relative">
+        <div className="flex items-center border border-lightGrey rounded-xl p-2 w-full mob470:w-[60%] lg:w-[50%] xl:w-[45%] relative">
           <Search className="mr-2 text-lg mob470:text-xl flex-shrink-0" />
           <input
             type="text"
@@ -19,11 +19,11 @@ export default function SearchBar() {
             <option value="Bag">Bag</option>
           </select>
         </div>
-        <button className="flex items-center justify-center border border-lightGrey rounded-xl p-2 flex-shrink-0 w-full mob470:w-auto mob470:min-w-[80px] text-sm mob470:text-base">
+        <button className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full mob470:w-auto mob470:min-w-[80px] text-sm mob470:text-base">
           <TuneIcon className="mr-1 mob470:mr-2 text-lg mob470:text-xl flex-shrink-0" />
           <span className="hidden mob470:inline">Filter</span>
         </button>
-        <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 flex-shrink-0 w-full mob470:w-auto mob470:min-w-[45px] bg-btnsGreen text-white cursor-pointer">
+        <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full mob470:w-auto mob470:min-w-[45px] bg-btnsGreen text-white cursor-pointer">
           <img
             src="../../../public/icons/cart.svg"
             alt="cart icon"
@@ -31,7 +31,7 @@ export default function SearchBar() {
             className="flex-shrink-0"
           />
         </div>
-        <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 flex-shrink-0 w-full mob470:w-auto mob470:min-w-[45px] bg-btnsGreen text-white cursor-pointer">
+        <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full mob470:w-auto mob470:min-w-[45px] bg-btnsGreen text-white cursor-pointer">
           <Favorite className="text-lg mob470:text-xl flex-shrink-0" />
         </div>
       </div>

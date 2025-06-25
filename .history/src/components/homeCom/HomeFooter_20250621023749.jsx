@@ -1,6 +1,7 @@
 import facebook from "../../assets/icons/facebook.svg";
 import instgram from "../../assets/icons/instgram.svg";
 import linkedin from "../../assets/icons/linkedin.svg";
+import twitter from "../../assets/icons/twitter.svg";
 import send from "../../assets/icons/send.svg";
 import { Link } from "react-router-dom";
 
@@ -16,19 +17,24 @@ function HomeFooter() {
             </p>
             <div className="social-icons flex justify-around items-center w-[80%] p-4">
               <a
-                href="https://www.facebook.com/profile.php?id=61577251423602"
+                href="https:/facebook.com"
                 className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
                 <img src={facebook} alt="Facebook" className="w-4 h-4" />
               </a>
               <a
-                href="https://www.instagram.com/grace_cycle_/"
+                href="https://instagram.com"
                 className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
                 <img src={instgram} alt="instgram" className="w-4 h-4" />
               </a>
               <a
-                href="https://www.linkedin.com/in/grace-cycle-bba54a370/"
+                href="https://linkedin.com"
                 className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
                 <img src={linkedin} alt="linkedin" className="w-4 h-4" />
+              </a>
+              <a
+                href="https://twitter.com"
+                className="social-icon w-8 h-8 bg-bgBeigeWhite rounded-full flex justify-center items-center">
+                <img src={twitter} alt="twitter" className="w-4 h-4" />
               </a>
             </div>
           </div>
