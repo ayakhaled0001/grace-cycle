@@ -22,7 +22,7 @@ function Drinks() {
           <a href="#">Shop More</a>
         </span>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-0.5 gap-y-2 justify-items-center w-full lg:w-[80%]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto">
         {loading || drinks.length === 0
           ? Array.from({ length: 3 }).map((_, idx) => (
               <div
@@ -103,9 +103,9 @@ function Drinks() {
                   </div>
                   <Link
                     to={`/CharityPage/cart/${food.id}`}
-                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block"
+                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300"
                   >
-                    Add to Cart
+                    More Details
                   </Link>
                 </div>
               </div>

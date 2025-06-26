@@ -1,6 +1,7 @@
 import facebook from "../../assets/icons/facebook.svg";
 import instgram from "../../assets/icons/instgram.svg";
 import linkedin from "../../assets/icons/linkedin.svg";
+import twitter from "../../assets/icons/twitter.svg";
 import send from "../../assets/icons/send.svg";
 import { Link } from "react-router-dom";
 

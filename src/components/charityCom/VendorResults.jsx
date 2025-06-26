@@ -76,7 +76,7 @@ const VendorResults = ({ onClear }) => {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center w-full lg:w-[80%]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto">
           {[...Array(9)].map((_, index) => (
             <div
               key={index}
@@ -110,7 +110,7 @@ const VendorResults = ({ onClear }) => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 justify-items-center w-full lg:w-[80%] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto">
             {allVendors.map((vendor) => (
               <div
                 className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
@@ -218,10 +218,10 @@ const VendorResults = ({ onClear }) => {
                   </div>
 
                   <Link
-                    to={`/vendor/${vendor.userId}`}
-                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors"
+                    to={`/CharityPage/cart/${vendor.id}`}
+                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300"
                   >
-                    View Menu
+                    More Details
                   </Link>
                 </div>
               </div>

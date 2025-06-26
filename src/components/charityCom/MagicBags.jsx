@@ -102,7 +102,8 @@ export default function MagicBags() {
                   <p
                     className={`text-xs mob470:text-sm ${
                       bag.opened ? "text-[#008000]" : "text-red-500"
-                    } font-semibold`}>
+                    } font-semibold`}
+                  >
                     {" "}
                     {bag.opened ? " (opened)" : " (closed)"}
                   </p>
@@ -127,8 +128,9 @@ export default function MagicBags() {
                 </div>
                 <Link
                   to={`/CharityPage/cart/${bag.id}`}
-                  className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base">
-                  Add to Cart
+                  className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base hover:bg-btnsGreen hover:text-white transition-colors duration-300"
+                >
+                  More Details
                 </Link>
               </div>
             </div>
