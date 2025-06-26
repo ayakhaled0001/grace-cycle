@@ -72,7 +72,6 @@ export default {
         xlHome: "1115px",
         xxlHome: "1350px",
         uppersm: "550px",
-        1500: "1500px",
       },
     },
   },

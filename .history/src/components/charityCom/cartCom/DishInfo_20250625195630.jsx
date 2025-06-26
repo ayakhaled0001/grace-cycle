@@ -41,7 +41,7 @@ function DishInfo({ dishId }) {
           <img
             src={dish.picUrl}
             alt={dish.name}
-            className="w-full max-w-sm mob470:max-w-md mob560:max-w-md md:max-w-lg lg:max-w-none rounded-md h-56 mob470:h-64 mob560:h-64 md:h-72 lg:h-80 object-cover"
+            className="w-full max-w-xs mob470:max-w-sm mob560:max-w-md md:max-w-lg lg:max-w-none rounded-md h-48 mob470:h-56 mob560:h-64 md:h-72 lg:h-80 object-cover"
           />
         </div>
 

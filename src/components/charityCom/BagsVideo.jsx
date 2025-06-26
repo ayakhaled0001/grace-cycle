@@ -14,6 +14,7 @@ const BagsVideo = () => {
           muted
           loop
           className="h-[100%] object-cover"
+          className="h-[100%] object-cover"
         />
         <Box className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center bg-[rgba(0,0,0,0.3)] text-white p-2 text-center">
           <Typography

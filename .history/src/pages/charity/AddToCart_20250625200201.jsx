@@ -8,7 +8,7 @@ function AddToCart() {
 
   return (
     <>
-      <div className="pt-20 lgHome:px-20 mob470:px-2 mob560:px-3 md:px-10 bg-bgBeigeWhite ">
+      <div className="pt-20 lgHome:px-20 bg-bgBeigeWhite ">
         <DishInfo dishId={dishId} />
         <DishReview />
       </div>
