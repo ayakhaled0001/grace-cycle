@@ -18,6 +18,7 @@ import { clearFilteredVendors } from "../../redux/VendorFilterSlice";
 import { fetchCategories } from "../../redux/CategoriesSlice";
 import { fetchVendorCategories } from "../../redux/VendorCategoriesSlice";
 import { setBagsPage, fetchAllBags } from "../../redux/BagsSlice";
+import BagsVideo from "../../components/charityCom/BagsVideo";
 
 const CharityPage = () => {
   const location = useLocation();
@@ -114,6 +115,7 @@ const CharityPage = () => {
               <BakedGoods />
               <Drinks />
               <Dessert />
+              <BagsVideo/>
               <MagicBags />
             </>
           )}
