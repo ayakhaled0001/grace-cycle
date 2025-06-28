@@ -38,7 +38,9 @@ function OTP() {
       await dispatch(verifyOTP({ email, code: enteredOtp })).unwrap();
       navigate("/setPassword");
     } catch (err) {
-      setError(typeof err === 'object' ? "Error happen. Please try again." : err);
+      setError(
+        typeof err === "object" ? "Error happen. Please try again." : err
+      );
     }
   };
 
@@ -63,14 +65,19 @@ function OTP() {
             />
           ))}
         </div>
-        {error && <div className="error text-red-600 text-md font-nunitoBold mb-2">{error}</div>}
+        {error && (
+          <div className="error text-red-600 text-md font-nunitoBold mb-2">
+            {error}
+          </div>
+        )}
         <button type="submit" className="resetPass">
           Reset Password
         </button>
       </form>
       <div className="flex flex-col items-center gap-y-3">
         <p className={styles.p}>
-          Didn’t receive the email ? <span className={styleOTP.span}>Click to resend</span>
+          Didn’t receive the email ?{" "}
+          <span className={styleOTP.span}>Click to resend</span>
         </p>
       </div>
     </aside>

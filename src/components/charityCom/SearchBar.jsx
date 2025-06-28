@@ -278,7 +278,8 @@ export default function SearchBar({
             <select
               className="bg-verylightGrey border border-lightGrey rounded-md cursor-pointer px-1 sm:px-2 h-full mr-2 text-sm sm:text-base"
               value={currentSearchType}
-              onChange={handleSearchTypeChange}>
+              onChange={handleSearchTypeChange}
+            >
               <option value="All">All</option>
               <option value="Food">Food</option>
               <option value="Vendor">Vendor</option>
@@ -305,7 +306,8 @@ export default function SearchBar({
             <select
               className="bg-verylightGrey border border-lightGrey rounded-md px-2 cursor-pointer w-full sm:w-[80%] text-sm sm:text-base"
               value={currentSortBy}
-              onChange={handleSortChange}>
+              onChange={handleSortChange}
+            >
               {currentSearchType === "Vendor" ? (
                 <>
                   <option value="rating">Rating</option>

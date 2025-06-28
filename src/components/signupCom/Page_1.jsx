@@ -6,7 +6,7 @@ const Page_1 = ({ onChange, formData, errors }) => {
   return (
     <>
       <div
-        className="flex justify-end underline cursor-pointer mb-2 text-[#225A4B]"
+        className="flex justify-end underline cursor-pointer mb-2 text-[#225A4B] text-sm sm:text-base"
         onClick={() =>
           window.open(
             `https://www.google.com/maps/@37.7749,-122.4194,14z`,
@@ -14,7 +14,7 @@ const Page_1 = ({ onChange, formData, errors }) => {
           )
         }
       >
-        <img src={Vector} alt="Find" />
+        <img src={Vector} alt="Find" className="w-4 h-4 sm:w-5 sm:h-5" />
         <span>Find</span>
       </div>
 
@@ -40,7 +40,10 @@ const Page_1 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
-            // "&.Mui": { color: "#000", fontWeight: "bold" },
+            fontSize: { xs: "14px", sm: "16px" },
+          },
+          "& input": {
+            fontSize: { xs: "14px", sm: "16px" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",
@@ -77,6 +80,10 @@ const Page_1 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+            fontSize: { xs: "14px", sm: "16px" },
+          },
+          "& input": {
+            fontSize: { xs: "14px", sm: "16px" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",
@@ -113,6 +120,10 @@ const Page_1 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+            fontSize: { xs: "14px", sm: "16px" },
+          },
+          "& input": {
+            fontSize: { xs: "14px", sm: "16px" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",

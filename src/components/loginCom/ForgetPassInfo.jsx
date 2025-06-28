@@ -5,7 +5,6 @@ import styles from "./forgetpassinfo.module.css";
 import { useNavigate } from "react-router-dom";
 import { setEmailAction } from "../../redux/ForgetPassSlice";
 
-
 function ForgetPassInfo() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,16 +34,16 @@ function ForgetPassInfo() {
       return;
     }
 
-    setErrorMessage(""); 
-    dispatch(setEmailAction(email)); 
+    setErrorMessage("");
+    dispatch(setEmailAction(email));
 
     try {
-      const response = await dispatch(sendEmail({email})).unwrap();
+      const response = await dispatch(sendEmail({ email })).unwrap();
       alert(response.message);
       navigate("/OTP");
     } catch (err) {
       setErrorMessage(
-        typeof err === 'object' ? "An error occurred during signup" : err
+        typeof err === "object" ? "An error occurred during signup" : err
       );
     }
   };
@@ -68,8 +67,12 @@ function ForgetPassInfo() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        {errorMessage && <span className="text-red-600 text-md font-nunitoBold mb-2">{errorMessage}</span>}
-        
+        {errorMessage && (
+          <span className="text-red-600 text-md font-nunitoBold mb-2">
+            {errorMessage}
+          </span>
+        )}
+
         <button className="resetPass" type="submit" disabled={isLoading}>
           {isLoading ? "Sending..." : "Reset Password"}
         </button>

@@ -32,10 +32,16 @@ function NewPasswordReset() {
       return;
     }
     try {
-      await dispatch(resetPassword({ email, newPassword:password, token })).unwrap();
+      await dispatch(
+        resetPassword({ email, newPassword: password, token })
+      ).unwrap();
       navigate("/PasswordReseted");
     } catch (err) {
-      setError(typeof err === 'object' ? "Something went wrong. Please try again." : err);
+      setError(
+        typeof err === "object"
+          ? "Something went wrong. Please try again."
+          : err
+      );
     }
   };
 
@@ -89,8 +95,14 @@ function NewPasswordReset() {
             />
           </div>
         </div>
-        {error && <div className="error text-red-600 text-md font-nunitoBold mb-2">{error}</div>}
-        <button type="submit" className="resetPass">Reset Password</button>
+        {error && (
+          <div className="error text-red-600 text-md font-nunitoBold mb-2">
+            {error}
+          </div>
+        )}
+        <button type="submit" className="resetPass">
+          Reset Password
+        </button>
       </form>
     </aside>
   );

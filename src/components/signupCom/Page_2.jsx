@@ -27,6 +27,10 @@ const Page_2 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+            fontSize: { xs: "14px", sm: "16px" },
+          },
+          "& input": {
+            fontSize: { xs: "14px", sm: "16px" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",
@@ -64,6 +68,10 @@ const Page_2 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+            fontSize: { xs: "14px", sm: "16px" },
+          },
+          "& input": {
+            fontSize: { xs: "14px", sm: "16px" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",
@@ -101,6 +109,10 @@ const Page_2 = ({ onChange, formData, errors }) => {
           },
           "& .MuiInputLabel-root": {
             "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+            fontSize: { xs: "14px", sm: "16px" },
+          },
+          "& input": {
+            fontSize: { xs: "14px", sm: "16px" },
           },
           "& input:-webkit-autofill": {
             WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",

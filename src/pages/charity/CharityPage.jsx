@@ -115,7 +115,7 @@ const CharityPage = () => {
               <BakedGoods />
               <Drinks />
               <Dessert />
-              <BagsVideo/>
+              <BagsVideo />
               <MagicBags />
             </>
           )}
