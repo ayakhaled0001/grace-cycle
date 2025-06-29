@@ -8,14 +8,14 @@ import FormLabel from "@mui/material/FormLabel";
 const Page_0 = ({ onChange, formData, errors }) => {
   return (
     <>
-      <h4 className="text-[20px] font-medium font-nunito">
+      <h4 className="text-lg sm:text-xl lg:text-xl font-medium font-nunito mb-4">
         Select type of your Organization
       </h4>
 
-      <FormControl className="h-52">
+      <FormControl className="h-auto min-h-52">
         <FormLabel
           id="demo-radio-buttons-group-label"
-          className="text-[16px] font-normal"
+          className="text-sm sm:text-base lg:text-lg font-normal"
           sx={{
             color: "#5B5B5BCC",
             "&.Mui-focused": { color: "#5B5B5BCC" },
@@ -30,26 +30,27 @@ const Page_0 = ({ onChange, formData, errors }) => {
           name="organizationType"
           value={formData.organizationType}
           onChange={onChange}
+          className="space-y-2"
         >
           <FormControlLabel
             value="vendor"
             control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
-            label="Vendor"
+            label={<span className="text-sm sm:text-base">Vendor</span>}
           />
           <FormControlLabel
             value="factory"
             control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
-            label="Factory"
+            label={<span className="text-sm sm:text-base">Factory</span>}
           />
           <FormControlLabel
             value="charity"
             control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
-            label="Charity"
+            label={<span className="text-sm sm:text-base">Charity</span>}
           />
         </RadioGroup>
         {errors.organizationType && (
           <div className="flex justify-center items-center mb-2 h-3">
-            <span className="text-red-600 font-semibold">
+            <span className="text-red-600 font-semibold text-sm sm:text-base">
               {errors.organizationType}
             </span>
           </div>

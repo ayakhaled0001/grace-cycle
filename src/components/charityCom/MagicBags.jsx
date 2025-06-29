@@ -83,13 +83,13 @@ export default function MagicBags() {
                 <span className="absolute text-semiDarkBeige text-sm px-4 rounded-md top-2 left-2 bg-lightGreen">
                   {bag.quantity}+ bag left
                 </span>
-                <span className="absolute shadow-xl rounded-full bg-semiDarkBeige p-2 -left-2 -bottom-2">
+                {/* <span className="absolute shadow-xl rounded-full bg-semiDarkBeige p-2 -left-2 -bottom-2">
                   <FavoriteOutlinedIcon
                     className={`cursor-pointer
                 ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
                     onClick={() => setIsFav(!isFav)}
                   />
-                </span>
+                </span> */}
               </div>
               <div className="flex flex-col p-4 w-full sm:w-[60%]">
                 <h3 className="text-lg">

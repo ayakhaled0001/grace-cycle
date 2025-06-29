@@ -72,20 +72,22 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="bg-offWhite p-8 md:w-1/2 flex justify-center items-center w-[100%] h-screen">
+      <div className="bg-offWhite p-4 sm:p-6 lg:p-8 w-full lg:w-1/2 flex justify-center items-center h-screen">
         <Box
           sx={{
-            maxWidth: 475,
-            height: 621,
+            maxWidth: { xs: "100%", sm: 475 },
+            height: { xs: "auto", sm: 621 },
+            minHeight: { xs: "100vh", sm: "auto" },
             flexGrow: 1,
             margin: "auto",
-            padding: "20px",
+            padding: { xs: "16px", sm: "20px" },
             backgroundColor: "rgb(255 252 246)",
             borderRadius: "8px",
+            overflow: "auto",
           }}
         >
           <Header />
-          
+
           <TextField
             id="email"
             label="Organization Email"
@@ -98,22 +100,26 @@ export default function LoginForm() {
             sx={{
               backgroundColor: "#dee8e0",
               borderRadius: "20px",
-              marginTop:"20px",
+              marginTop: "20px",
               width: "100%",
               "& .MuiOutlinedInput-root": {
-                borderRadius: "20px", 
+                borderRadius: "20px",
                 "& fieldset": { borderRadius: "20px" },
                 "&:hover fieldset": { borderColor: "#225A4B" },
                 "&.Mui-focused fieldset": { borderColor: "#225A4B" },
               },
               "& .MuiInputLabel-root": {
                 "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+                fontSize: { xs: "14px", sm: "16px" },
+              },
+              "& input": {
+                fontSize: { xs: "14px", sm: "16px" },
               },
               "& input:-webkit-autofill": {
-                WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset", 
-                WebkitTextFillColor: "#000", 
+                WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",
+                WebkitTextFillColor: "#000",
                 transition: "background-color 5000s ease-in-out 0s",
-                borderRadius: "20px",  
+                borderRadius: "20px",
                 clipPath: "inset(0 0 0 0 round 20px)",
               },
             }}
@@ -144,6 +150,10 @@ export default function LoginForm() {
               },
               "& .MuiInputLabel-root": {
                 "&.Mui-focused": { color: "#000", fontWeight: "bold" },
+                fontSize: { xs: "14px", sm: "16px" },
+              },
+              "& input": {
+                fontSize: { xs: "14px", sm: "16px" },
               },
               "& input:-webkit-autofill": {
                 WebkitBoxShadow: "0 0 0px 1000px #dee8e0 inset",
@@ -160,7 +170,7 @@ export default function LoginForm() {
 
           {serverMessage && (
             <div className="flex justify-center items-center mb-2">
-              <span className="text-red-600 font-semibold">
+              <span className="text-red-600 font-semibold text-sm sm:text-base">
                 {serverMessage}
               </span>
             </div>
@@ -168,7 +178,7 @@ export default function LoginForm() {
 
           <div className="flex justify-end">
             <Link to="/forgetPassword">
-              <span className="text-[#D57B21] underline cursor-pointer font-nunito">
+              <span className="text-[#D57B21] underline cursor-pointer font-nunito text-sm sm:text-base">
                 Forget Password
               </span>
             </Link>
@@ -181,7 +191,7 @@ export default function LoginForm() {
               width: "100%",
               alignItems: "center",
               backgroundColor: "transparent",
-              padding: "16px",
+              padding: { xs: "12px", sm: "16px" },
             }}
           >
             <Button
@@ -190,12 +200,12 @@ export default function LoginForm() {
               sx={{
                 marginTop: "10px",
                 backgroundColor: "#225A4B",
-                height: "46px",
-                width: "387px",
+                height: { xs: "40px", sm: "46px" },
+                width: { xs: "100%", sm: "387px" },
                 color: "white",
                 borderRadius: "8px",
                 textTransform: "capitalize",
-                fontSize: "18px",
+                fontSize: { xs: "16px", sm: "18px" },
               }}
               className="font-nunitoBold"
               disabled={isLoading}
@@ -207,7 +217,7 @@ export default function LoginForm() {
               )}
             </Button>
 
-            <p className="pt-4">
+            <p className="pt-4 text-sm sm:text-base">
               Don&apos;t have an account?
               <Link to="/signup">
                 <span className="text-[#D57B21] underline cursor-pointer font-nunito">
@@ -219,7 +229,7 @@ export default function LoginForm() {
           </Box>
         </Box>
       </div>
-      <div className="md:w-1/2 hidden md:flex lg:flex">
+      <div className="lg:w-1/2 hidden lg:flex">
         <img
           src={signupphoto}
           alt="photo"

@@ -13,14 +13,13 @@ import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 
-
 export default function Signup() {
   const dispatch = useDispatch();
   const [activeStep, setActiveStep] = React.useState(0);
   const [errors, setErrors] = React.useState({});
   const navigate = useNavigate();
-  const [serverMessage, setServerMessage] = React.useState(""); 
-  const [loading, setLoading] = React.useState(false); 
+  const [serverMessage, setServerMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const [formData, setFormData] = React.useState({
     organizationType: "",
@@ -58,32 +57,31 @@ export default function Signup() {
 
   const validatePage1 = () => {
     const newErrors = {};
-  
+
     if (!formData.location) newErrors.location = "Location is required";
     if (!formData.name) newErrors.name = "Organization name is required";
     if (!formData.phone) newErrors.phone = "Phone number is required";
-  
+
     if (formData.name && formData.name.length < 8) {
       newErrors.name = "Name must be at least 8 characters long";
     }
-  
+
     if (formData.name && /^\d+$/.test(formData.name)) {
-      newErrors.name = "Name cannot contain only numbers; it must include letters";
+      newErrors.name =
+        "Name cannot contain only numbers; it must include letters";
     }
-  
+
     if (formData.phone && !/^01/.test(formData.phone)) {
       newErrors.phone = "Phone number must start with '01'";
     }
-  
+
     if (formData.phone && formData.phone.length !== 11) {
       newErrors.phone = "Phone number must be exactly 11 digits long";
     }
-  
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
-
 
   const validatePage2 = () => {
     const newErrors = {};
@@ -120,7 +118,7 @@ export default function Signup() {
       )
         .unwrap()
         .then((payload) => {
-          setLoading(false); 
+          setLoading(false);
           console.log("payload", payload);
           navigate("/");
           Swal.fire({
@@ -131,11 +129,11 @@ export default function Signup() {
           });
         })
         .catch((err) => {
-          setLoading(false); 
+          setLoading(false);
           console.error("Error from server:", err);
           // toast.error("❌ حدث خطأ أثناء التسجيل!");
           setServerMessage(
-            typeof err === 'object' ? "An error occurred during signup" : err
+            typeof err === "object" ? "An error occurred during signup" : err
           );
         });
     }

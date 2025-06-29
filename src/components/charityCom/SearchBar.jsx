@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Search, Favorite } from "@mui/icons-material";
 import TuneIcon from "@mui/icons-material/Tune";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   setSearchTerm,
   setSearchType,
@@ -278,7 +279,8 @@ export default function SearchBar({
             <select
               className="bg-verylightGrey border border-lightGrey rounded-md cursor-pointer px-1 sm:px-2 h-full mr-2 text-sm sm:text-base"
               value={currentSearchType}
-              onChange={handleSearchTypeChange}>
+              onChange={handleSearchTypeChange}
+            >
               <option value="All">All</option>
               <option value="Food">Food</option>
               <option value="Vendor">Vendor</option>
@@ -296,7 +298,9 @@ export default function SearchBar({
             <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
           </div>
           <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
-            <Favorite />
+            <Link to="/favorites">
+              <Favorite />
+            </Link>
           </div>
         </div>
         <div className="flex items-center">
@@ -305,7 +309,8 @@ export default function SearchBar({
             <select
               className="bg-verylightGrey border border-lightGrey rounded-md px-2 cursor-pointer w-full sm:w-[80%] text-sm sm:text-base"
               value={currentSortBy}
-              onChange={handleSortChange}>
+              onChange={handleSortChange}
+            >
               {currentSearchType === "Vendor" ? (
                 <>
                   <option value="rating">Rating</option>

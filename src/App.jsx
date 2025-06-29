@@ -22,6 +22,7 @@ import MyListings from "./components/vendorCom/MyListings";
 import Orders from "./components/vendorCom/Orders";
 import Settings from "./components/vendorCom/Settings";
 import AddToCart from "./pages/charity/AddToCart";
+import FavoriteItemsPage from "./pages/charity/FavoriteItemsPage";
 // import GlobalLoader from "./components/loadersCom/GlobalLoader";
 // import { useEffect, useState } from "react";
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="cart" element={<Navigate to="/CharityPage" replace />} />
           <Route path="cart/:dishId" element={<AddToCart />} />
         </Route>
+        <Route path="/favorites" element={<FavoriteItemsPage />} />
 
         <Route path="/VendorPage" element={<VendorPage />}>
           <Route path="overview" element={<Overview />} />

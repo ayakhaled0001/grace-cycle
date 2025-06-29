@@ -1,0 +1,192 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserFavoriteFoods, toggleFavorite } from "../../redux/FoodSlice";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import { Skeleton } from "@mui/material";
+import { Link } from "react-router-dom";
+
+function FavoriteItems() {
+  const dispatch = useDispatch();
+  const { favoriteFoods, loading, error } = useSelector(
+    (state) => state.servicesFood
+  );
+
+  useEffect(() => {
+    dispatch(fetchUserFavoriteFoods());
+  }, [dispatch]);
+
+  const handleToggleFav = (foodId) => {
+    dispatch(toggleFavorite({ foodId, isCurrentlyFavorited: true }));
+  };
+
+  // Debug: Log the favoriteFoods data
+  console.log("favoriteFoods data:", favoriteFoods);
+  console.log("favoriteFoods type:", typeof favoriteFoods);
+  console.log("favoriteFoods is array:", Array.isArray(favoriteFoods));
+
+  // Ensure favoriteFoods is an array
+  const foodsArray = Array.isArray(favoriteFoods) ? favoriteFoods : [];
+
+  if (error) {
+    return (
+      <div className="w-11/12 md:w-10/12 mx-auto bg-semiDarkBeige my-5 p-4 md:p-8 text-center rounded-lg">
+        <p className="text-red-600 font-nunitoBold text-base md:text-lg">
+          Error: {error}
+        </p>
+        <button
+          onClick={() => dispatch(fetchUserFavoriteFoods())}
+          className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors"
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <section className="w-full md:w-10/12 mx-auto bg-semiDarkBeige my-4 md:my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+      <div className="absolute -top-3 md:-top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-2 md:mx-4 gap-2">
+        <span className="bg-white p-1 md:p-2 rounded-md text-sm md:text-base lg:text-lg font-semibold text-center sm:text-left">
+          My Favorite Foods ({foodsArray.length} items)
+        </span>
+      </div>
+
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full px-2 md:px-4">
+          {Array.from({ length: 6 }).map((_, idx) => (
+            <div
+              className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
+              key={idx}
+            >
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height={160}
+                sx={{ borderRadius: "12px 12px 0 0" }}
+              />
+              <div className="p-2 relative">
+                <Skeleton
+                  variant="circular"
+                  width={32}
+                  height={32}
+                  sx={{ position: "absolute", left: -12, top: -24 }}
+                />
+                <Skeleton width="60%" height={24} />
+                <Skeleton width="40%" height={20} />
+                <Skeleton width="80%" height={20} />
+                <Skeleton width="100%" height={32} />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : foodsArray.length === 0 ? (
+        <div className="text-center py-8 px-4">
+          <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
+            You haven't added any foods to your favorites yet
+          </p>
+          <Link
+            to="/CharityPage"
+            className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors inline-block text-sm md:text-base"
+          >
+            Browse Foods
+          </Link>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full px-2 md:px-4">
+          {foodsArray.map((food) => (
+            <div
+              className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
+              key={food.id}
+            >
+              <div className="flex absolute justify-between m-2 md:m-3 left-0 right-0 overflow-hidden">
+                <span className="bg-semiDarkBeige px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-xs md:text-sm">
+                  {food.quantity ||
+                    food.availableQuantity ||
+                    food.stockQuantity ||
+                    0}
+                  + left
+                </span>
+                <span className="flex items-center bg-semiDarkBeige px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-xs md:text-sm">
+                  <img
+                    src="/icons/star.svg"
+                    alt="star"
+                    className="w-2.5 md:w-3 text-center mr-1"
+                  />
+                  {food.rating || food.averageRating || food.rate || 0}
+                </span>
+              </div>
+
+              <img
+                src={
+                  food.picUrl ||
+                  food.imageUrl ||
+                  food.photoUrl ||
+                  food.image ||
+                  "/public/services/foodlistingtest.png"
+                }
+                alt={food.name || food.title || "Food item"}
+                className="w-full rounded-se-xl rounded-ss-xl h-36 md:h-48 object-cover"
+                onError={(e) => {
+                  e.target.src = "/public/services/foodlistingtest.png";
+                }}
+              />
+
+              <div className="p-2 md:p-3 relative">
+                <div className="flex justify-between">
+                  <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 md:p-3 absolute -left-3 md:-left-4 -top-8 md:-top-10">
+                    <FavoriteOutlinedIcon
+                      className="cursor-pointer text-btnsGreen text-lg md:text-xl"
+                      onClick={() => handleToggleFav(food.id)}
+                    />
+                  </span>
+                  {food.discountPercentage && (
+                    <span className="bg-semiBrightYellow py-2 md:py-3 px-1 md:px-1.5 rounded-full text-lg md:text-xl font-bold absolute right-1 md:right-2 -top-12 md:-top-16">
+                      %{food.discountPercentage}
+                    </span>
+                  )}
+                </div>
+
+                <h1 className="text-base md:text-lg lg:text-xl font-medium mt-2">
+                  {food.name || food.title}
+                </h1>
+                <div className="text-xs md:text-sm text-gray-600 mt-1">
+                  <span>
+                    {food.vName ||
+                      food.vendorName ||
+                      food.restaurantName ||
+                      food.vendor ||
+                      "Unknown Vendor"}
+                  </span>
+                  <span className="ml-1">
+                    ({food.isOpen ? "opened" : "closed"})
+                  </span>
+                </div>
+
+                <div className="flex justify-between py-2 mt-2">
+                  <span className="text-sm md:text-base">Price</span>
+                  <div className="text-right">
+                    <span className="text-xs md:text-sm px-1 line-through text-gray-500">
+                      EGP{food.unitPrice || food.originalPrice || food.price}
+                    </span>
+                    <span className="text-btnsGreen font-semibold text-sm md:text-base lg:text-lg block">
+                      EGP{food.newPrice || food.discountedPrice || food.price}
+                    </span>
+                  </div>
+                </div>
+
+                <Link
+                  to={`/CharityPage/cart/${food.id}`}
+                  className="text-center w-full p-1.5 md:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300 text-sm md:text-base mt-2"
+                >
+                  More Details
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+export default FavoriteItems;

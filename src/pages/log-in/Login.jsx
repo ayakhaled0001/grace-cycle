@@ -1,6 +1,5 @@
 import LoginForm from "../../components/loginCom/LoginForm";
 
-
 function Login() {
   return (
     <>

@@ -1,7 +1,7 @@
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMainDishes, toggleFav } from "../../redux/FoodSlice";
+import { fetchMainDishes, toggleFavorite } from "../../redux/FoodSlice";
 import { Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
 function MainDishes() {
@@ -89,9 +89,14 @@ function MainDishes() {
                     <span className="shadow-xl rounded-full bg-semiDarkBeige  p-3 absolute -left-4 -top-10">
                       <FavoriteOutlinedIcon
                         className={` cursor-pointer
-                      ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
-                        onClick={(id) => {
-                          dispatch(toggleFav(id));
+                      ${food.isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
+                        onClick={() => {
+                          dispatch(
+                            toggleFavorite({
+                              foodId: food.id,
+                              isCurrentlyFavorited: food.isFav,
+                            })
+                          );
                         }}
                       />
                     </span>

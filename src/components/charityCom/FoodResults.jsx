@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
-import { toggleFav } from "../../redux/FoodSlice";
+import { toggleFavorite } from "../../redux/FoodSlice";
 import { setCurrentPage, fetchAllFoods } from "../../redux/FoodFilterSlice";
 
 const FoodResults = ({ onClear }) => {
@@ -48,8 +48,8 @@ const FoodResults = ({ onClear }) => {
     );
   };
 
-  const handleToggleFav = (id) => {
-    dispatch(toggleFav({ id }));
+  const handleToggleFav = (id, isCurrentlyFavorited) => {
+    dispatch(toggleFavorite({ foodId: id, isCurrentlyFavorited }));
   };
 
   if (error) {
@@ -163,7 +163,7 @@ const FoodResults = ({ onClear }) => {
                         className={`cursor-pointer ${
                           food.isFav ? "text-btnsGreen" : "text-paleBarkYellow"
                         }`}
-                        onClick={() => handleToggleFav(food.id)}
+                        onClick={() => handleToggleFav(food.id, food.isFav)}
                       />
                     </span>
                     {food.discountPercentage && (
