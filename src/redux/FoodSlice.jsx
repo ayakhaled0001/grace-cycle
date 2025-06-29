@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import Swal from "sweetalert2";
 //
 const BaseUrl = "https://gracecycleapi.azurewebsites.net/api/web/home/foods";
+const FavBaseUrl = "https://gracecycleapi.azurewebsites.net/api/web/fav/foods";
 
 //fetching all food categories
 
@@ -57,6 +59,156 @@ export const fetchDessert = createAsyncThunk(
   }
 );
 
+// Toggle favorite API call
+export const toggleFavorite = createAsyncThunk(
+  "services/toggleFavorite",
+  async ({ foodId, isCurrentlyFavorited }, thunkAPI) => {
+    try {
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.log("No token found in localStorage");
+        Swal.fire({
+          icon: "error",
+          title: "Authentication Required",
+          text: "Please login to manage your favorites",
+          showConfirmButton: true,
+        });
+        return thunkAPI.rejectWithValue("No authentication token found");
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
+
+      console.log(
+        `Sending ${
+          isCurrentlyFavorited ? "DELETE" : "POST"
+        } favorite request for foodId: ${foodId}`
+      );
+
+      let response;
+      if (isCurrentlyFavorited) {
+        // Remove from favorites - DELETE request
+        response = await axios.delete(`${FavBaseUrl}/${foodId}`, config);
+      } else {
+        // Add to favorites - POST request
+        response = await axios.post(
+          `${FavBaseUrl}?foodId=${foodId}`,
+          {},
+          config
+        );
+      }
+
+      console.log("Favorite API Response:", response.data);
+
+      // Show success message
+      const message =
+        response.data.message || "Food item updated in favorites successfully";
+      const isAdded = !isCurrentlyFavorited;
+
+      Swal.fire({
+        icon: "success",
+        title: isAdded ? "Added to Favorites!" : "Removed from Favorites!",
+        text: message,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      return { foodId, response: response.data, isAdded };
+    } catch (error) {
+      console.log("Error toggling favorite for foodId:", foodId);
+      console.log("Error details:", {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message,
+      });
+
+      // Show error message
+      let errorMessage = "Failed to update favorite status";
+
+      if (error.response?.status === 400) {
+        errorMessage =
+          "This item is already in your favorites or doesn't exist";
+      } else if (error.response?.status === 401) {
+        errorMessage = "Please login again to continue";
+      } else if (error.response?.status === 404) {
+        errorMessage = "Food item not found";
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errorMessage,
+        showConfirmButton: true,
+      });
+
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  }
+);
+
+// Fetch user favorite foods
+export const fetchUserFavoriteFoods = createAsyncThunk(
+  "services/fetchUserFavoriteFoods",
+  async (_, thunkAPI) => {
+    try {
+      // Get token from localStorage
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.log("No token found in localStorage");
+        return thunkAPI.rejectWithValue("No authentication token found");
+      }
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      console.log("Fetching user favorite foods...");
+      const response = await axios.get(FavBaseUrl, config);
+      console.log("Favorite foods response:", response.data);
+
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching favorite foods");
+      console.log("Error details:", {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message,
+      });
+
+      // Show error message
+      let errorMessage = "Failed to load favorite foods";
+
+      if (error.response?.status === 401) {
+        errorMessage = "Please login again to view your favorites";
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      }
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: errorMessage,
+        showConfirmButton: true,
+      });
+
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  }
+);
+
 // initial state
 
 const initialState = {
@@ -64,6 +216,7 @@ const initialState = {
   drinks: [],
   bakedGoods: [],
   dessert: [],
+  favoriteFoods: [],
   isFav: false,
   loading: false,
   error: null,
@@ -92,10 +245,17 @@ const foodSlice = createSlice({
       })
       .addCase(fetchMainDishes.fulfilled, (state, action) => {
         state.loading = false;
-        state.mainDishes = action.payload.map((item) => ({
-          ...item,
-          isFav: item.isFavourite || false, // Ensure each item has an isFav property
-        }));
+        console.log("Main Dishes data from backend:", action.payload);
+        state.mainDishes = action.payload.map((item) => {
+          console.log(
+            `Food item ${item.id} (${item.name}) - isFavourite:`,
+            item.isFavourite
+          );
+          return {
+            ...item,
+            isFav: item.isFavourite || false, // Ensure each item has an isFav property
+          };
+        });
       })
       .addCase(fetchMainDishes.rejected, (state, action) => {
         state.loading = false;
@@ -107,10 +267,17 @@ const foodSlice = createSlice({
       })
       .addCase(fetchDrinks.fulfilled, (state, action) => {
         state.loading = false;
-        state.drinks = action.payload.map((item) => ({
-          ...item,
-          isFav: item.isFavourite || false, // Ensure each item has an isFav property
-        }));
+        console.log("Drinks data from backend:", action.payload);
+        state.drinks = action.payload.map((item) => {
+          console.log(
+            `Drink item ${item.id} (${item.name}) - isFavourite:`,
+            item.isFavourite
+          );
+          return {
+            ...item,
+            isFav: item.isFavourite || false, // Ensure each item has an isFav property
+          };
+        });
       })
       .addCase(fetchDrinks.rejected, (state, action) => {
         state.loading = false;
@@ -122,10 +289,17 @@ const foodSlice = createSlice({
       })
       .addCase(fetchBakedGoods.fulfilled, (state, action) => {
         state.loading = false;
-        state.bakedGoods = action.payload.map((item) => ({
-          ...item,
-          isFav: item.isFavourite || false, // Ensure each item has an isFav property
-        }));
+        console.log("Baked Goods data from backend:", action.payload);
+        state.bakedGoods = action.payload.map((item) => {
+          console.log(
+            `Baked Good item ${item.id} (${item.name}) - isFavourite:`,
+            item.isFavourite
+          );
+          return {
+            ...item,
+            isFav: item.isFavourite || false, // Ensure each item has an isFav property
+          };
+        });
       })
       .addCase(fetchBakedGoods.rejected, (state, action) => {
         state.loading = false;
@@ -137,14 +311,129 @@ const foodSlice = createSlice({
       })
       .addCase(fetchDessert.fulfilled, (state, action) => {
         state.loading = false;
-        state.dessert = action.payload.map((item) => ({
-          ...item,
-          isFav: item.isFavourite || false, // Ensure each item has an isFav property
-        }));
+        console.log("Dessert data from backend:", action.payload);
+        state.dessert = action.payload.map((item) => {
+          console.log(
+            `Dessert item ${item.id} (${item.name}) - isFavourite:`,
+            item.isFavourite
+          );
+          return {
+            ...item,
+            isFav: item.isFavourite || false, // Ensure each item has an isFav property
+          };
+        });
       })
       .addCase(fetchDessert.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchUserFavoriteFoods.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserFavoriteFoods.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("Favorite foods response payload:", action.payload);
+        console.log("Payload type:", typeof action.payload);
+        console.log("Payload is array:", Array.isArray(action.payload));
+
+        // Handle different response formats
+        if (Array.isArray(action.payload)) {
+          state.favoriteFoods = action.payload;
+        } else if (
+          action.payload &&
+          action.payload.data &&
+          Array.isArray(action.payload.data)
+        ) {
+          state.favoriteFoods = action.payload.data;
+        } else if (
+          action.payload &&
+          action.payload.items &&
+          Array.isArray(action.payload.items)
+        ) {
+          state.favoriteFoods = action.payload.items;
+        } else {
+          console.log("Unexpected payload format, setting empty array");
+          state.favoriteFoods = [];
+        }
+
+        console.log("Favorite foods updated in state:", state.favoriteFoods);
+      })
+      .addCase(fetchUserFavoriteFoods.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(toggleFavorite.fulfilled, (state, action) => {
+        const { foodId, isAdded } = action.payload;
+        console.log(
+          `Toggling favorite for foodId: ${foodId}, isAdded: ${isAdded}`
+        );
+        console.log("Response data:", action.payload.response);
+
+        // Update all food arrays to toggle the favorite status
+        state.mainDishes = state.mainDishes.map((item) => {
+          if (item.id === foodId) {
+            console.log(
+              `Updating mainDish ${item.id} (${item.name}) - isFav from ${item.isFav} to ${isAdded}`
+            );
+            return { ...item, isFav: isAdded };
+          }
+          return item;
+        });
+
+        state.drinks = state.drinks.map((item) => {
+          if (item.id === foodId) {
+            console.log(
+              `Updating drink ${item.id} (${item.name}) - isFav from ${item.isFav} to ${isAdded}`
+            );
+            return { ...item, isFav: isAdded };
+          }
+          return item;
+        });
+
+        state.bakedGoods = state.bakedGoods.map((item) => {
+          if (item.id === foodId) {
+            console.log(
+              `Updating bakedGood ${item.id} (${item.name}) - isFav from ${item.isFav} to ${isAdded}`
+            );
+            return { ...item, isFav: isAdded };
+          }
+          return item;
+        });
+
+        state.dessert = state.dessert.map((item) => {
+          if (item.id === foodId) {
+            console.log(
+              `Updating dessert ${item.id} (${item.name}) - isFav from ${item.isFav} to ${isAdded}`
+            );
+            return { ...item, isFav: isAdded };
+          }
+          return item;
+        });
+
+        // Update favoriteFoods array
+        if (isAdded) {
+          // Add to favorites if not already there
+          const existingItem = state.favoriteFoods.find(
+            (item) => item.id === foodId
+          );
+          if (!existingItem) {
+            // Find the food item from other arrays and add it to favorites
+            const foodItem =
+              state.mainDishes.find((item) => item.id === foodId) ||
+              state.drinks.find((item) => item.id === foodId) ||
+              state.bakedGoods.find((item) => item.id === foodId) ||
+              state.dessert.find((item) => item.id === foodId);
+            if (foodItem) {
+              state.favoriteFoods.push(foodItem);
+            }
+          }
+        } else {
+          // Remove from favorites
+          state.favoriteFoods = state.favoriteFoods.filter(
+            (item) => item.id !== foodId
+          );
+        }
       });
   },
 });

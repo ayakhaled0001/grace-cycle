@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Search, Favorite } from "@mui/icons-material";
 import TuneIcon from "@mui/icons-material/Tune";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   setSearchTerm,
   setSearchType,
@@ -297,7 +298,9 @@ export default function SearchBar({
             <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
           </div>
           <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
-            <Favorite />
+            <Link to="/favorites">
+              <Favorite />
+            </Link>
           </div>
         </div>
         <div className="flex items-center">
