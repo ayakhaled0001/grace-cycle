@@ -294,9 +294,12 @@ export default function SearchBar({
             <TuneIcon className="mr-2" />
             Filter
           </button>
-          <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
+          <Link
+            to="/CharityPage/cart"
+            className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors"
+          >
             <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
-          </div>
+          </Link>
           <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
             <Link to="/favorites">
               <Favorite />

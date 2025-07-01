@@ -1,22 +1,59 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserFavoriteFoods, toggleFavorite } from "../../redux/FoodSlice";
+import {
+  fetchUserFavoriteVendors,
+  toggleVendorFavorite,
+} from "../../redux/VendorFilterSlice";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 function FavoriteItems() {
   const dispatch = useDispatch();
   const { favoriteFoods, loading, error } = useSelector(
     (state) => state.servicesFood
   );
+  const { favoriteVendors, favVendorsLoading, favVendorsError } = useSelector(
+    (state) => state.vendorFilter
+  );
 
   useEffect(() => {
     dispatch(fetchUserFavoriteFoods());
+    dispatch(fetchUserFavoriteVendors());
   }, [dispatch]);
 
   const handleToggleFav = (foodId) => {
-    dispatch(toggleFavorite({ foodId, isCurrentlyFavorited: true }));
+    Swal.fire({
+      title: "Are you sure to delete this item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#225A4B",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(toggleFavorite({ foodId, isCurrentlyFavorited: true }));
+      }
+    });
+  };
+
+  const handleToggleVendorFav = (vendorId) => {
+    Swal.fire({
+      title: "Are you sure to delete this item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#225A4B",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(
+          toggleVendorFavorite({ vendorId, isCurrentlyFavorited: true })
+        );
+      }
+    });
   };
 
   // Debug: Log the favoriteFoods data
@@ -26,6 +63,7 @@ function FavoriteItems() {
 
   // Ensure favoriteFoods is an array
   const foodsArray = Array.isArray(favoriteFoods) ? favoriteFoods : [];
+  const vendorsArray = Array.isArray(favoriteVendors) ? favoriteVendors : [];
 
   if (error) {
     return (
@@ -44,112 +82,116 @@ function FavoriteItems() {
   }
 
   return (
-    <section className="w-full md:w-10/12 mx-auto bg-semiDarkBeige my-4 md:my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
-      <div className="absolute -top-3 md:-top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-2 md:mx-4 gap-2">
-        <span className="bg-white p-1 md:p-2 rounded-md text-sm md:text-base lg:text-lg font-semibold text-center sm:text-left">
-          My Favorite Foods ({foodsArray.length} items)
-        </span>
-      </div>
+    <>
+      {/* Favorite Foods Section */}
+      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-8 font-nunitoBold">
+        My Favorite Foods
+      </h1>
+      <section className="w-full md:w-10/12 mx-auto bg-semiDarkBeige my-4 md:my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+        <div className="absolute -top-3 md:-top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-2 md:mx-4 gap-2">
+          <span className="bg-white p-1 md:p-2 rounded-md text-sm md:text-base lg:text-lg font-semibold text-center sm:text-left">
+            My Favorite Foods ({foodsArray.length} items)
+          </span>
+        </div>
 
-      {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full px-2 md:px-4">
-          {Array.from({ length: 6 }).map((_, idx) => (
-            <div
-              className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
-              key={idx}
-            >
-              <Skeleton
-                variant="rectangular"
-                width="100%"
-                height={160}
-                sx={{ borderRadius: "12px 12px 0 0" }}
-              />
-              <div className="p-2 relative">
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full px-2 md:px-4">
+            {Array.from({ length: 6 }).map((_, idx) => (
+              <div
+                className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
+                key={idx}
+              >
                 <Skeleton
-                  variant="circular"
-                  width={32}
-                  height={32}
-                  sx={{ position: "absolute", left: -12, top: -24 }}
+                  variant="rectangular"
+                  width="100%"
+                  height={160}
+                  sx={{ borderRadius: "12px 12px 0 0" }}
                 />
-                <Skeleton width="60%" height={24} />
-                <Skeleton width="40%" height={20} />
-                <Skeleton width="80%" height={20} />
-                <Skeleton width="100%" height={32} />
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : foodsArray.length === 0 ? (
-        <div className="text-center py-8 px-4">
-          <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
-            You haven't added any foods to your favorites yet
-          </p>
-          <Link
-            to="/CharityPage"
-            className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors inline-block text-sm md:text-base"
-          >
-            Browse Foods
-          </Link>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full px-2 md:px-4">
-          {foodsArray.map((food) => (
-            <div
-              className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
-              key={food.id}
-            >
-              <div className="flex absolute justify-between m-2 md:m-3 left-0 right-0 overflow-hidden">
-                <span className="bg-semiDarkBeige px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-xs md:text-sm">
-                  {food.quantity ||
-                    food.availableQuantity ||
-                    food.stockQuantity ||
-                    0}
-                  + left
-                </span>
-                <span className="flex items-center bg-semiDarkBeige px-1.5 md:px-2 py-0.5 md:py-1 rounded-md text-xs md:text-sm">
-                  <img
-                    src="/icons/star.svg"
-                    alt="star"
-                    className="w-2.5 md:w-3 text-center mr-1"
+                <div className="p-2 relative">
+                  <Skeleton
+                    variant="circular"
+                    width={32}
+                    height={32}
+                    sx={{ position: "absolute", left: -12, top: -24 }}
                   />
-                  {food.rating || food.averageRating || food.rate || 0}
-                </span>
+                  <Skeleton width="60%" height={24} />
+                  <Skeleton width="40%" height={20} />
+                  <Skeleton width="80%" height={20} />
+                  <Skeleton width="100%" height={32} />
+                </div>
               </div>
-
-              <img
-                src={
-                  food.picUrl ||
-                  food.imageUrl ||
-                  food.photoUrl ||
-                  food.image ||
-                  "/public/services/foodlistingtest.png"
-                }
-                alt={food.name || food.title || "Food item"}
-                className="w-full rounded-se-xl rounded-ss-xl h-36 md:h-48 object-cover"
-                onError={(e) => {
-                  e.target.src = "/public/services/foodlistingtest.png";
-                }}
-              />
-
-              <div className="p-2 md:p-3 relative">
-                <div className="flex justify-between">
-                  <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 md:p-3 absolute -left-3 md:-left-4 -top-8 md:-top-10">
-                    <FavoriteOutlinedIcon
-                      className="cursor-pointer text-btnsGreen text-lg md:text-xl"
-                      onClick={() => handleToggleFav(food.id)}
-                    />
+            ))}
+          </div>
+        ) : foodsArray.length === 0 ? (
+          <div className="text-center py-8 px-4">
+            <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
+              You haven't added any foods to your favorites yet
+            </p>
+            <Link
+              to="/CharityPage"
+              className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors inline-block text-sm md:text-base"
+            >
+              Browse Foods
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
+            {foodsArray.map((food) => (
+              <div
+                className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
+                key={food.id}
+              >
+                <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
+                  <span className="bg-semiDarkBeige px-2 py-1 rounded-md">
+                    {food.quantity ||
+                      food.availableQuantity ||
+                      food.stockQuantity ||
+                      0}
+                    + left
                   </span>
-                  {food.discountPercentage && (
-                    <span className="bg-semiBrightYellow py-2 md:py-3 px-1 md:px-1.5 rounded-full text-lg md:text-xl font-bold absolute right-1 md:right-2 -top-12 md:-top-16">
-                      %{food.discountPercentage}
-                    </span>
-                  )}
+                  <span className="flex items-center bg-semiDarkBeige px-2 py-1 rounded-md">
+                    <img
+                      src="/icons/star.svg"
+                      alt="star"
+                      className="w-3 text-center mr-1"
+                    />
+                    {food.rating || food.averageRating || food.rate || 0}
+                  </span>
                 </div>
 
-                <h1 className="text-base md:text-lg lg:text-xl font-medium mt-2">
-                  {food.name || food.title}
-                </h1>
-                <div className="text-xs md:text-sm text-gray-600 mt-1">
+                <img
+                  src={
+                    food.picUrl ||
+                    food.imageUrl ||
+                    food.photoUrl ||
+                    food.image ||
+                    "/public/services/foodlistingtest.png"
+                  }
+                  alt={food.name || food.title || "Food item"}
+                  className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
+                  onError={(e) => {
+                    e.target.src = "/public/services/foodlistingtest.png";
+                  }}
+                />
+
+                <div className="p-2 relative">
+                  <div className="flex justify-between">
+                    <span className="shadow-xl rounded-full bg-semiDarkBeige p-3 absolute -left-4 -top-10">
+                      <FavoriteOutlinedIcon
+                        className="cursor-pointer text-btnsGreen"
+                        onClick={() => handleToggleFav(food.id)}
+                      />
+                    </span>
+                    {food.discountPercentage && (
+                      <span className="bg-semiBrightYellow py-3 px-1.5 rounded-full text-xl font-bold absolute right-2 -top-16">
+                        %{food.discountPercentage}
+                      </span>
+                    )}
+                  </div>
+
+                  <h1 className="text-xl font-medium">
+                    {food.name || food.title}
+                  </h1>
                   <span>
                     {food.vName ||
                       food.vendorName ||
@@ -157,35 +199,202 @@ function FavoriteItems() {
                       food.vendor ||
                       "Unknown Vendor"}
                   </span>
-                  <span className="ml-1">
-                    ({food.isOpen ? "opened" : "closed"})
+                  <span>({food.isOpen ? "opened" : "closed"})</span>
+
+                  <div className="flex justify-between py-2">
+                    <span className="text-lg">Price</span>
+                    <div className="">
+                      <span className="text-sm px-1 line-through">
+                        EGP{food.unitPrice || food.originalPrice || food.price}
+                      </span>
+                      <span className="text-btnsGreen font-semibold text-lg">
+                        EGP{food.newPrice || food.discountedPrice || food.price}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    to={`/CharityPage/cart/${food.id}`}
+                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300"
+                  >
+                    More Details
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Favorite Vendors Section */}
+      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-8 font-nunitoBold">
+        My Favorite Vendors
+      </h1>
+      <section className="w-full md:w-10/12 mx-auto bg-semiDarkBeige my-4 md:my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+        <div className="absolute -top-3 md:-top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-2 md:mx-4 gap-2">
+          <span className="bg-white p-1 md:p-2 rounded-md text-sm md:text-base lg:text-lg font-semibold text-center sm:text-left">
+            My Favorite Vendors ({vendorsArray.length} items)
+          </span>
+        </div>
+        {favVendorsLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
+            {Array.from({ length: 4 }).map((_, idx) => (
+              <div
+                className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
+                key={idx}
+              >
+                <Skeleton
+                  variant="rectangular"
+                  width="100%"
+                  height={160}
+                  sx={{ borderRadius: "12px 12px 0 0" }}
+                />
+                <div className="p-2 relative">
+                  <Skeleton
+                    variant="circular"
+                    width={32}
+                    height={32}
+                    sx={{ position: "absolute", left: -12, top: -24 }}
+                  />
+                  <Skeleton width="60%" height={24} />
+                  <Skeleton width="40%" height={20} />
+                  <Skeleton width="80%" height={20} />
+                  <Skeleton width="100%" height={32} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : favVendorsError ? (
+          <div className="text-center py-8 px-4">
+            <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
+              {favVendorsError}
+            </p>
+          </div>
+        ) : vendorsArray.length === 0 ? (
+          <div className="text-center py-8 px-4">
+            <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
+              You haven't added any vendors to your favorites yet
+            </p>
+            <Link
+              to="/CharityPage"
+              className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors inline-block text-sm md:text-base"
+            >
+              Browse Vendors
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
+            {vendorsArray.map((vendor) => (
+              <div
+                className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
+                key={vendor.userId || vendor.id}
+              >
+                {/* Rating at top right only */}
+                <div className="flex absolute justify-end m-3 left-0 right-0 overflow-hidden">
+                  <span className="flex items-center bg-semiDarkBeige px-2 py-1 rounded-md">
+                    <img
+                      src="/icons/star.svg"
+                      alt="star"
+                      className="w-3 text-center mr-1"
+                    />
+                    {vendor.rating || vendor.averageRating || vendor.rate || 0}
                   </span>
                 </div>
-
-                <div className="flex justify-between py-2 mt-2">
-                  <span className="text-sm md:text-base">Price</span>
-                  <div className="text-right">
-                    <span className="text-xs md:text-sm px-1 line-through text-gray-500">
-                      EGP{food.unitPrice || food.originalPrice || food.price}
-                    </span>
-                    <span className="text-btnsGreen font-semibold text-sm md:text-base lg:text-lg block">
-                      EGP{food.newPrice || food.discountedPrice || food.price}
+                {/* Vendor Image */}
+                <img
+                  src={
+                    vendor.picUrl ||
+                    vendor.imageUrl ||
+                    vendor.photoUrl ||
+                    vendor.image ||
+                    vendor.logoUrl ||
+                    "/public/services/restaurants.png"
+                  }
+                  alt={vendor.displayName || vendor.name || "Vendor"}
+                  className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
+                  onError={(e) => {
+                    e.target.src = "/public/services/restaurants.png";
+                  }}
+                />
+                <div className="p-2 relative">
+                  {/* Favorite button */}
+                  <span className="shadow-xl rounded-full bg-semiDarkBeige p-3 absolute -left-4 -top-10">
+                    <FavoriteOutlinedIcon
+                      className="cursor-pointer text-btnsGreen"
+                      onClick={() =>
+                        handleToggleVendorFav(vendor.userId || vendor.id, true)
+                      }
+                    />
+                  </span>
+                  <div className="flex items-center justify-between mb-2">
+                    <h1 className="text-xl font-medium">
+                      {vendor.displayName || vendor.name}
+                    </h1>
+                    {/* Vendor Logo as small circle */}
+                    <span className="ml-2 flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 overflow-hidden">
+                      <img
+                        src={
+                          vendor.logoUrl ||
+                          vendor.picUrl ||
+                          vendor.imageUrl ||
+                          vendor.photoUrl ||
+                          vendor.image ||
+                          "/public/services/restaurants.png"
+                        }
+                        alt="logo"
+                        className="w-9 h-9 object-cover"
+                        onError={(e) => {
+                          e.target.src = "/public/services/restaurants.png";
+                        }}
+                      />
                     </span>
                   </div>
-                </div>
+                  <span className="text-gray-600">
+                    {vendor.type ||
+                      vendor.categoryName ||
+                      vendor.category ||
+                      ""}
+                  </span>
+                  {vendor.address && (
+                    <div className="flex items-center py-1 justify-between">
+                      <span className="text-sm text-gray-500">
+                        📍 {vendor.address}
+                      </span>
+                      <span
+                        className={`text-sm px-2 py-1 rounded ${
+                          vendor.isOpen
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {vendor.isOpen ? "Open Now" : "Closed"}
+                      </span>
+                    </div>
+                  )}
 
-                <Link
-                  to={`/CharityPage/cart/${food.id}`}
-                  className="text-center w-full p-1.5 md:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300 text-sm md:text-base mt-2"
-                >
-                  More Details
-                </Link>
+                  {vendor.description && (
+                    <p className="text-sm text-gray-600 py-1 line-clamp-2">
+                      {vendor.description}
+                    </p>
+                  )}
+
+                  <div className="flex justify-between py-2">
+                    <span></span>
+                  </div>
+
+                  <Link
+                    to={`/CharityPage/cart/${vendor.id}`}
+                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300"
+                  >
+                    More Details
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </section>
+            ))}
+          </div>
+        )}
+      </section>
+    </>
   );
 }
 

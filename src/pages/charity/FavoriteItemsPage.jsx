@@ -11,9 +11,6 @@ function FavoriteItemsPage() {
       <div className="mt-6">
         {/* <SearchBar /> */}
         <div className="w-full px-2 md:px-4 py-4 md:py-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-8 font-nunitoBold">
-            My Favorite Foods
-          </h1>
           <FavoriteItems />
         </div>
         <Footer />

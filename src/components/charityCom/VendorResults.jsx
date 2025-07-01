@@ -3,7 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { setCurrentPage, fetchAllVendors } from "../../redux/VendorFilterSlice";
+import {
+  setCurrentPage,
+  fetchAllVendors,
+  toggleVendorFavorite,
+} from "../../redux/VendorFilterSlice";
 
 const VendorResults = ({ onClear }) => {
   const dispatch = useDispatch();
@@ -43,6 +47,10 @@ const VendorResults = ({ onClear }) => {
         pageSize: 9,
       })
     );
+  };
+
+  const handleToggleVendorFav = (vendorId, isCurrentlyFavorited) => {
+    dispatch(toggleVendorFavorite({ vendorId, isCurrentlyFavorited }));
   };
 
   if (error) {
@@ -114,7 +122,7 @@ const VendorResults = ({ onClear }) => {
             {allVendors.map((vendor) => (
               <div
                 className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
-                key={vendor.userId}
+                key={vendor.userId || vendor.id}
               >
                 {/* Rating at top right only */}
                 <div className="flex absolute justify-end m-3 left-0 right-0 overflow-hidden">
@@ -148,17 +156,16 @@ const VendorResults = ({ onClear }) => {
                   <span className="shadow-xl rounded-full bg-semiDarkBeige p-3 absolute -left-4 -top-10">
                     <FavoriteOutlinedIcon
                       className={`cursor-pointer ${
-                        vendor.isFavourite
+                        vendor.isFav || vendor.isFavourite
                           ? "text-btnsGreen"
                           : "text-paleBarkYellow"
                       }`}
-                      onClick={() => {
-                        // TODO: handle vendor favorite toggle
-                        console.log(
-                          "Toggle favorite for vendor:",
-                          vendor.userId
-                        );
-                      }}
+                      onClick={() =>
+                        handleToggleVendorFav(
+                          vendor.userId || vendor.id,
+                          vendor.isFav || vendor.isFavourite
+                        )
+                      }
                     />
                   </span>
                   <div className="flex items-center justify-between mb-2">
@@ -264,11 +271,11 @@ const VendorResults = ({ onClear }) => {
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`px-2 sm:px-3 py-1.5 sm:py-2 border rounded-md text-xs sm:text-sm md:text-base ${
+                    className={`px-2 sm:px-3 py-1.5 sm:py-2 border rounded-md ${
                       currentPage === page
                         ? "bg-btnsGreen text-white border-btnsGreen"
                         : "border-lightGrey hover:bg-gray-50"
-                    }`}
+                    } text-xs sm:text-sm md:text-base`}
                   >
                     {page}
                   </button>
