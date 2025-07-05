@@ -1,6 +1,11 @@
 import "./styles/App.css";
 import ForgetPassword from "./pages/log-in/ForgetPassword";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import PasswordReset from "./pages/log-in/PasswordReset";
 import NewPassword from "./pages/log-in/NewPassword";
 import PasswordReseted from "./pages/log-in/PasswordReseted";
