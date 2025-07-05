@@ -61,7 +61,9 @@ const CharityPage = () => {
   return (
     <div className="relative">
       <HomeNav backgroundColor="bg-[#EEEADF]" />
-      {location.pathname.startsWith("/CharityPage/cart") ? (
+      {location.pathname.startsWith("/CharityPage/cart") ||
+      location.pathname.startsWith("/CharityPage/magicbags") ||
+      location.pathname.startsWith("/CharityPage/vendor") ? (
         <Outlet />
       ) : (
         <div className="mt-6">
