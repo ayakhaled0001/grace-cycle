@@ -63,7 +63,6 @@ export default function MagicBags() {
         <span className="bg-white p-1 rounded-md text-base md:text-lg font-semibold text-center sm:text-left">
           Magic Bags
         </span>
-<<<<<<< HEAD
         <span className="bg-white p-1 rounded-md text-base md:text-lg text-lightBrownYellow underline text-center sm:text-right">
           <a href="#">Shop More</a>
         </span>
@@ -84,13 +83,6 @@ export default function MagicBags() {
                 <span className="absolute text-semiDarkBeige text-sm px-4 rounded-md top-2 left-2 bg-lightGreen">
                   {bag.quantity}+ bag left
                 </span>
-                {/* <span className="absolute shadow-xl rounded-full bg-semiDarkBeige p-2 -left-2 -bottom-2">
-                  <FavoriteOutlinedIcon
-                    className={`cursor-pointer
-                ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
-                    onClick={() => setIsFav(!isFav)}
-                  />
-                </span> */}
               </div>
               <div className="flex flex-col p-4 w-full sm:w-[60%]">
                 <h3 className="text-lg">
@@ -108,39 +100,6 @@ export default function MagicBags() {
                     {" "}
                     {bag.opened ? " (opened)" : " (closed)"}
                   </p>
-=======
-        <span className="bg-white p-1 rounded-md text-sm mob470:text-base mob560:text-lg text-lightBrownYellow underline">
-          <a href="#">Shop More</a>
-        </span>
-      </div>
-      <div className="flex flex-col gap-3 mob470:gap-4 w-full mx-auto mt-8 mob470:mt-10 font-nunitoBold">
-        {bags.map((bag, index) => {
-          console.log("Bag data:", bag);
-
-          const bagId = bag.id || bag.bagId || bag._id || index;
-
-          return (
-            <div
-              key={index}
-              className="flex flex-col md:flex-row items-center hover:border-4 cursor-pointer hover:border-btnsGreen transition-bg duration-200 rounded-xl p-3 mob470:p-4 w-[100%] h-auto md:h-44 bg-semiDarkBeige box-border">
-              <div className="flex flex-col md:flex-row w-full md:w-[50%] h-auto md:h-[100%] bg-cover bg-center">
-                <div className="relative w-full md:w-[40%] h-32 md:h-[100%] rounded-xl">
-                  <img
-                    src={bag.picUrl}
-                    alt=""
-                    className="w-full h-full rounded-xl object-cover"
-                  />
-                  <span className="absolute text-semiDarkBeige text-xs mob470:text-sm px-2 mob470:px-4 rounded-md top-2 left-2 bg-lightGreen">
-                    {bag.quantity}+ bag left
-                  </span>
-                  <span className="absolute shadow-xl rounded-full bg-semiDarkBeige p-1.5 mob470:p-2 -left-2 -bottom-2">
-                    <FavoriteOutlinedIcon
-                      className={`cursor-pointer text-lg mob470:text-xl
-                  ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
-                      onClick={() => setIsFav(!isFav)}
-                    />
-                  </span>
->>>>>>> vendordet
                 </div>
                 <div className="flex flex-col p-3 mob470:p-4 w-full md:w-[60%] mt-3 md:mt-0">
                   <h3 className="text-sm mob470:text-base mob560:text-lg">
@@ -153,7 +112,8 @@ export default function MagicBags() {
                     <p
                       className={`text-xs mob470:text-sm ${
                         bag.opened ? "text-[#008000]" : "text-red-500"
-                      } font-semibold`}>
+                      } font-semibold`}
+                    >
                       {" "}
                       {bag.opened ? " (opened)" : " (closed)"}
                     </p>
@@ -177,14 +137,14 @@ export default function MagicBags() {
                     </span>
                   </div>
                   <Link
-                    to={`/CharityPage/magicbags/${bagId}`}
-                    className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base">
+                    to={`/CharityPage/magicbags/${bag.id}`}
+                    className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base"
+                  >
                     Add to Cart
                   </Link>
                 </div>
               </div>
             </div>
-<<<<<<< HEAD
             <div className="flex w-full sm:w-[50%] h-full justify-center sm:justify-end">
               <div className="flex flex-col justify-center items-center w-full sm:w-[50%]">
                 <span className="bg-[#F8BD00] px-6 rounded-lg">
@@ -208,10 +168,6 @@ export default function MagicBags() {
             </div>
           </div>
         ))}
-=======
-          );
-        })}
->>>>>>> vendordet
       </div>
     </section>
   );

@@ -135,11 +135,7 @@ function MainDishes() {
                           className="flex-1 text-center p-1.5 mob470:p-2 border-2 border-lightBrownYellow rounded-xl text-lightBrownYellow font-semibold inline-block text-sm mob470:text-base hover:bg-lightBrownYellow hover:text-white transition-colors">
                           View Vendor
                         </Link>
-                        <Link
-                          to={`/CharityPage/cart/${food.id}`}
-                          className="flex-1 text-center p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base hover:bg-btnsGreen hover:text-white transition-colors">
-                          Add to Cart
-                        </Link>
+                     
                       </div>
                     </>
                   )}
