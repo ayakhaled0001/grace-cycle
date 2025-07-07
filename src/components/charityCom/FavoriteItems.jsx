@@ -95,29 +95,82 @@ function FavoriteItems() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full px-2 md:px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
             {Array.from({ length: 6 }).map((_, idx) => (
               <div
-                className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
+                className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
                 key={idx}
               >
+                {/* Top badges skeleton - quantity and rating */}
+                <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
+                  <Skeleton
+                    variant="rectangular"
+                    width={60}
+                    height={24}
+                    sx={{ borderRadius: "6px" }}
+                  />
+                  <Skeleton
+                    variant="rectangular"
+                    width={50}
+                    height={24}
+                    sx={{ borderRadius: "6px" }}
+                  />
+                </div>
+
+                {/* Main image skeleton */}
                 <Skeleton
                   variant="rectangular"
                   width="100%"
-                  height={160}
+                  height={192}
                   sx={{ borderRadius: "12px 12px 0 0" }}
                 />
+
                 <div className="p-2 relative">
+                  {/* Favorite button skeleton */}
                   <Skeleton
                     variant="circular"
-                    width={32}
-                    height={32}
-                    sx={{ position: "absolute", left: -12, top: -24 }}
+                    width={48}
+                    height={48}
+                    sx={{ position: "absolute", left: -16, top: -40 }}
                   />
-                  <Skeleton width="60%" height={24} />
-                  <Skeleton width="40%" height={20} />
-                  <Skeleton width="80%" height={20} />
-                  <Skeleton width="100%" height={32} />
+
+                  {/* Discount badge skeleton */}
+                  <Skeleton
+                    variant="circular"
+                    width={40}
+                    height={40}
+                    sx={{ position: "absolute", right: 8, top: -64 }}
+                  />
+
+                  {/* Food name skeleton */}
+                  <Skeleton width="70%" height={24} sx={{ marginTop: 8 }} />
+
+                  {/* Vendor name skeleton */}
+                  <Skeleton width="50%" height={20} sx={{ marginTop: 4 }} />
+
+                  {/* Status skeleton */}
+                  <Skeleton width="30%" height={20} sx={{ marginTop: 2 }} />
+
+                  {/* Price section skeleton */}
+                  <div className="flex justify-between py-2 mt-2">
+                    <Skeleton width="20%" height={20} />
+                    <div className="flex flex-col items-end">
+                      <Skeleton
+                        width="60px"
+                        height={16}
+                        sx={{ marginBottom: 2 }}
+                      />
+                      <Skeleton width="80px" height={20} />
+                    </div>
+                  </div>
+
+                  {/* Button skeleton */}
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={40}
+                    sx={{ borderRadius: "12px", marginTop: 8 }}
+                  />
                 </div>
               </div>
             ))}
@@ -237,29 +290,79 @@ function FavoriteItems() {
           </span>
         </div>
         {favVendorsLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
             {Array.from({ length: 4 }).map((_, idx) => (
               <div
-                className="w-full max-w-[280px] sm:max-w-xs border border-stone-700 rounded-xl relative"
+                className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
                 key={idx}
               >
+                {/* Rating badge skeleton at top right */}
+                <div className="flex absolute justify-end m-3 left-0 right-0 overflow-hidden">
+                  <Skeleton
+                    variant="rectangular"
+                    width={50}
+                    height={24}
+                    sx={{ borderRadius: "6px" }}
+                  />
+                </div>
+
+                {/* Vendor image skeleton */}
                 <Skeleton
                   variant="rectangular"
                   width="100%"
-                  height={160}
+                  height={192}
                   sx={{ borderRadius: "12px 12px 0 0" }}
                 />
+
                 <div className="p-2 relative">
+                  {/* Favorite button skeleton */}
                   <Skeleton
                     variant="circular"
-                    width={32}
-                    height={32}
-                    sx={{ position: "absolute", left: -12, top: -24 }}
+                    width={48}
+                    height={48}
+                    sx={{ position: "absolute", left: -16, top: -40 }}
                   />
-                  <Skeleton width="60%" height={24} />
-                  <Skeleton width="40%" height={20} />
-                  <Skeleton width="80%" height={20} />
-                  <Skeleton width="100%" height={32} />
+
+                  {/* Vendor name and logo section skeleton */}
+                  <div className="flex items-center justify-between mb-2">
+                    <Skeleton width="60%" height={24} />
+                    <Skeleton
+                      variant="circular"
+                      width={36}
+                      height={36}
+                      sx={{ marginLeft: 8 }}
+                    />
+                  </div>
+
+                  {/* Category skeleton */}
+                  <Skeleton width="40%" height={20} sx={{ marginTop: 4 }} />
+
+                  {/* Address and status section skeleton */}
+                  <div className="flex items-center py-1 justify-between mt-2">
+                    <Skeleton width="50%" height={16} />
+                    <Skeleton
+                      width="60px"
+                      height={20}
+                      sx={{ borderRadius: "4px" }}
+                    />
+                  </div>
+
+                  {/* Description skeleton */}
+                  <Skeleton width="90%" height={16} sx={{ marginTop: 4 }} />
+                  <Skeleton width="70%" height={16} sx={{ marginTop: 2 }} />
+
+                  {/* Empty space for spacing */}
+                  <div className="flex justify-between py-2">
+                    <span></span>
+                  </div>
+
+                  {/* Button skeleton */}
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height={40}
+                    sx={{ borderRadius: "12px" }}
+                  />
                 </div>
               </div>
             ))}
