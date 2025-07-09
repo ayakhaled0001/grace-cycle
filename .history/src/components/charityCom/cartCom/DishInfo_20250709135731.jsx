@@ -349,7 +349,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
                 </span>
 
                 <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                  <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                  <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
                     <img
                       src="/icons/minus.svg"
                       alt="discard item"
@@ -527,7 +527,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
               </span>
 
               <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
                   <img
                     src="/icons/minus.svg"
                     alt="discard item"
@@ -537,7 +537,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
                 <span className="text-lg mob470:text-xl mob560:text-xl md:text-2xl font-nunitoBold">
                   2
                 </span>
-                <button className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors">
+                <button className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-transparent transition-colors">
                   <img
                     src="/icons/add.svg"
                     alt="add item"

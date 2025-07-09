@@ -43,10 +43,6 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
     error: foodListingError,
   } = useSelector((state) => state.foodListing);
 
-  // All hooks at the top, before any logic/returns
-  const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(false);
-
   // Fetch vendor details data when component mounts for vendor pages
   useEffect(() => {
     if (itemType === "vendor") {
@@ -349,7 +345,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
                 </span>
 
                 <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                  <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                  <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
                     <img
                       src="/icons/minus.svg"
                       alt="discard item"
@@ -527,7 +523,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
               </span>
 
               <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
                   <img
                     src="/icons/minus.svg"
                     alt="discard item"
@@ -581,6 +577,10 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           return bagId.toString() === itemId.toString();
         })
       : allDishes.find((d) => d.id === parseInt(itemId));
+
+  // Move hooks to top level
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   // Handlers for increment/decrement
   const handleIncrement = () => {

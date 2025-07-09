@@ -131,7 +131,7 @@ export default function MagicBags() {
                   </span>
                 </div>
                 <Link
-                  to={`/CharityPage/magicbags/${bag.id}`}
+                  to={`/CharityPage/cart/${bag.id}`}
                   className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base hover:bg-btnsGreen hover:text-white transition-colors duration-300">
                   More Details
                 </Link>

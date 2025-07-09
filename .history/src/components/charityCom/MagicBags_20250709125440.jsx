@@ -116,6 +116,28 @@ export default function MagicBags() {
                   </div>
                 </div>
               </div>
+              <div className="flex w-full md:w-[50%] justify-center md:justify-end mt-3 md:mt-0">
+                <div className="flex flex-col justify-center items-center w-full md:w-[50%]">
+                  <span className="bg-[#F8BD00] px-4 mob470:px-6 rounded-lg text-xs mob470:text-sm">
+                    {bag.discount}% OFF
+                  </span>
+                  <div className="flex justify-center items-center my-2">
+                    <span className="text-xs mob470:text-sm px-1 line-through">
+                      EGP{bag.price}
+                    </span>
+                    <span className="text-btnsGreen font-semibold text-sm mob470:text-base mob560:text-lg">
+                      EGP{bag.newPrice}
+                    </span>
+                  </div>
+                </div>
+                {/* <div className="flex flex-col justify-center items-center w-full sm:w-auto">
+                  <Link
+                    to={`/CharityPage/magicbags/${bag.id}`}
+                    className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base">
+                    Add to Cart
+                  </Link>
+                </div> */}
+              </div>
             </div>
             <div className="flex w-full sm:w-[50%] h-full justify-center sm:justify-end">
               <div className="flex flex-col justify-center items-center w-full sm:w-[50%]">
@@ -131,7 +153,7 @@ export default function MagicBags() {
                   </span>
                 </div>
                 <Link
-                  to={`/CharityPage/magicbags/${bag.id}`}
+                  to={`/CharityPage/cart/${bag.id}`}
                   className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base hover:bg-btnsGreen hover:text-white transition-colors duration-300">
                   More Details
                 </Link>

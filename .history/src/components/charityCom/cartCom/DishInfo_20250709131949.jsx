@@ -43,10 +43,6 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
     error: foodListingError,
   } = useSelector((state) => state.foodListing);
 
-  // All hooks at the top, before any logic/returns
-  const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(false);
-
   // Fetch vendor details data when component mounts for vendor pages
   useEffect(() => {
     if (itemType === "vendor") {
@@ -349,7 +345,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
                 </span>
 
                 <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                  <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                  <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
                     <img
                       src="/icons/minus.svg"
                       alt="discard item"
@@ -527,7 +523,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
               </span>
 
               <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
                   <img
                     src="/icons/minus.svg"
                     alt="discard item"
@@ -582,6 +578,10 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         })
       : allDishes.find((d) => d.id === parseInt(itemId));
 
+  // Quantity state
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   // Handlers for increment/decrement
   const handleIncrement = () => {
     if (quantity < (item?.quantity || 1)) setQuantity(quantity + 1);
@@ -624,19 +624,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
   };
 
   if (!item) {
-    return (
-      <div className="pt-20 lgHome:px-20 mob470:px-2 mob560:px-3 md:px-10 bg-bgBeigeWhite">
-        <div className="text-center py-10">
-          <h2 className="text-xl font-bold text-red-600 mb-4">
-            {itemType === "bag" ? "Magic Bag" : "Dish"} not found
-          </h2>
-          <p className="text-gray-600">
-            The {itemType === "bag" ? "magic bag" : "dish"} you&apos;re looking
-            for doesn&apos;t exist or has been removed.
-          </p>
-        </div>
-      </div>
-    );
+    return <div>Dish not found</div>;
   }
 
   // Determine category for breadcrumb
