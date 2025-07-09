@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@mui/material";
 import VendorInfoCard from "./VendorInfoCard";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import axios from "axios";
 
 function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
   const dispatch = useDispatch();
@@ -105,12 +106,84 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!item) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Authentication Error",
+        text: "Please log in to delete items from cart",
+        showConfirmButton: true,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        "https://gracecycleapi.azurewebsites.net/api/webcart/update-item",
+        {
+          vendorId: item.vendorId,
+          item: {
+            id: item.id,
+            name: item.name,
+            picUrl: item.picUrl,
+            unitPrice: item.unitPrice,
+            newPrice: item.newPrice,
+            quantity: 0,
+          },
+          vendorName: item.vName || "SupermarketTwo",
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Delete response:", response.data);
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted from Cart!",
+        text: "Item has been removed from cart successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+    } catch (error) {
+      console.log("Delete error:", error.response?.data || error.message);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to delete item from cart",
+        showConfirmButton: true,
+      });
+    }
+  };
+
   const allDishes = [...mainDishes, ...bakedGoods, ...dessert, ...drinks];
   const fallbackItem =
     itemType === "bag"
       ? bags.find((b) => String(b.id || b.bagId || b._id) === itemId)
       : allDishes.find((d) => d.id === parseInt(itemId));
-  const item = id ? { id, name, picUrl, rating, isFavourite, unitPrice, newPrice, quantity: fallbackItem?.quantity, vendorId, vName, isOpen: true } : fallbackItem;
+  const item = id
+    ? {
+        id,
+        name,
+        picUrl,
+        rating,
+        isFavourite,
+        unitPrice,
+        newPrice,
+        quantity: fallbackItem?.quantity,
+        vendorId,
+        vName,
+        isOpen: true,
+      }
+    : fallbackItem;
 
   if (!item) {
     return (
@@ -120,7 +193,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             {itemType === "bag" ? "Magic Bag" : "Dish"} not found
           </h2>
           <p className="text-gray-600">
-            The {itemType === "bag" ? "magic bag" : "dish"} you're looking for doesn't exist or has been removed.
+            The {itemType === "bag" ? "magic bag" : "dish"} you're looking for
+            doesn't exist or has been removed.
           </p>
         </div>
       </div>
@@ -200,7 +274,9 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         {/* Cart */}
         {showShoppingCart && (
           <div className="w-full lg:w-3/12 p-4 border-2 border-lightBrownYellow rounded-lg space-y-4">
-            <h1 className="text-lightBrownYellow font-semibold text-xl">Available:</h1>
+            <h1 className="text-lightBrownYellow font-semibold text-xl">
+              Available:
+            </h1>
             <span className="text-lg">{item.quantity} Pieces</span>
 
             <div className="flex items-center justify-around">
@@ -236,9 +312,12 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
       {/* Description */}
       <div className="py-6 px-4">
-        <h4 className="text-lightBrownYellow text-2xl font-bold mb-2">Description</h4>
+        <h4 className="text-lightBrownYellow text-2xl font-bold mb-2">
+          Description
+        </h4>
         <p className="text-lg leading-relaxed">
-          {item.description || `${item.name} is a delicious and high-quality dish prepared with fresh ingredients. This item is part of our charity program to reduce food waste while providing excellent meals at discounted prices.`}
+          {item.description ||
+            `${item.name} is a delicious and high-quality dish prepared with fresh ingredients. This item is part of our charity program to reduce food waste while providing excellent meals at discounted prices.`}
         </p>
       </div>
     </>

@@ -5,6 +5,8 @@ import { fetchCartDetails } from "../../redux/FoodSlice";
 import { updateCartItem } from "../../redux/FoodSlice";
 import HomeNav from "../../components/homeCom/HomeNav";
 import HomeFooter from "../../components/homeCom/HomeFooter";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 function CartDetailsPage() {
   const { restaurantId } = useParams();
@@ -99,9 +101,116 @@ function CartDetailsPage() {
     setUnsaved(false);
   };
 
-  const handleDelete = (productId) => {
-    // Handle delete functionality
-    console.log("Delete product:", productId);
+  const handleDelete = async (productId) => {
+    try {
+      // Find the product in cartDetails.items
+      const product = cartDetails.items.find((item) => item.id === productId);
+
+      if (!product) {
+        console.error("Product not found in cart");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        Swal.fire({
+          icon: "error",
+          title: "Authentication Error",
+          text: "Please log in to delete items from cart",
+          showConfirmButton: true,
+        });
+        return;
+      }
+
+      const payload = {
+        vendorId: cartDetails.vendorId,
+        item: {
+          id: product.id,
+          name: product.name,
+          picUrl: product.picUrl,
+          unitPrice: product.unitPrice,
+          newPrice: product.newPrice,
+          quantity: 0,
+        },
+        vendorName: cartDetails.vendorName,
+      };
+
+      const response = await axios.put(
+        "https://gracecycleapi.azurewebsites.net/api/webcart/update-item",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Delete response:", response.data);
+      console.log("Deleting productId:", productId, "Type:", typeof productId);
+
+      // Update local state to remove the deleted item
+      setCartDetails((prevCart) => {
+        const updatedCart = { ...prevCart };
+
+        // Check if it's a product or bag
+        if (typeof productId === "string" && productId.startsWith("bag_")) {
+          // It's a bag
+          const bagId = productId.replace("bag_", "");
+          updatedCart.bags = updatedCart.bags.filter(
+            (bag) => bag.id !== parseInt(bagId)
+          );
+        } else {
+          // It's a product - handle both string and number IDs
+          const productIdToRemove =
+            typeof productId === "string" ? parseInt(productId) : productId;
+          updatedCart.items = updatedCart.items.filter(
+            (item) => item.id !== productIdToRemove
+          );
+        }
+
+        console.log("Updated cart:", updatedCart);
+        return updatedCart;
+      });
+
+      // Remove from quantities state
+      setQuantities((prev) => {
+        const updated = { ...prev };
+        delete updated[productId];
+        return updated;
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Item removed from cart!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // Re-fetch cart details to ensure UI is in sync with backend
+      const resultAction = await dispatch(fetchCartDetails(restaurantId));
+      if (fetchCartDetails.fulfilled.match(resultAction)) {
+        const data = resultAction.payload;
+        setCartDetails(data);
+        // Update quantities
+        const newQuantities = {};
+        data.items.forEach((item) => {
+          newQuantities[item.id] = item.quantity;
+        });
+        data.bags.forEach((bag) => {
+          newQuantities[`bag_${bag.id}`] = bag.quantity;
+        });
+        setQuantities(newQuantities);
+      }
+    } catch (err) {
+      console.log("Delete error:", err.response?.data || err.message);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to remove item from cart",
+        showConfirmButton: true,
+      });
+    }
   };
 
   // Calculate totals from backend data
@@ -151,6 +260,114 @@ function CartDetailsPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-lg">No cart details found</p>
+      </div>
+    );
+  }
+
+  // Check if cart is empty (no items and no bags)
+  const isCartEmpty =
+    (!cartDetails.items || cartDetails.items.length === 0) &&
+    (!cartDetails.bags || cartDetails.bags.length === 0);
+
+  if (isCartEmpty) {
+    return (
+      <div className="min-h-screen bg-bgBeigeWhite">
+        <div className="py-20 px-4 md:px-8 lg:px-16">
+          {/* Header with breadcrumb */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 text-sm md:text-base">
+              <Link
+                to="/CharityPage/cart"
+                className="text-gray-600 hover:text-btnsGreen"
+              >
+                Your Cart
+              </Link>
+              <span className="text-gray-400">››</span>
+              <span className="text-btnsGreen font-semibold">
+                {cartDetails.vendorName || "Cart Details"}
+              </span>
+            </div>
+          </div>
+
+          {/* Empty Cart Message */}
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            {/* Empty Cart Icon */}
+            <div className="mb-6">
+              <svg
+                width="120"
+                height="120"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-gray-400"
+              >
+                <path
+                  d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
+
+            {/* Empty Cart Text */}
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              Your cart is empty
+            </h2>
+            <p className="text-lg text-gray-600 mb-8 max-w-md">
+              Looks like you haven't added any items to your cart yet. Start
+              shopping to discover amazing food and magic bags!
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/CharityPage"
+                className="px-8 py-4 bg-btnsGreen text-white rounded-lg font-semibold text-lg hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6C4 4.89543 4.89543 4 6 4H8"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M15 2H9C8.44772 2 8 2.44772 8 3V5C8 5.55228 8.44772 6 9 6H15C15.5523 6 16 5.55228 16 5V3C16 2.44772 15.5523 2 15 2Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                Start Shopping
+              </Link>
+            </div>
+          </div>
+        </div>
+        <HomeFooter />
       </div>
     );
   }
@@ -210,81 +427,159 @@ function CartDetailsPage() {
               </div>
               {productsOpen && (
                 <div className="p-4 transition-all duration-300 ease-in-out font-nunitoBold">
-                  {cartDetails.items.map((product) => (
-                    <div
-                      key={product.id}
-                      className="pb-4 mb-4 border-b-2 border-[#A6A6A6] border-dashed"
-                    >
-                      <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-                        {/* Product Image */}
-                        <img
-                          src={product.picUrl}
-                          alt={product.name}
-                          className="w-24 h-16 sm:w-32 sm:h-20 object-cover rounded-lg mb-2 sm:mb-0"
-                        />
-                        {/* Product Info */}
-                        <div className="flex-1 min-w-0 w-full flex flex-col items-center sm:items-start">
-                          <div className="font-bold text-black text-base sm:text-lg mb-1 text-center sm:text-left">
-                            {product.name}
-                          </div>
-                          <div className="flex flex-col sm:flex-row items-center sm:items-end gap-1 sm:gap-2 mb-1">
-                            <span className="line-through text-gray-500 text-xs sm:text-sm">
-                              EGP {product.unitPrice}
-                            </span>
-                            <span
-                              className="font-bold text-base sm:text-lg"
-                              style={{ color: "#225A4B" }}
-                            >
-                              EGP {product.newPrice}
-                            </span>
-                          </div>
-                          <div
-                            className="inline-block px-2 py-1 rounded-md text-xs font-semibold mb-2 sm:mb-0"
-                            style={{ background: "#EEEADF", color: "#5b5e5b" }}
-                          >
-                            {product.available}+ left
-                          </div>
-                        </div>
-                        {/* Quantity Controls */}
-                        <div className="flex items-center gap-1 sm:gap-2 mt-2 sm:mt-0">
-                          <button
-                            onClick={() => handleQuantityChange(product.id, -1)}
-                            className="w-8 h-8 sm:w-9 sm:h-9 border-2 rounded-md flex items-center justify-center text-base sm:text-lg font-bold"
-                            style={{
-                              borderColor: "#225A4B",
-                              color: "#225A4B",
-                              background: "#fff",
-                            }}
-                          >
-                            –
-                          </button>
-                          <span className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md font-bold text-base sm:text-lg">
-                            {quantities[product.id]}
-                          </span>
-                          <button
-                            onClick={() => handleQuantityChange(product.id, 1)}
-                            className="w-8 h-8 sm:w-9 sm:h-9 border-2 rounded-md flex items-center justify-center text-base sm:text-lg font-bold bg-[#225A4B] text-white"
-                          >
-                            +
-                          </button>
-                        </div>
-                        {/* Delete Icon */}
-                        <button
-                          onClick={() => handleDelete(product.id)}
-                          className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md ml-0 sm:ml-2 mt-2 sm:mt-0"
-                          style={{ background: "#fff" }}
+                  {cartDetails.items.length === 0 ? (
+                    <div className="text-center py-8">
+                      <div className="mb-4">
+                        <svg
+                          width="60"
+                          height="60"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-gray-400 mx-auto"
                         >
-                          <img
-                            src="/icons/delete.svg"
-                            alt="delete icon"
-                            width="18"
-                            height="18"
-                            className="sm:w-[20px] sm:h-[20px]"
+                          <path
+                            d="M12 2L2 7L12 12L22 7L12 2Z"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                           />
-                        </button>
+                          <path
+                            d="M2 17L12 22L22 17"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M2 12L12 17L22 12"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </div>
+                      <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                        No products in cart
+                      </h3>
+                      <p className="text-gray-500 mb-4">
+                        Add some delicious food items to your cart!
+                      </p>
+                      <Link
+                        to="/CharityPage"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-btnsGreen text-white rounded-md hover:bg-green-700 transition-colors"
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12 5V19"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M5 12H19"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        Browse Products
+                      </Link>
                     </div>
-                  ))}
+                  ) : (
+                    cartDetails.items.map((product) => (
+                      <div
+                        key={product.id}
+                        className="pb-4 mb-4 border-b-2 border-[#A6A6A6] border-dashed"
+                      >
+                        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                          {/* Product Image */}
+                          <img
+                            src={product.picUrl}
+                            alt={product.name}
+                            className="w-24 h-16 sm:w-32 sm:h-20 object-cover rounded-lg mb-2 sm:mb-0"
+                          />
+                          {/* Product Info */}
+                          <div className="flex-1 min-w-0 w-full flex flex-col items-center sm:items-start">
+                            <div className="font-bold text-black text-base sm:text-lg mb-1 text-center sm:text-left">
+                              {product.name}
+                            </div>
+                            <div className="flex flex-col sm:flex-row items-center sm:items-end gap-1 sm:gap-2 mb-1">
+                              <span className="line-through text-gray-500 text-xs sm:text-sm">
+                                EGP {product.unitPrice}
+                              </span>
+                              <span
+                                className="font-bold text-base sm:text-lg"
+                                style={{ color: "#225A4B" }}
+                              >
+                                EGP {product.newPrice}
+                              </span>
+                            </div>
+                            <div
+                              className="inline-block px-2 py-1 rounded-md text-xs font-semibold mb-2 sm:mb-0"
+                              style={{
+                                background: "#EEEADF",
+                                color: "#5b5e5b",
+                              }}
+                            >
+                              {product.available}+ left
+                            </div>
+                          </div>
+                          {/* Quantity Controls */}
+                          <div className="flex items-center gap-1 sm:gap-2 mt-2 sm:mt-0">
+                            <button
+                              onClick={() =>
+                                handleQuantityChange(product.id, -1)
+                              }
+                              className="w-8 h-8 sm:w-9 sm:h-9 border-2 rounded-md flex items-center justify-center text-base sm:text-lg font-bold"
+                              style={{
+                                borderColor: "#225A4B",
+                                color: "#225A4B",
+                                background: "#fff",
+                              }}
+                            >
+                              –
+                            </button>
+                            <span className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md font-bold text-base sm:text-lg">
+                              {quantities[product.id]}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handleQuantityChange(product.id, 1)
+                              }
+                              className="w-8 h-8 sm:w-9 sm:h-9 border-2 rounded-md flex items-center justify-center text-base sm:text-lg font-bold bg-[#225A4B] text-white"
+                            >
+                              +
+                            </button>
+                          </div>
+                          {/* Delete Icon */}
+                          <button
+                            onClick={() => handleDelete(product.id)}
+                            className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-md ml-0 sm:ml-2 mt-2 sm:mt-0"
+                            style={{ background: "#fff" }}
+                          >
+                            <img
+                              src="/icons/delete.svg"
+                              alt="delete icon"
+                              width="18"
+                              height="18"
+                              className="sm:w-[20px] sm:h-[20px]"
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
                   {/* Save Changes Button inside Products Accordion, after products list */}
                   <div
                     className={`transition-all duration-300 ${
