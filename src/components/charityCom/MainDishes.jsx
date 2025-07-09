@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMainDishes, toggleFavorite } from "../../redux/FoodSlice";
 import { Skeleton } from "@mui/material";
 import { Link } from "react-router-dom";
+
 function MainDishes() {
   const dispatch = useDispatch();
-  const { mainDishes, isFav, loading } = useSelector(
-    (state) => state.servicesFood
-  );
+  const { mainDishes, loading } = useSelector((state) => state.servicesFood);
+
   useEffect(() => {
     dispatch(fetchMainDishes());
   }, [dispatch]);
+
   console.log("loading state :", loading);
+
   return (
     <section className="w-11/12 md:w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
       <div className="absolute -top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-4 gap-2">
@@ -29,8 +31,7 @@ function MainDishes() {
           ? Array.from({ length: 3 }).map((_, idx) => (
               <div
                 className="w-full max-w-xs border border-stone-700 rounded-xl relative"
-                key={idx}
-              >
+                key={idx}>
                 <Skeleton
                   variant="rectangular"
                   width="100%"
@@ -54,8 +55,7 @@ function MainDishes() {
           : mainDishes.map((food) => (
               <div
                 className="w-full max-w-xs border border-stone-700 rounded-xl relative"
-                key={food.id}
-              >
+                key={food.id}>
                 <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
                   <span className=" bg-semiDarkBeige px-2 py-1 rounded-md">
                     {food.quantity}+ left
@@ -129,12 +129,14 @@ function MainDishes() {
                           </span>
                         </div>
                       </div>
-                      <Link
-                        to={`/CharityPage/cart/${food.id}`}
-                        className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300"
-                      >
-                        More Details
-                      </Link>
+                      <div className="flex gap-2">
+                        <Link
+                          to={`/CharityPage/vendor/${food.vendorId}`}
+                          className="flex-1 text-center p-1.5 mob470:p-2 border-2 border-lightBrownYellow rounded-xl text-lightBrownYellow font-semibold inline-block text-sm mob470:text-base hover:bg-lightBrownYellow hover:text-white transition-colors">
+                          View Vendor
+                        </Link>
+                     
+                      </div>
                     </>
                   )}
                 </div>

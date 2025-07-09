@@ -25,6 +25,8 @@ import AddToCart from "./pages/charity/AddToCart";
 import CartPage from "./pages/charity/CartPage";
 import CartDetailsPage from "./pages/charity/CartDetailsPage";
 import FavoriteItemsPage from "./pages/charity/FavoriteItemsPage";
+import MagicBagsInfo from "./pages/charity/MagicBagsInfo";
+import VendorDetails from "./pages/charity/VendorDetails";
 // import GlobalLoader from "./components/loadersCom/GlobalLoader";
 // import { useEffect, useState } from "react";
 
@@ -43,6 +45,8 @@ function App() {
             element={<CartDetailsPage />}
           />
           <Route path="cart/:dishId" element={<AddToCart />} />
+          <Route path="magicbags/:bagId" element={<MagicBagsInfo />} />
+          <Route path="vendor/:vendorId" element={<VendorDetails />} />
         </Route>
         <Route path="/favorites" element={<FavoriteItemsPage />} />
 

@@ -7,6 +7,9 @@ import foodFilterReducer from "./FoodFilterSlice";
 import categoriesReducer from "./CategoriesSlice";
 import vendorFilterReducer from "./VendorFilterSlice";
 import vendorCategoriesReducer from "./VendorCategoriesSlice";
+import vendorReducer from "./VendorSlice";
+import vendorDetailsReducer from "./VendorDetailsSlice";
+import foodListingReducer from "./FoodListingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -18,5 +21,8 @@ export const store = configureStore({
     categories: categoriesReducer,
     vendorFilter: vendorFilterReducer,
     vendorCategories: vendorCategoriesReducer,
+    vendors: vendorReducer,
+    vendorDetails: vendorDetailsReducer,
+    foodListing: foodListingReducer,
   },
 });

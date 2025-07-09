@@ -1,0 +1,475 @@
+import BtnGreen from "../../Ui/BtnGreen";
+import { useSelector, useDispatch } from "react-redux";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { getVendorDetails } from "../../../redux/VendorDetailsSlice";
+import { Skeleton } from "@mui/material";
+
+function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
+  const dispatch = useDispatch();
+  const { mainDishes, bakedGoods, dessert, drinks } = useSelector(
+    (state) => state.servicesFood
+  );
+  const { bags } = useSelector((state) => state.bags);
+  const { vendorDetails, itemsOffered, similarItems, isLoading, error } =
+    useSelector((state) => state.vendorDetails);
+
+  // Fetch vendor details data when component mounts for vendor pages
+  useEffect(() => {
+    if (itemType === "vendor") {
+      dispatch(getVendorDetails(itemId));
+    }
+  }, [dispatch, itemType, itemId]);
+
+  // Handle vendor data
+  if (itemType === "vendor") {
+    if (isLoading) {
+      return (
+        <>
+          <p className="text-semilightGrey font-nunito py-2 mob470:py-3 mob560:py-3 md:py-5 px-2 mob470:px-3 mob560:px-4 md:px-0 text-xs mob470:text-sm mob560:text-sm md:text-base">
+            Charity &gt;&gt; Vendors &gt;&gt; Loading...
+          </p>
+
+          {/* Main Content Container */}
+          <div className="flex flex-col lg:flex-row justify-center gap-6 px-6 lg:px-8">
+            {/* Vendor Image Skeleton */}
+            <div className="w-full lg:w-5/12 flex justify-center">
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height={320}
+                className="rounded-md"
+              />
+            </div>
+            {/* Info Skeleton */}
+            <div className="w-full lg:w-5/12 space-y-4">
+              <Skeleton variant="text" width="60%" height={40} />
+              <Skeleton variant="text" width="80%" height={60} />
+              <Skeleton variant="text" width="40%" height={30} />
+              <Skeleton variant="text" width="70%" height={30} />
+              <Skeleton variant="text" width="90%" height={100} />
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="pt-20 lgHome:px-20 mob470:px-2 mob560:px-3 md:px-10 bg-bgBeigeWhite">
+          <div className="text-center py-10">
+            <h2 className="text-xl font-bold text-red-600 mb-4">
+              Error Loading Vendor
+            </h2>
+            <p className="text-gray-600">{error}</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (!vendorDetails) {
+      return (
+        <div className="pt-20 lgHome:px-20 mob470:px-2 mob560:px-3 md:px-10 bg-bgBeigeWhite">
+          <div className="text-center py-10">
+            <h2 className="text-xl font-bold text-red-600 mb-4">
+              Vendor Not Found
+            </h2>
+            <p className="text-gray-600">The vendor could not be found.</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <p className="text-semilightGrey font-nunito py-2 mob470:py-3 mob560:py-3 md:py-5 px-2 mob470:px-3 mob560:px-4 md:px-0 text-xs mob470:text-sm mob560:text-sm md:text-base">
+          Charity &gt;&gt; Vendors &gt;&gt; {vendorDetails.displayName}
+        </p>
+
+        {/* Main Content Container */}
+        <div className="flex flex-col lg:flex-row justify-center gap-6 px-6 lg:px-8">
+          {/* Vendor Image Section */}
+          <div className="w-full lg:w-5/12 flex justify-center">
+            <img
+              src={vendorDetails.picUrl}
+              alt={vendorDetails.displayName}
+              className="w-full max-w-sm mob470:max-w-md mob560:max-w-md md:max-w-lg lg:max-w-none rounded-md h-56 mob470:h-64 mob560:h-64 md:h-72 lg:h-80 object-cover"
+            />
+          </div>
+
+          {/* Vendor Information Section */}
+          <div className="w-full lg:w-5/12 px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-4">
+            <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
+              Vendor Details
+            </h1>
+
+            <h2 className="flex flex-col sm:flex-row text-xl mob470:text-2xl mob560:text-2xl md:text-3xl py-1 gap-2">
+              <span className="break-words">{vendorDetails.displayName}</span>
+              <span className="flex items-center text-base mob470:text-lg mob560:text-lg md:text-xl">
+                (
+                <img
+                  src="/icons/star.svg"
+                  alt="star"
+                  className="w-3 mob470:w-4 mob560:w-4 text-center mr-1"
+                />
+                {vendorDetails.rating})
+              </span>
+            </h2>
+
+            <div className="space-y-3">
+              <div className="flex items-center pt-1 text-sm mob470:text-base mob560:text-base md:text-lg">
+                <img
+                  src="/icons/send.svg"
+                  alt="location"
+                  className="w-3 mob470:w-4 mob560:w-4 text-center mr-2"
+                />
+                <span className="font-semibold text-lightBrownYellow">
+                  Address:
+                </span>
+                <span className="ml-2">{vendorDetails.address}</span>
+              </div>
+
+              <div className="flex items-center pt-1 text-sm mob470:text-base mob560:text-base md:text-lg">
+                <img
+                  src="/icons/clock.svg"
+                  alt="clock"
+                  className="w-3 mob470:w-4 mob560:w-4 text-center mr-2"
+                />
+                <span className="font-semibold text-lightBrownYellow">
+                  Working Hours:
+                </span>
+                <span className="ml-2">
+                  {vendorDetails.opening} - {vendorDetails.closing}
+                </span>
+              </div>
+
+              <div className="flex items-center pt-1 text-sm mob470:text-base mob560:text-base md:text-lg">
+                <img
+                  src="/icons/star.svg"
+                  alt="rating"
+                  className="w-3 mob470:w-4 mob560:w-4 text-center mr-2"
+                />
+                <span className="font-semibold text-lightBrownYellow">
+                  Rating:
+                </span>
+                <span className="ml-2">{vendorDetails.rating}/5</span>
+              </div>
+
+              {vendorDetails.logoUrl && (
+                <div className="pt-3">
+                  <p className="text-sm mob470:text-base mob560:text-base md:text-lg font-semibold text-lightBrownYellow mb-2">
+                    Logo:
+                  </p>
+                  <img
+                    src={vendorDetails.logoUrl}
+                    alt={`${vendorDetails.displayName} logo`}
+                    className="w-24 h-24 mob470:w-28 mob470:h-28 mob560:w-32 mob560:h-32 object-contain rounded-lg border border-gray-200"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Items Offered Section */}
+        {itemsOffered.length > 0 && (
+          <div className="py-4 mob470:py-5 mob560:py-5 px-6 lg:px-8">
+            <h4 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl mb-3">
+              Items Offered
+            </h4>
+            <div className="grid grid-cols-1 mob470:grid-cols-2 mob560:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {itemsOffered.map((item) => (
+                <div
+                  key={item.id}
+                  className="border border-gray-200 rounded-lg p-3">
+                  <img
+                    src={item.picUrl}
+                    alt={item.name}
+                    className="w-full h-32 object-cover rounded-md mb-2"
+                  />
+                  <h5 className="font-semibold text-sm">{item.name}</h5>
+                  <p className="text-xs text-gray-600">{item.vName}</p>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-xs line-through">
+                      EGP{item.unitPrice}
+                    </span>
+                    <span className="text-sm font-bold text-btnsGreen">
+                      EGP{item.newPrice}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Similar Items Section */}
+        {similarItems.length > 0 && (
+          <div className="py-4 mob470:py-5 mob560:py-5 px-6 lg:px-8">
+            <h4 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl mb-3">
+              Similar Vendors
+            </h4>
+            <div className="grid grid-cols-1 mob470:grid-cols-2 mob560:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {similarItems.map((vendor) => (
+                <div
+                  key={vendor.userId}
+                  className="border border-gray-200 rounded-lg p-3">
+                  <img
+                    src={vendor.picUrl}
+                    alt={vendor.displayName}
+                    className="w-full h-32 object-cover rounded-md mb-2"
+                  />
+                  <h5 className="font-semibold text-sm">
+                    {vendor.displayName}
+                  </h5>
+                  <p className="text-xs text-gray-600">{vendor.address}</p>
+                  <div className="flex items-center mt-2">
+                    <img
+                      src="/icons/star.svg"
+                      alt="star"
+                      className="w-3 text-center mr-1"
+                    />
+                    <span className="text-xs">{vendor.rating}/5</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Description Section */}
+        <div className="py-4 mob470:py-5 mob560:py-5 px-6 lg:px-8">
+          <h4 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl mb-3">
+            About {vendorDetails.displayName}
+          </h4>
+          <p className="text-base mob470:text-lg mob560:text-lg md:text-xl leading-relaxed text-gray-700">
+            {vendorDetails.description ||
+              `${vendorDetails.displayName} is a trusted ${
+                vendorDetails.vendorType || "vendor"
+              } in our charity program, located in ${
+                vendorDetails.address
+              }. They have earned a rating of ${
+                vendorDetails.rating
+              }/5 from our community and are open from ${
+                vendorDetails.opening
+              } to ${
+                vendorDetails.closing
+              }. This vendor is committed to reducing food waste while providing quality products to our customers.`}
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  // Find the item from all categories
+  const allDishes = [...mainDishes, ...bakedGoods, ...dessert, ...drinks];
+  const item =
+    itemType === "bag"
+      ? bags.find((b, index) => {
+          // Try to match by ID first, then by index
+          const bagId = b.id || b.bagId || b._id || index;
+          return bagId.toString() === itemId.toString();
+        })
+      : allDishes.find((d) => d.id === parseInt(itemId));
+
+  if (!item) {
+    return (
+      <div className="pt-20 lgHome:px-20 mob470:px-2 mob560:px-3 md:px-10 bg-bgBeigeWhite">
+        <div className="text-center py-10">
+          <h2 className="text-xl font-bold text-red-600 mb-4">
+            {itemType === "bag" ? "Magic Bag" : "Dish"} not found
+          </h2>
+          <p className="text-gray-600">
+            The {itemType === "bag" ? "magic bag" : "dish"} you&apos;re looking
+            for doesn&apos;t exist or has been removed.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Determine category for breadcrumb
+  const getCategory = () => {
+    if (itemType === "bag") return "magic bags";
+    if (mainDishes.find((d) => d.id === parseInt(itemId))) return "main dishes";
+    if (bakedGoods.find((d) => d.id === parseInt(itemId))) return "baked goods";
+    if (dessert.find((d) => d.id === parseInt(itemId))) return "desserts";
+    if (drinks.find((d) => d.id === parseInt(itemId))) return "drinks";
+    return "food";
+  };
+
+  // Get the correct price fields based on item type
+  const originalPrice = itemType === "bag" ? item.price : item.unitPrice;
+  const discountedPrice = itemType === "bag" ? item.newPrice : item.newPrice;
+
+  return (
+    <>
+      <p className="text-semilightGrey font-nunito py-2 mob470:py-3 mob560:py-3 md:py-5 px-2 mob470:px-3 mob560:px-4 md:px-0 text-xs mob470:text-sm mob560:text-sm md:text-base">
+        Charity &gt;&gt; {getCategory()} &gt;&gt; {item.name}
+      </p>
+
+      {/* Main Content Container */}
+      <div
+        className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
+          showShoppingCart ? "" : "lg:justify-center"
+        }`}>
+        {/* Image Section */}
+        <div
+          className={`w-full ${
+            showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
+          } flex justify-center`}>
+          <img
+            src={item.picUrl}
+            alt={item.name}
+            className="w-full max-w-sm mob470:max-w-md mob560:max-w-md md:max-w-lg lg:max-w-none rounded-md h-56 mob470:h-64 mob560:h-64 md:h-72 lg:h-80 object-cover"
+          />
+        </div>
+
+        {/* Item Information Section */}
+        <div
+          className={`w-full ${
+            showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
+          } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+          <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
+            {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
+          </h1>
+
+          <h2 className="flex flex-col sm:flex-row text-xl mob470:text-2xl mob560:text-2xl md:text-3xl py-1 gap-1 mob470:gap-2 mob560:gap-2">
+            <span className="break-words">{item.name}</span>
+            <span className="flex items-center text-base mob470:text-lg mob560:text-lg md:text-xl">
+              (
+              <img
+                src="/icons/star.svg"
+                alt="star"
+                className="w-3 mob470:w-4 mob560:w-4 text-center mr-1"
+              />
+              {item.rating})
+            </span>
+          </h2>
+
+          <p className="py-1 mob470:py-2 mob560:py-2">
+            <span className="line-through text-lg mob470:text-xl mob560:text-xl md:text-2xl">
+              EGP{originalPrice}
+            </span>
+            <span className="text-btnsGreen text-xl mob470:text-2xl mob560:text-2xl md:text-3xl px-1 font-semibold">
+              EGP{discountedPrice}
+            </span>
+          </p>
+
+          <div className="space-y-2 mob470:space-y-3 mob560:space-y-3">
+            <h3 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl pt-2 mob470:pt-3 mob560:pt-4">
+              Vendor
+            </h3>
+
+            <Link
+              to={`/CharityPage/vendor/${item.vendorId}`}
+              className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+              <img
+                src="/icons/person.svg"
+                alt="person"
+                className="w-3 mob470:w-4 mob560:w-4 text-center mr-2"
+              />
+              {item.vName}
+            </Link>
+
+            <p className="flex items-center pt-1 text-sm mob470:text-base mob560:text-base md:text-lg">
+              <img
+                src="/icons/clock.svg"
+                alt="clock"
+                className="w-3 mob470:w-4 mob560:w-4 text-center mr-2"
+              />
+              {item.isOpen ? "Open" : "Closed"}
+            </p>
+
+            <p className="flex items-center pt-1 text-sm mob470:text-base mob560:text-base md:text-lg">
+              <img
+                src="/icons/send.svg"
+                alt="location"
+                className="w-3 mob470:w-4 mob560:w-4 text-center mr-2"
+              />
+              It is 10 km away from you
+            </p>
+
+            {/* Show foods list for magic bags */}
+            {itemType === "bag" && item.foods && (
+              <div className="pt-1">
+                <p className="text-sm mob470:text-base mob560:text-base md:text-lg font-semibold text-lightBrownYellow">
+                  Contains:
+                </p>
+                <p className="text-sm mob470:text-base mob560:text-base md:text-lg text-darkgray">
+                  {item.foods.join(", ")}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Shopping Cart Section - Conditionally Rendered */}
+        {showShoppingCart && (
+          <div className="w-full lg:w-3/12 p-3 mob470:p-4 mob560:p-4 md:p-6 border-2 border-lightBrownYellow rounded-lg mx-0 md:mx-5 space-y-3 mob470:space-y-4 mob560:space-y-4">
+            <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
+              Available:
+            </h1>
+            <span className="text-base mob470:text-lg mob560:text-lg md:text-xl font-nunito">
+              {item.quantity} {itemType === "bag" ? "Bags" : "Pieces"}
+            </span>
+
+            <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
+              <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
+                <img
+                  src="/icons/minus.svg"
+                  alt="discard item"
+                  className="w-3 h-3 mob470:w-4 mob470:h-4 mob560:w-4 mob560:h-4 md:w-5 md:h-5"
+                />
+              </button>
+              <span className="text-lg mob470:text-xl mob560:text-xl md:text-2xl font-nunitoBold">
+                2
+              </span>
+              <button className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors">
+                <img
+                  src="/icons/add.svg"
+                  alt="add item"
+                  className="w-3 h-3 mob470:w-4 mob470:h-4 mob560:w-4 mob560:h-4 md:w-5 md:h-5"
+                />
+              </button>
+            </div>
+
+            <p className="font-nunito text-lg mob470:text-xl mob560:text-xl md:text-2xl border border-nescafe py-2 md:py-1 rounded-md px-2 md:px-1">
+              Total: <span>EGP {discountedPrice * 2}</span>
+            </p>
+
+            <BtnGreen className="w-full text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2">
+              Add to Cart
+            </BtnGreen>
+          </div>
+        )}
+      </div>
+
+      {/* Description Section */}
+      <div className="py-4 mob470:py-5 mob560:py-5 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8">
+        <h4 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
+          Description
+        </h4>
+        <p className="py-2 md:py-1 text-base mob470:text-lg mob560:text-lg md:text-xl leading-relaxed">
+          {item.description ||
+            `${item.name} is a delicious and high-quality ${
+              itemType === "bag"
+                ? "magic bag containing multiple items"
+                : "dish"
+            } prepared with fresh ingredients. This item is part of our charity program to reduce food waste while providing you with excellent ${
+              itemType === "bag" ? "bags" : "meals"
+            } at discounted prices.`}
+        </p>
+      </div>
+    </>
+  );
+}
+
+DishInfo.propTypes = {
+  itemId: PropTypes.string.isRequired,
+  itemType: PropTypes.oneOf(["dish", "bag", "vendor"]),
+  showShoppingCart: PropTypes.bool,
+};
+
+export default DishInfo;
