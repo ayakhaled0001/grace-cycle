@@ -46,6 +46,12 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
   // All hooks at the top, before any logic/returns
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+  const handleIncrement = () => {
+    if (item && quantity < item.quantity) setQuantity(quantity + 1);
+  };
+  const handleDecrement = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
 
   // Fetch vendor details data when component mounts for vendor pages
   useEffect(() => {
@@ -118,7 +124,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             {error.includes("UnAuthorized") && (
               <Link
                 to="/login"
-                className="inline-block bg-btnsGreen text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                className="inline-block bg-btnsGreen text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+              >
                 Go to Login
               </Link>
             )}
@@ -250,12 +257,14 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           <div
             className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
               showShoppingCart ? "" : "lg:justify-center"
-            }`}>
+            }`}
+          >
             {/* Image Section */}
             <div
               className={`w-full ${
                 showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-              } flex justify-center relative`}>
+              } flex justify-center relative`}
+            >
               {/* Favorite Icon */}
               <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
                 <FavoriteOutlinedIcon
@@ -275,7 +284,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             <div
               className={`w-full ${
                 showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
-              } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+              } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+            >
               <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
                 {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
               </h1>
@@ -309,7 +319,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
                 <Link
                   to={`/CharityPage/vendor/${item.vendorId}`}
-                  className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+                  className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+                >
                   <img
                     src="/icons/person.svg"
                     alt="person"
@@ -373,7 +384,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
                 </p>
 
                 <BtnGreen className="w-full text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2">
-                  Add to Cart
+                  Add to Carttttt
                 </BtnGreen>
               </div>
             )}
@@ -427,12 +438,14 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         <div
           className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
             showShoppingCart ? "" : "lg:justify-center"
-          }`}>
+          }`}
+        >
           {/* Image Section */}
           <div
             className={`w-full ${
               showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-            } flex justify-center relative`}>
+            } flex justify-center relative`}
+          >
             {/* Favorite Icon - only for dish and bag */}
             <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
               <FavoriteOutlinedIcon
@@ -453,7 +466,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           <div
             className={`w-full ${
               showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
-            } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+            } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+          >
             <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
               {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
             </h1>
@@ -487,7 +501,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
               <Link
                 to={`/CharityPage/vendor/${vendorId}`}
-                className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+                className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+              >
                 <img
                   src="/icons/person.svg"
                   alt="person"
@@ -527,7 +542,10 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
               </span>
 
               <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-                <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+                <button
+                  onClick={handleDecrement}
+                  className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors"
+                >
                   <img
                     src="/icons/minus.svg"
                     alt="discard item"
@@ -535,9 +553,12 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
                   />
                 </button>
                 <span className="text-lg mob470:text-xl mob560:text-xl md:text-2xl font-nunitoBold">
-                  2
+                  {quantity}
                 </span>
-                <button className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors">
+                <button
+                  onClick={handleIncrement}
+                  className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors"
+                >
                   <img
                     src="/icons/add.svg"
                     alt="add item"
@@ -547,7 +568,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
               </div>
 
               <p className="font-nunito text-lg mob470:text-xl mob560:text-xl md:text-2xl border border-nescafe py-2 md:py-1 rounded-md px-2 md:px-1">
-                Total: <span>EGP {newPrice * 2}</span>
+                Total: <span>EGP {newPrice * quantity}</span>
               </p>
 
               <BtnGreen className="w-full text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2">
@@ -582,16 +603,12 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         })
       : allDishes.find((d) => d.id === parseInt(itemId));
 
-  // Handlers for increment/decrement
-  const handleIncrement = () => {
-    if (quantity < (item?.quantity || 1)) setQuantity(quantity + 1);
-  };
-  const handleDecrement = () => {
-    if (quantity > 1) setQuantity(quantity - 1);
-  };
+  // دوال التحكم في الكمية
+  // احذف أي تعريفات أو دوال مكررة لاحقًا في الملف.
 
-  // Add to Cart handler
+  // دالة إضافة للكارت
   const handleAddToCart = async () => {
+    if (!item) return;
     const payload = {
       vendorId: item.vendorId,
       item: {
@@ -605,11 +622,9 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
       vendorName: item.vName || "SupermarketTwo",
     };
     setLoading(true);
-    console.log("Payload to backend:", payload);
     const resultAction = await dispatch(addToCart(payload));
     setLoading(false);
     if (addToCart.fulfilled.match(resultAction)) {
-      const data = resultAction.payload;
       Swal.fire({
         icon: "success",
         title: "Added to Cart!",
@@ -617,9 +632,13 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         showConfirmButton: false,
         timer: 2000,
       });
-      console.log("Add to cart response:", data);
     } else {
-      console.error("Error adding to cart:", resultAction.payload);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to add item to cart",
+        showConfirmButton: true,
+      });
     }
   };
 
@@ -663,12 +682,14 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
       <div
         className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
           showShoppingCart ? "" : "lg:justify-center"
-        }`}>
+        }`}
+      >
         {/* Image Section */}
         <div
           className={`w-full ${
             showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-          } flex justify-center relative`}>
+          } flex justify-center relative`}
+        >
           {/* Favorite Icon - only for dish and bag */}
           {(itemType === "dish" || itemType === "bag") && (
             <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
@@ -689,7 +710,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         <div
           className={`w-full ${
             showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
-          } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+          } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+        >
           <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
             {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
           </h1>
@@ -723,7 +745,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
             <Link
               to={`/CharityPage/vendor/${item.vendorId}`}
-              className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+              className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+            >
               <img
                 src="/icons/person.svg"
                 alt="person"
@@ -764,7 +787,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
             <button
               onClick={handleDecrement}
-              className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
+              className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors"
+            >
               <img
                 src="/icons/minus.svg"
                 alt="discard item"
@@ -776,7 +800,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             </span>
             <button
               onClick={handleIncrement}
-              className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors">
+              className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors"
+            >
               <img
                 src="/icons/add.svg"
                 alt="add item"
@@ -792,7 +817,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           <button
             onClick={handleAddToCart}
             className="text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2 bg-btnsGreen text-white w-full rounded-md my-4"
-            disabled={loading || foodLoading}>
+            disabled={loading || foodLoading}
+          >
             {loading || foodLoading ? "Loading..." : "Add to Cart"}
           </button>
         </div>
