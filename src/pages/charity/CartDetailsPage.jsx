@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCartDetails } from "../../redux/FoodSlice";
-import { updateCartItem } from "../../redux/FoodSlice";
+import {
+  fetchCartDetails,
+  updateCartItem,
+  setCartBags,
+  removeBagFromCartState,
+} from "../../redux/FoodSlice";
 import HomeNav from "../../components/homeCom/HomeNav";
 import HomeFooter from "../../components/homeCom/HomeFooter";
 import axios from "axios";
@@ -16,6 +20,7 @@ function CartDetailsPage() {
   const [cartDetails, setCartDetails] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [unsaved, setUnsaved] = useState(false);
+  const [bagsUnsaved, setBagsUnsaved] = useState(false);
   const [productsOpen, setProductsOpen] = useState(true);
   const [bagsOpen, setBagsOpen] = useState(true);
 
@@ -34,6 +39,10 @@ function CartDetailsPage() {
           initialQuantities[`bag_${bag.id}`] = bag.quantity;
         });
         setQuantities(initialQuantities);
+
+        // Update cartBags state with bags from backend
+        const bagIds = data.bags.map((bag) => bag.id);
+        dispatch(setCartBags(bagIds));
       }
     };
     fetchDetails();
@@ -47,7 +56,13 @@ function CartDetailsPage() {
         [productId]: updatedQuantity,
       };
     });
-    setUnsaved(true);
+
+    // Check if it's a bag or product and update appropriate state
+    if (typeof productId === "string" && productId.startsWith("bag_")) {
+      setBagsUnsaved(true);
+    } else {
+      setUnsaved(true);
+    }
   };
 
   const handleSaveChanges = async () => {
@@ -101,16 +116,102 @@ function CartDetailsPage() {
     setUnsaved(false);
   };
 
+  const handleSaveBagsChanges = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Authentication Error",
+        text: "Please log in to save changes",
+        showConfirmButton: true,
+      });
+      return;
+    }
+
+    try {
+      // Prepare and send update requests for all changed bags
+      let updatePromises = [];
+
+      cartDetails.bags.forEach((bag) => {
+        if (quantities[`bag_${bag.id}`] !== bag.quantity) {
+          const bagPayload = {
+            vendorId: cartDetails.vendorId,
+            bag: {
+              id: bag.id,
+              name: bag.name,
+              picUrl: bag.picUrl,
+              unitPrice: bag.unitPrice || bag.price,
+              newPrice: bag.newPrice,
+              quantity: quantities[`bag_${bag.id}`],
+              foods: bag.foods || ["falafel", "Foul", "Bread"],
+            },
+          };
+
+          updatePromises.push(
+            axios.put(
+              "https://gracecycleapi.azurewebsites.net/api/webcart/update-bag",
+              bagPayload,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+          );
+        }
+      });
+
+      if (updatePromises.length > 0) {
+        const results = await Promise.all(updatePromises);
+        console.log(
+          "Bags update results:",
+          results.map((r) => r.data)
+        );
+
+        // Re-fetch cart details to ensure UI is in sync with backend
+        const resultAction = await dispatch(fetchCartDetails(restaurantId));
+        if (fetchCartDetails.fulfilled.match(resultAction)) {
+          const data = resultAction.payload;
+          setCartDetails(data);
+          // Update quantities
+          const newQuantities = {};
+          data.items.forEach((item) => {
+            newQuantities[item.id] = item.quantity;
+          });
+          data.bags.forEach((bag) => {
+            newQuantities[`bag_${bag.id}`] = bag.quantity;
+          });
+          setQuantities(newQuantities);
+        }
+
+        Swal.fire({
+          icon: "success",
+          title: "Bags Updated!",
+          text: "Your bag quantities have been updated successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(
+        "Save bags changes error:",
+        error.response?.data || error.message
+      );
+
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to update bag quantities",
+        showConfirmButton: true,
+      });
+    }
+
+    setBagsUnsaved(false);
+  };
+
   const handleDelete = async (productId) => {
     try {
-      // Find the product in cartDetails.items
-      const product = cartDetails.items.find((item) => item.id === productId);
-
-      if (!product) {
-        console.error("Product not found in cart");
-        return;
-      }
-
       const token = localStorage.getItem("token");
       if (!token) {
         Swal.fire({
@@ -122,56 +223,111 @@ function CartDetailsPage() {
         return;
       }
 
-      const payload = {
-        vendorId: cartDetails.vendorId,
-        item: {
-          id: product.id,
-          name: product.name,
-          picUrl: product.picUrl,
-          unitPrice: product.unitPrice,
-          newPrice: product.newPrice,
-          quantity: 0,
-        },
-        vendorName: cartDetails.vendorName,
-      };
+      // Check if it's a bag or product
+      if (typeof productId === "string" && productId.startsWith("bag_")) {
+        // It's a bag - find the bag
+        const bagId = productId.replace("bag_", "");
+        const bag = cartDetails.bags.find((b) => b.id === parseInt(bagId));
 
-      const response = await axios.put(
-        "https://gracecycleapi.azurewebsites.net/api/webcart/update-item",
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+        if (!bag) {
+          console.error("Bag not found in cart");
+          return;
         }
-      );
 
-      console.log("Delete response:", response.data);
-      console.log("Deleting productId:", productId, "Type:", typeof productId);
+        const bagPayload = {
+          vendorId: cartDetails.vendorId,
+          bag: {
+            id: bag.id,
+            name: bag.name,
+            picUrl: bag.picUrl,
+            unitPrice: bag.unitPrice || bag.price,
+            newPrice: bag.newPrice,
+            quantity: 0,
+            foods: bag.foods || ["falafel", "Foul", "Bread"],
+          },
+        };
 
-      // Update local state to remove the deleted item
-      setCartDetails((prevCart) => {
-        const updatedCart = { ...prevCart };
+        const response = await axios.put(
+          "https://gracecycleapi.azurewebsites.net/api/webcart/update-bag",
+          bagPayload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-        // Check if it's a product or bag
-        if (typeof productId === "string" && productId.startsWith("bag_")) {
-          // It's a bag
-          const bagId = productId.replace("bag_", "");
+        console.log("Delete bag response:", response.data);
+        console.log("Deleting bagId:", bagId);
+
+        // Update local state to remove the deleted bag
+        setCartDetails((prevCart) => {
+          const updatedCart = { ...prevCart };
           updatedCart.bags = updatedCart.bags.filter(
-            (bag) => bag.id !== parseInt(bagId)
+            (b) => b.id !== parseInt(bagId)
           );
-        } else {
-          // It's a product - handle both string and number IDs
+          console.log("Updated cart after bag deletion:", updatedCart);
+          return updatedCart;
+        });
+
+        // Update cartBags state
+        dispatch(removeBagFromCartState(parseInt(bagId)));
+        // Reset bags unsaved state since bag is deleted
+        setBagsUnsaved(false);
+      } else {
+        // It's a product - find the product
+        const product = cartDetails.items.find((item) => item.id === productId);
+
+        if (!product) {
+          console.error("Product not found in cart");
+          return;
+        }
+
+        const payload = {
+          vendorId: cartDetails.vendorId,
+          item: {
+            id: product.id,
+            name: product.name,
+            picUrl: product.picUrl,
+            unitPrice: product.unitPrice,
+            newPrice: product.newPrice,
+            quantity: 0,
+          },
+          vendorName: cartDetails.vendorName,
+        };
+
+        const response = await axios.put(
+          "https://gracecycleapi.azurewebsites.net/api/webcart/update-item",
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Delete product response:", response.data);
+        console.log(
+          "Deleting productId:",
+          productId,
+          "Type:",
+          typeof productId
+        );
+
+        // Update local state to remove the deleted product
+        setCartDetails((prevCart) => {
+          const updatedCart = { ...prevCart };
           const productIdToRemove =
             typeof productId === "string" ? parseInt(productId) : productId;
           updatedCart.items = updatedCart.items.filter(
             (item) => item.id !== productIdToRemove
           );
-        }
-
-        console.log("Updated cart:", updatedCart);
-        return updatedCart;
-      });
+          console.log("Updated cart after product deletion:", updatedCart);
+          return updatedCart;
+        });
+      }
 
       // Remove from quantities state
       setQuantities((prev) => {
@@ -714,6 +870,22 @@ function CartDetailsPage() {
                         </div>
                       </div>
                     ))}
+
+                    {/* Save Changes Button inside Bags Accordion, after bags list */}
+                    <div
+                      className={`transition-all duration-300 ${
+                        bagsUnsaved
+                          ? "max-h-20 opacity-100 mt-2"
+                          : "max-h-0 opacity-0 overflow-hidden"
+                      }`}
+                    >
+                      <button
+                        onClick={handleSaveBagsChanges}
+                        className="w-full py-2 bg-btnsGreen text-white rounded-md font-semibold hover:bg-green-900 transition-colors"
+                      >
+                        Save Bags Changes
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

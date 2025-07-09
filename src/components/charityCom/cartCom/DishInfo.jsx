@@ -2,7 +2,7 @@ import BtnGreen from "../../Ui/BtnGreen";
 import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
-import { addToCart } from "../../../redux/FoodSlice";
+import { addToCart, addBagToCartState } from "../../../redux/FoodSlice";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import { getVendorDetails } from "../../../redux/VendorDetailsSlice";
@@ -22,6 +22,7 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
   );
   const { bags } = useSelector((state) => state.bags);
   const foodLoading = useSelector((state) => state.servicesFood.loading);
+  const cartBags = useSelector((state) => state.servicesFood.cartBags);
   const { vendorDetails, isLoading, error } = useSelector(
     (state) => state.vendorDetails
   );
@@ -73,36 +74,111 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
   const handleAddToCart = async () => {
     if (!item) return;
-    const payload = {
-      vendorId: item.vendorId,
-      item: {
-        id: item.id,
-        name: item.name,
-        picUrl: item.picUrl,
-        unitPrice: item.unitPrice,
-        newPrice: item.newPrice,
-        quantity: quantity,
-      },
-      vendorName: item.vName || "SupermarketTwo",
-    };
-    setLoading(true);
-    const resultAction = await dispatch(addToCart(payload));
-    setLoading(false);
-    if (addToCart.fulfilled.match(resultAction)) {
+
+    // Check if bag is already in cart
+    if (itemType === "bag" && cartBags.includes(item.id)) {
       Swal.fire({
-        icon: "success",
-        title: "Added to Cart!",
-        text: "This item added to cart successfully",
-        showConfirmButton: false,
-        timer: 2000,
+        icon: "info",
+        title: "Bag Already in Cart",
+        text: "This magic bag is already in your cart",
+        showConfirmButton: true,
       });
-    } else {
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Authentication Error",
+        text: "Please log in to add items to cart",
+        showConfirmButton: true,
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (itemType === "bag") {
+        // Handle bag addition
+        const bagPayload = {
+          vendorId: item.vendorId || "cb5ba1ee-bb67-418e-aeda-8c628ddc58ff",
+          bag: {
+            id: item.id,
+            name: item.name,
+            picUrl: item.picUrl,
+            unitPrice: item.unitPrice || item.price,
+            newPrice: item.newPrice,
+            quantity: quantity,
+            foods: item.foods || ["falafel", "Foul", "Bread"], // Default foods if not available
+          },
+          vendorName: item.vName || "Vendor1",
+        };
+
+        const response = await axios.post(
+          "https://gracecycleapi.azurewebsites.net/api/webcart/add-bag",
+          bagPayload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Bag added to cart:", response.data);
+
+        // Update local state to track bag in cart
+        dispatch(addBagToCartState(item.id));
+
+        Swal.fire({
+          icon: "success",
+          title: "Bag Added to Cart!",
+          text: "This magic bag has been added to your cart successfully",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } else {
+        // Handle regular item addition
+        const payload = {
+          vendorId: item.vendorId,
+          item: {
+            id: item.id,
+            name: item.name,
+            picUrl: item.picUrl,
+            unitPrice: item.unitPrice,
+            newPrice: item.newPrice,
+            quantity: quantity,
+          },
+          vendorName: item.vName || "SupermarketTwo",
+        };
+
+        const resultAction = await dispatch(addToCart(payload));
+
+        if (addToCart.fulfilled.match(resultAction)) {
+          Swal.fire({
+            icon: "success",
+            title: "Added to Cart!",
+            text: "This item added to cart successfully",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        } else {
+          throw new Error("Failed to add item to cart");
+        }
+      }
+    } catch (error) {
+      console.log("Add to cart error:", error.response?.data || error.message);
+
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "Failed to add item to cart",
         showConfirmButton: true,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -302,9 +378,17 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             <button
               onClick={handleAddToCart}
               disabled={loading || foodLoading}
-              className="bg-btnsGreen text-white w-full rounded-md p-3 text-lg"
+              className={`w-full rounded-md p-3 text-lg ${
+                cartBags.includes(item.id)
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-btnsGreen text-white hover:bg-green-700"
+              }`}
             >
-              {loading || foodLoading ? "Loading..." : "Add to Cart"}
+              {loading || foodLoading
+                ? "Loading..."
+                : cartBags.includes(item.id)
+                ? "Already in Cart"
+                : "Add to Cart"}
             </button>
           </div>
         )}

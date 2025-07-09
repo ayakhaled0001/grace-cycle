@@ -329,6 +329,7 @@ const initialState = {
   loading: false,
   error: null,
   cart: [],
+  cartBags: [], // Array to track bags in cart
 };
 
 // food slice
@@ -345,6 +346,19 @@ const foodSlice = createSlice({
       );
     },
     // --------------------------------------
+    addBagToCartState: (state, action) => {
+      const bagId = action.payload;
+      if (!state.cartBags.includes(bagId)) {
+        state.cartBags.push(bagId);
+      }
+    },
+    removeBagFromCartState: (state, action) => {
+      const bagId = action.payload;
+      state.cartBags = state.cartBags.filter((id) => id !== bagId);
+    },
+    setCartBags: (state, action) => {
+      state.cartBags = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -604,7 +618,12 @@ const foodSlice = createSlice({
   },
 });
 
-export const { toggleFav } = foodSlice.actions;
+export const {
+  toggleFav,
+  addBagToCartState,
+  removeBagFromCartState,
+  setCartBags,
+} = foodSlice.actions;
 export default foodSlice.reducer;
 
 // const BaseUrlListing = "https://gracecycleapi.azurewebsites.net/api/web/home/food-listing";
