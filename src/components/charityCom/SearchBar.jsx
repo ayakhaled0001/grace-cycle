@@ -25,6 +25,7 @@ import {
   setSearchTerm as setBagsSearchTerm,
   setSortBy as setBagsSortBy,
 } from "../../redux/BagsSlice";
+import { fetchUserCart } from "../../redux/FoodSlice";
 
 export default function SearchBar({
   onSearchTypeChange,
@@ -60,6 +61,13 @@ export default function SearchBar({
     maxPriceFilter: bagMaxPriceFilter,
   } = useSelector((state) => state.bags);
 
+  // Get cart items count from redux (if available)
+  const cart = useSelector((state) => state.servicesFood.cart || []);
+  // If cart is an array of carts, sum all itemsCount
+  const cartCount = Array.isArray(cart)
+    ? cart.reduce((acc, c) => acc + (c.itemsCount || 0), 0)
+    : 0;
+
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentSearchType, setCurrentSearchType] = useState("All");
 
@@ -69,6 +77,10 @@ export default function SearchBar({
       onSearchTypeChange(currentSearchType);
     }
   }, [currentSearchType, onSearchTypeChange]);
+
+  useEffect(() => {
+    dispatch(fetchUserCart());
+  }, [dispatch]);
 
   const handleSearchChange = (e) => {
     if (currentSearchType === "Vendor") {
@@ -298,7 +310,33 @@ export default function SearchBar({
             to="/CharityPage/cart"
             className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors"
           >
-            <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
+            <div
+              style={{ position: "relative", width: "22px", height: "22px" }}
+            >
+              <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
+              {cartCount > 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-15px",
+                    right: "-18px",
+                    background: "#BC0101",
+                    color: "white",
+                    borderRadius: "50%",
+                    width: "20px",
+                    height: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    zIndex: 2,
+                  }}
+                >
+                  {cartCount}
+                </span>
+              )}
+            </div>
           </Link>
           <div className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer">
             <Link to="/favorites">
