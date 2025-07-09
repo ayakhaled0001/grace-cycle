@@ -25,6 +25,7 @@ import AddToCart from "./pages/charity/AddToCart";
 import CartPage from "./pages/charity/CartPage";
 import CartDetailsPage from "./pages/charity/CartDetailsPage";
 import FavoriteItemsPage from "./pages/charity/FavoriteItemsPage";
+import CharityProfile from "./components/charityCom/CharityProfile";
 // import GlobalLoader from "./components/loadersCom/GlobalLoader";
 // import { useEffect, useState } from "react";
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="cart/:dishId" element={<AddToCart />} />
         </Route>
         <Route path="/favorites" element={<FavoriteItemsPage />} />
+        <Route path="/charityProfile" element={<CharityProfile />} />
 
         <Route path="/VendorPage" element={<VendorPage />}>
           <Route path="overview" element={<Overview />} />
