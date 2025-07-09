@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBags } from "../../redux/BagsSlice";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@mui/material";
 
 export default function MagicBags() {
-  const [isFav, setIsFav] = useState(false);
   const dispatch = useDispatch();
   const { bags, isLoading, error } = useSelector((state) => state.bags);
 
@@ -62,34 +59,41 @@ export default function MagicBags() {
         <span className="bg-white p-1 rounded-md text-base md:text-lg font-semibold text-center sm:text-left">
           Magic Bags
         </span>
-        <span className="bg-white p-1 rounded-md text-sm mob470:text-base mob560:text-lg text-lightBrownYellow underline">
+        <span className="bg-white p-1 rounded-md text-base md:text-lg text-lightBrownYellow underline text-center sm:text-right">
           <a href="#">Shop More</a>
         </span>
       </div>
-      <div className="flex flex-col gap-3 mob470:gap-4 w-full mx-auto mt-8 mob470:mt-10 font-nunitoBold">
-        {bags.map((bag, index) => {
-          const bagId = bag.id || bag.bagId || bag._id || index;
-          return (
-            <div
-              key={index}
-              className="flex flex-col md:flex-row items-center hover:border-4 cursor-pointer hover:border-btnsGreen transition-bg duration-200 rounded-xl p-3 mob470:p-4 w-[100%] h-auto md:h-44 bg-semiDarkBeige box-border">
-              <div className="flex flex-col md:flex-row w-full md:w-[50%] h-auto md:h-[100%] bg-cover bg-center">
-                <div className="relative w-full md:w-[40%] h-32 md:h-[100%] rounded-xl">
-                  <img
-                    src={bag.picUrl}
-                    alt=""
-                    className="w-full h-full rounded-xl object-cover"
-                  />
-                  <span className="absolute text-semiDarkBeige text-xs mob470:text-sm px-2 mob470:px-4 rounded-md top-2 left-2 bg-lightGreen">
-                    {bag.quantity}+ bag left
-                  </span>
-                  <span className="absolute shadow-xl rounded-full bg-semiDarkBeige p-1.5 mob470:p-2 -left-2 -bottom-2">
-                    <FavoriteOutlinedIcon
-                      className={`cursor-pointer text-lg mob470:text-xl
-                  ${isFav ? "text-btnsGreen" : "text-paleBarkYellow"}`}
-                      onClick={() => setIsFav(!isFav)}
-                    />
-                  </span>
+      <div className="flex flex-col gap-4 w-full mx-auto mt-10 font-nunitoBold">
+        {bags.map((bag, index) => (
+          <div
+            key={index}
+            className="flex flex-col sm:flex-row items-center rounded-xl p-4 w-full min-h-44 bg-semiDarkBeige box-border gap-4">
+            <div className="flex flex-col sm:flex-row w-full h-full bg-cover bg-center gap-4">
+              <div className="relative w-full sm:w-[40%] h-48 rounded-xl flex-shrink-0">
+                <img
+                  src={bag.picUrl}
+                  alt=""
+                  className="w-full h-full rounded-xl object-cover"
+                />
+                <span className="absolute text-semiDarkBeige text-sm px-4 rounded-md top-2 left-2 bg-lightGreen">
+                  {bag.quantity}+ bag left
+                </span>
+              </div>
+              <div className="flex flex-col p-4 w-full sm:w-[60%]">
+                <h3 className="text-lg">
+                  {bag.name}(
+                  <StarIcon style={{ width: "16px", color: "#BC870B" }} />
+                  {bag.rating})
+                </h3>
+                <div className="flex justify-start items-center py-0">
+                  <p className="text-xs mob470:text-sm">{bag.vName}</p>
+                  <p
+                    className={`text-xs mob470:text-sm ${
+                      bag.opened ? "text-[#008000]" : "text-red-500"
+                    } font-semibold`}>
+                    {" "}
+                    {bag.opened ? " (opened)" : " (closed)"}
+                  </p>
                 </div>
                 <div className="flex flex-col p-3 mob470:p-4 w-full md:w-[60%] mt-3 md:mt-0">
                   <h3 className="text-sm mob470:text-base mob560:text-lg">
@@ -125,16 +129,38 @@ export default function MagicBags() {
                       EGP{bag.newPrice}
                     </span>
                   </div>
+                </div>
+                <div className="flex flex-col justify-center items-center w-full sm:w-auto">
                   <Link
-                    to={`/CharityPage/magicbags/${bagId}`}
+                    to={`/CharityPage/magicbags/${bag.id}`}
                     className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base">
                     Add to Cart
                   </Link>
                 </div>
               </div>
             </div>
-          );
-        })}
+            <div className="flex w-full sm:w-[50%] h-full justify-center sm:justify-end">
+              <div className="flex flex-col justify-center items-center w-full sm:w-[50%]">
+                <span className="bg-[#F8BD00] px-6 rounded-lg">
+                  {bag.discount}% OFF
+                </span>
+                <div className="flex justify-center items-center my-2">
+                  <span className="text-sm px-1 line-through">
+                    EGP{bag.price}
+                  </span>
+                  <span className="text-btnsGreen font-semibold text-lg">
+                    EGP{bag.newPrice}
+                  </span>
+                </div>
+                <Link
+                  to={`/CharityPage/cart/${bag.id}`}
+                  className="text-center w-full p-1.5 mob470:p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block text-sm mob470:text-base hover:bg-btnsGreen hover:text-white transition-colors duration-300">
+                  More Details
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

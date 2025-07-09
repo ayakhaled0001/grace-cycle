@@ -1,19 +1,35 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
+import { Link } from "react-router-dom";
+import { fetchUserCart } from "../../redux/FoodSlice";
 
 function HomeNav({ backgroundColor }) {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Get cart items count from redux
+  const cart = useSelector((state) => state.servicesFood.cart || []);
+  // If cart is an array of carts, sum all itemsCount
+  const cartCount = Array.isArray(cart)
+    ? cart.reduce((acc, c) => acc + (c.itemsCount || 0), 0)
+    : 0;
+
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const token = localStorage.getItem("token");
   const userType = localStorage.getItem("userType");
   const isLoggedIn = Boolean(token);
+
+  // Fetch cart data on component mount
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(fetchUserCart());
+    }
+  }, [dispatch, isLoggedIn]);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -35,7 +51,8 @@ function HomeNav({ backgroundColor }) {
   return (
     <>
       <nav
-        className={`sticky z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 lgHome:py-5 minScreen:py-3 minScreen:h-20 w-full font-nunitoBold  minScreen:justify-between minScreen:px-3`}>
+        className={`sticky z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 lgHome:py-5 minScreen:py-3 minScreen:h-20 w-full font-nunitoBold  minScreen:justify-between minScreen:px-3`}
+      >
         <div className="w-[20%] flex items-center justify-center ">
           <img src="/logo.png" alt="grace cycle" className="w-40" />
         </div>
@@ -49,21 +66,24 @@ function HomeNav({ backgroundColor }) {
           <li className="mr-20">
             <button
               onClick={handleNavigateServices}
-              className="text-lg hover:text-lightBrownYellow">
+              className="text-lg hover:text-lightBrownYellow"
+            >
               Services
             </button>
           </li>
           <li className="mr-20">
             <NavLink
               to="/about"
-              className={`text-lg hover:text-lightBrownYellow`}>
+              className={`text-lg hover:text-lightBrownYellow`}
+            >
               About us
             </NavLink>
           </li>
           <li className="mr-20">
             <NavLink
               to="/contact"
-              className={`text-lg hover:text-lightBrownYellow`}>
+              className={`text-lg hover:text-lightBrownYellow`}
+            >
               Contact us
             </NavLink>
           </li>
@@ -74,16 +94,54 @@ function HomeNav({ backgroundColor }) {
             <>
               <NavLink
                 to="/userProfile"
-                className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-all">
+                className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-all"
+              >
                 <img
                   src="../../public/homeMedia/usericon.png"
                   alt="User Profile"
                   className="w-10 h-10 rounded-full"
                 />
               </NavLink>
+              <Link
+                to="/CharityPage/cart"
+                className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[10%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors"
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "22px",
+                    height: "22px",
+                  }}
+                >
+                  <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
+                  {cartCount > 0 && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-15px",
+                        right: "-18px",
+                        background: "#BC0101",
+                        color: "white",
+                        borderRadius: "50%",
+                        width: "20px",
+                        height: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        fontWeight: "bold",
+                        zIndex: 2,
+                      }}
+                    >
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
               <button
                 onClick={handleLogout}
-                className="font-nunitoBold border-solid border-[#BC0101] border-2 w-[50%] text-[#BC0101] rounded-[11px] hover:bg-[#BC0101] hover:text-white transition-all text-center my-auto py-2">
+                className="font-nunitoBold border-solid border-[#BC0101] border-2 w-[50%] text-[#BC0101] rounded-[11px] hover:bg-[#BC0101] hover:text-white transition-all text-center my-auto py-2"
+              >
                 Logout
               </button>
             </>
@@ -92,13 +150,15 @@ function HomeNav({ backgroundColor }) {
               <NavLink
                 to="/signup"
                 className="font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen
-             w-6/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen transition-all text-center my-auto py-2">
+             w-6/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen transition-all text-center my-auto py-2"
+              >
                 Organization Sign up
               </NavLink>
               <NavLink
                 to="/login"
                 className="font-nunitoBold border-solid border-btnsGreen border-2 w-6/12
-             text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center my-auto py-2">
+             text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center my-auto py-2"
+              >
                 Log in
               </NavLink>
             </>
@@ -107,7 +167,8 @@ function HomeNav({ backgroundColor }) {
 
         <button
           onClick={toggleMenu}
-          className="lgHome:hidden text-3xl focus:outline-none">
+          className="lgHome:hidden text-3xl focus:outline-none"
+        >
           ☰
         </button>
       </nav>
@@ -119,28 +180,32 @@ function HomeNav({ backgroundColor }) {
               <li>
                 <NavLink
                   to="/"
-                  className={`text-lg hover:text-lightBrownYellow`}>
+                  className={`text-lg hover:text-lightBrownYellow`}
+                >
                   Home
                 </NavLink>
               </li>
               <li>
                 <button
                   onClick={handleNavigateServices}
-                  className="text-lg hover:text-lightBrownYellow">
+                  className="text-lg hover:text-lightBrownYellow"
+                >
                   Services
                 </button>
               </li>
               <li>
                 <NavLink
                   to="/about"
-                  className={`text-lg hover:text-lightBrownYellow`}>
+                  className={`text-lg hover:text-lightBrownYellow`}
+                >
                   About us
                 </NavLink>
               </li>
               <li>
                 <NavLink
                   to="/contact"
-                  className={`text-lg hover:text-lightBrownYellow`}>
+                  className={`text-lg hover:text-lightBrownYellow`}
+                >
                   Contact us
                 </NavLink>
               </li>
@@ -150,19 +215,22 @@ function HomeNav({ backgroundColor }) {
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="font-nunitoBold border-solid border-red-500 border-2 w-10 text-red-500 rounded-[11px] hover:bg-red-500 hover:text-white transition-all text-center py-2">
+                  className="font-nunitoBold border-solid border-red-500 border-2 w-10 text-red-500 rounded-[11px] hover:bg-red-500 hover:text-white transition-all text-center py-2"
+                >
                   Logout
                 </button>
               ) : (
                 <>
                   <NavLink
                     to="/signup"
-                    className="font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen w-8/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen transition-all text-center py-2">
+                    className="font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen w-8/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen transition-all text-center py-2"
+                  >
                     Organization Sign up
                   </NavLink>
                   <NavLink
                     to="/login"
-                    className="font-nunitoBold border-solid border-btnsGreen border-2 w-8/12 text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center py-2">
+                    className="font-nunitoBold border-solid border-btnsGreen border-2 w-8/12 text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center py-2"
+                  >
                     Log in
                   </NavLink>
                 </>

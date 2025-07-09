@@ -1,52 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserCart } from "../../redux/FoodSlice";
 import HomeNav from "../../components/homeCom/HomeNav";
 import HomeFooter from "../../components/homeCom/HomeFooter";
 
 function CartPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [selectedItems, setSelectedItems] = useState([]);
 
-  // Mock data for cart items
-  const cartItems = [
-    {
-      id: 1,
-      restaurantName: "Restaurant Al-Ahly",
-      date: "5/31/25",
-      items: 4,
-      total: 200,
-      bgColor: "#3F7D6C",
-      moneyIconColor: "#3F7D6C",
-    },
-    {
-      id: 2,
-      restaurantName: "Restaurant Al-Zamalek",
-      date: "5/31/25",
-      items: 16,
-      total: 400,
-      bgColor: "#624C04",
-      moneyIconColor: "#624C04",
-    },
-    {
-      id: 3,
-      restaurantName: "Restaurant Al-Masry",
-      date: "5/31/25",
-      items: 4,
-      total: 200,
-      bgColor: "#3F7D6C",
-      moneyIconColor: "#3F7D6C",
-    },
-    {
-      id: 4,
-      restaurantName: "Restaurant Al-Ismaily",
-      date: "5/31/25",
-      items: 4,
-      total: 200,
-      bgColor: "#3F7D6C",
-      moneyIconColor: "#3F7D6C",
-    },
-  ];
+  const { loading, error } = useSelector((state) => state.servicesFood);
+  const [cartItems, setCartItems] = useState([]);
 
+  useEffect(() => {
+    const fetchCart = async () => {
+      const resultAction = await dispatch(fetchUserCart());
+      if (fetchUserCart.fulfilled.match(resultAction)) {
+        setCartItems(resultAction.payload);
+      }
+    };
+    fetchCart();
+  }, [dispatch]);
+
+  // Mock data for cart items
   const handleItemClick = (itemId) => {
     setSelectedItems((prev) =>
       prev.includes(itemId)
@@ -59,10 +36,20 @@ function CartPage() {
     if (selectedItems.length > 0) {
       // Navigate to detailed cart page with selected restaurant
       const selectedRestaurant = cartItems.find((item) =>
-        selectedItems.includes(item.id)
+        selectedItems.includes(item.vendorId)
       );
-      navigate(`/CharityPage/cart/details/${selectedRestaurant.id}`);
+      navigate(`/CharityPage/cart/details/${selectedRestaurant.vendorId}`);
     }
+  };
+
+  // Helper function to format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "numeric",
+      day: "numeric",
+      year: "2-digit",
+    });
   };
 
   return (
@@ -80,95 +67,127 @@ function CartPage() {
           </p>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-8">
+            <p className="text-lg">Loading your cart...</p>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-8">
+            <p className="text-red-600 text-lg">Error loading cart: {error}</p>
+          </div>
+        )}
+
+        {/* Empty Cart State */}
+        {!loading && !error && cartItems.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-lg text-gray-600">Your cart is empty</p>
+          </div>
+        )}
+
         {/* Cart Items Container */}
-        <div className="mx-auto lg:w-[80%] w-[95%]">
-          <div className="w-full mx-auto space-y-4 ">
-            {cartItems.map((item) => (
-              <div
-                key={item.id}
-                className={`w-full p-6 rounded-lg cursor-pointer transition-all duration-300 ${
-                  selectedItems.includes(item.id)
-                    ? "border-4 border-btnsGreen"
-                    : "border border-btnsGreen"
-                } bg-paleWhiteGrey`}
-                onClick={() => handleItemClick(item.id)}
+        {!loading && !error && cartItems.length > 0 && (
+          <div className="mx-auto lg:w-[80%] w-[95%]">
+            <div className="w-full mx-auto space-y-4 ">
+              {cartItems.map((item) => (
+                <div
+                  key={item.vendorId}
+                  className={`w-full p-6 rounded-lg cursor-pointer transition-all duration-300 ${
+                    selectedItems.includes(item.vendorId)
+                      ? "border-4 border-btnsGreen"
+                      : "border border-btnsGreen"
+                  } bg-paleWhiteGrey`}
+                  onClick={() => handleItemClick(item.vendorId)}
+                >
+                  {/* First Row - Restaurant Name and Date */}
+                  <div className="flex flex-row justify-content items-center mb-3 gap-2">
+                    <h2 className="text-md md:text-lg lg:text-xl font-nunitoBold leading-none">
+                      {item.vendorName}
+                    </h2>
+                    <span className="text-base md:text-lg font-semibold text-[#00000099]">
+                      ({formatDate(item.createdAt)})
+                    </span>
+                  </div>
+
+                  {/* Second Row - Items Count and Total */}
+                  <div className="flex flex-row justify-between items-center gap-2">
+                    <div
+                      className="px-3 py-1 rounded-md text-white text-sm font-semibold w-fit"
+                      style={{ backgroundColor: "#3F7D6C" }}
+                    >
+                      {item.itemsCount} items
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src="/icons/money.svg"
+                        alt="money icon"
+                        width="20"
+                        height="20"
+                      />
+                      <span
+                        className="text-base md:text-md font-semibold"
+                        style={{ color: "#3F7D6C" }}
+                      >
+                        total: EGP
+                        <span className="text-xl font-nunitoBold">
+                          {" "}
+                          {item.itemsTotal}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                  {/* Third Row - Bags Count and Total */}
+                  {item.bagsCount > 0 && (
+                    <div className="flex flex-row justify-between items-center gap-2 mt-2">
+                      <div
+                        className="px-3 py-1 rounded-md text-white text-sm font-semibold w-fit"
+                        style={{ backgroundColor: "#624C04" }}
+                      >
+                        {item.bagsCount} bags
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <img
+                          src="/icons/money.svg"
+                          alt="money icon"
+                          width="20"
+                          height="20"
+                        />
+                        <span
+                          className="text-base md:text-md font-semibold"
+                          style={{ color: "#624C04" }}
+                        >
+                          total: EGP
+                          <span className="text-xl font-nunitoBold">
+                            {" "}
+                            {item.bagsTotal}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Continue Button */}
+            <div className="flex justify-center mt-8 mb-8">
+              <button
+                onClick={handleContinue}
+                disabled={selectedItems.length === 0}
+                className={`w-full lg:w-[50%] py-2 px-4 text-md md:text-lg lg:text-xl rounded-md font-semibold transition-all duration-300 ${
+                  selectedItems.length === 0
+                    ? "bg-btnsGreen text-white opacity-50 cursor-not-allowed"
+                    : "bg-btnsGreen text-white hover:bg-green-900 opacity-100"
+                }`}
               >
-                {/* First Row - Restaurant Name and Date */}
-                <div className="flex flex-row justify-content items-center mb-3 gap-2">
-                  <h2 className="text-md md:text-lg lg:text-xl font-nunitoBold leading-none">
-                    {item.restaurantName}
-                  </h2>
-                  <span className="text-base md:text-lg font-semibold text-[#00000099]">
-                    ({item.date})
-                  </span>
-                </div>
-
-                {/* Second Row - Items Count and Total */}
-                <div className="flex flex-row justify-between items-center gap-2">
-                  <div
-                    className="px-3 py-1 rounded-md text-white text-sm font-semibold w-fit"
-                    style={{ backgroundColor: item.bgColor }}
-                  >
-                    {item.items} items
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="/icons/money.svg"
-                      alt="money icon"
-                      width="20"
-                      height="20"
-                    />
-                    <span className="text-base md:text-md font-semibold text-[#3F7D6C]">
-                      total: EGP
-                      <span className="text-xl font-nunitoBold">
-                        {" "}
-                        {item.total}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-row justify-between items-center gap-2 mt-2">
-                  <div
-                    className="px-3 py-1 rounded-md text-white text-sm font-semibold w-fit"
-                    style={{ backgroundColor: item.bgColor }}
-                  >
-                    {item.items} items
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <img
-                      src="/icons/money.svg"
-                      alt="money icon"
-                      width="20"
-                      height="20"
-                    />
-                    <span className="text-base md:text-md font-semibold text-[#3F7D6C]">
-                      total: EGP
-                      <span className="text-xl font-nunitoBold">
-                        {" "}
-                        {item.total}
-                      </span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
+                Continue
+              </button>
+            </div>
           </div>
-
-          {/* Continue Button */}
-          <div className="flex justify-center mt-8 mb-8">
-            <button
-              onClick={handleContinue}
-              disabled={selectedItems.length === 0}
-              className={`w-full lg:w-[50%] py-2 px-4 text-md md:text-lg lg:text-xl rounded-md font-semibold transition-colors duration-300 ${
-                selectedItems.length === 0
-                  ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                  : "bg-btnsGreen text-white hover:bg-green-900"
-              }`}
-            >
-              Continue
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       <HomeFooter />
