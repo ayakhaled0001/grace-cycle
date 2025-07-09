@@ -1,18 +1,70 @@
 import BtnGreen from "../../Ui/BtnGreen";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { addToCart } from "../../../redux/FoodSlice";
+import Swal from "sweetalert2";
 
 function DishInfo({ dishId }) {
   const { mainDishes, bakedGoods, dessert, drinks } = useSelector(
     (state) => state.servicesFood
   );
   const { bags } = useSelector((state) => state.bags);
+  const dispatch = useDispatch();
+  const foodLoading = useSelector((state) => state.servicesFood.loading);
 
   // Find the dish from all categories
   const allDishes = [...mainDishes, ...bakedGoods, ...dessert, ...drinks];
   const dish =
     allDishes.find((d) => d.id === parseInt(dishId)) ||
     bags.find((b) => b.id === parseInt(dishId));
+
+  console.log(dish);
+
+  // Quantity state
+  const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  // Handlers for increment/decrement
+  const handleIncrement = () => {
+    if (quantity < dish.quantity) setQuantity(quantity + 1);
+  };
+  const handleDecrement = () => {
+    if (quantity > 1) setQuantity(quantity - 1);
+  };
+
+  // Add to Cart handler
+  const handleAddToCart = async () => {
+    const payload = {
+      vendorId: dish.vendorId,
+      item: {
+        id: dish.id,
+        name: dish.name,
+        picUrl: dish.picUrl,
+        unitPrice: dish.unitPrice,
+        newPrice: dish.newPrice,
+        quantity: quantity,
+      },
+      vendorName: dish.vName || "SupermarketTwo",
+    };
+    setLoading(true);
+    console.log("Payload to backend:", payload);
+    const resultAction = await dispatch(addToCart(payload));
+    setLoading(false);
+    if (addToCart.fulfilled.match(resultAction)) {
+      const data = resultAction.payload;
+      Swal.fire({
+        icon: "success",
+        title: "Added to Cart!",
+        text: "This item added to cart successfully",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      console.log("Add to cart response:", data);
+    } else {
+      console.error("Error adding to cart:", resultAction.payload);
+    }
+  };
 
   if (!dish) {
     return <div>Dish not found</div>;
@@ -117,7 +169,10 @@ function DishInfo({ dishId }) {
           </span>
 
           <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
-            <button className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors">
+            <button
+              onClick={handleDecrement}
+              className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-5 md:px-2 hover:bg-btnsGreen hover:text-white transition-colors"
+            >
               <img
                 src="/icons/minus.svg"
                 alt="discard item"
@@ -125,9 +180,12 @@ function DishInfo({ dishId }) {
               />
             </button>
             <span className="text-lg mob470:text-xl mob560:text-xl md:text-2xl font-nunitoBold">
-              2
+              {quantity}
             </span>
-            <button className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors">
+            <button
+              onClick={handleIncrement}
+              className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors"
+            >
               <img
                 src="/icons/add.svg"
                 alt="add item"
@@ -137,12 +195,16 @@ function DishInfo({ dishId }) {
           </div>
 
           <p className="font-nunito text-lg mob470:text-xl mob560:text-xl md:text-2xl border border-nescafe py-2 md:py-1 rounded-md px-2 md:px-1">
-            Total: <span>EGP {dish.newPrice * 2}</span>
+            Total: <span>EGP {Math.ceil(dish.newPrice * quantity)}</span>
           </p>
 
-          <BtnGreen className="w-full text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2">
-            Add to Cart
-          </BtnGreen>
+          <button
+            onClick={handleAddToCart}
+            className="text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2 bg-btnsGreen text-white w-full rounded-md my-4"
+            disabled={loading || foodLoading}
+          >
+            {loading || foodLoading ? "Loading..." : "Add to Cart"}
+          </button>
         </div>
       </div>
 

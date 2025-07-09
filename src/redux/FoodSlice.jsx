@@ -209,6 +209,114 @@ export const fetchUserFavoriteFoods = createAsyncThunk(
   }
 );
 
+// Add to cart thunk
+export const addToCart = createAsyncThunk(
+  "services/addToCart",
+  async (payload, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        "https://gracecycleapi.azurewebsites.net/api/webcart/add-item",
+        payload,
+        config
+      );
+      console.log("Add to cart response from backend:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error adding to cart:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to add to cart"
+      );
+    }
+  }
+);
+
+// Fetch user cart thunk
+export const fetchUserCart = createAsyncThunk(
+  "services/fetchUserCart",
+  async (_, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        "https://gracecycleapi.azurewebsites.net/api/webcart",
+        config
+      );
+      console.log("Fetch user cart response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching user cart:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to fetch user cart"
+      );
+    }
+  }
+);
+
+// Fetch cart details thunk
+export const fetchCartDetails = createAsyncThunk(
+  "services/fetchCartDetails",
+  async (vendorId, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(
+        `https://gracecycleapi.azurewebsites.net/api/webcart/${vendorId}`,
+        config
+      );
+      console.log("Fetch cart details response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error fetching cart details:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to fetch cart details"
+      );
+    }
+  }
+);
+
+// Update cart item thunk
+export const updateCartItem = createAsyncThunk(
+  "services/updateCartItem",
+  async (payload, thunkAPI) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.put(
+        "https://gracecycleapi.azurewebsites.net/api/webcart/update-item",
+        payload,
+        config
+      );
+      console.log("Update cart item response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Error updating cart item:", error);
+      return thunkAPI.rejectWithValue(
+        error.response?.data || "Failed to update cart item"
+      );
+    }
+  }
+);
+
 // initial state
 
 const initialState = {
@@ -220,6 +328,7 @@ const initialState = {
   isFav: false,
   loading: false,
   error: null,
+  cart: [],
 };
 
 // food slice
@@ -434,6 +543,63 @@ const foodSlice = createSlice({
             (item) => item.id !== foodId
           );
         }
+      })
+      .addCase(addToCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addToCart.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("Add to cart fulfilled payload:", action.payload);
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        console.log("Add to cart rejected:", action.payload);
+      })
+      .addCase(fetchUserCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserCart.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("Fetch user cart fulfilled payload:", action.payload);
+        state.cart = action.payload;
+      })
+      .addCase(fetchUserCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        console.log("Fetch user cart rejected:", action.payload);
+      })
+      .addCase(fetchCartDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCartDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("Fetch cart details fulfilled payload:", action.payload);
+        // Assuming action.payload is the cart details data from the backend
+        // You might want to update your cart details state here if you have a cart details slice
+      })
+      .addCase(fetchCartDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        console.log("Fetch cart details rejected:", action.payload);
+      })
+      .addCase(updateCartItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateCartItem.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("Update cart item fulfilled payload:", action.payload);
+        // Assuming action.payload is the updated cart details from the backend
+        // You might want to update your cart state here if you have a cart slice
+      })
+      .addCase(updateCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        console.log("Update cart item rejected:", action.payload);
       });
   },
 });
