@@ -36,7 +36,6 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
     picUrl,
     rating,
     isFavourite,
-    quantity,
     unitPrice,
     newPrice,
     vName,
@@ -115,7 +114,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             {error.includes("UnAuthorized") && (
               <Link
                 to="/login"
-                className="inline-block bg-btnsGreen text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                className="inline-block bg-btnsGreen text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+              >
                 Go to Login
               </Link>
             )}
@@ -247,12 +247,14 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           <div
             className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
               showShoppingCart ? "" : "lg:justify-center"
-            }`}>
+            }`}
+          >
             {/* Image Section */}
             <div
               className={`w-full ${
                 showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-              } flex justify-center relative`}>
+              } flex justify-center relative`}
+            >
               {/* Favorite Icon */}
               <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
                 <FavoriteOutlinedIcon
@@ -272,7 +274,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
             <div
               className={`w-full ${
                 showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
-              } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+              } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+            >
               <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
                 {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
               </h1>
@@ -306,7 +309,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
                 <Link
                   to={`/CharityPage/vendor/${item.vendorId}`}
-                  className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+                  className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+                >
                   <img
                     src="/icons/person.svg"
                     alt="person"
@@ -424,12 +428,14 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         <div
           className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
             showShoppingCart ? "" : "lg:justify-center"
-          }`}>
+          }`}
+        >
           {/* Image Section */}
           <div
             className={`w-full ${
               showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-            } flex justify-center relative`}>
+            } flex justify-center relative`}
+          >
             {/* Favorite Icon - only for dish and bag */}
             <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
               <FavoriteOutlinedIcon
@@ -450,7 +456,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
           <div
             className={`w-full ${
               showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
-            } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+            } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+          >
             <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
               {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
             </h1>
@@ -484,7 +491,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
               <Link
                 to={`/CharityPage/vendor/${vendorId}`}
-                className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+                className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+              >
                 <img
                   src="/icons/person.svg"
                   alt="person"
@@ -628,6 +636,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
   if (!dish) {
     return <div>Dish not found</div>;
+  }
+
   if (!item) {
     return (
       <div className="pt-20 lgHome:px-20 mob470:px-2 mob560:px-3 md:px-10 bg-bgBeigeWhite">
@@ -668,12 +678,14 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
       <div
         className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
           showShoppingCart ? "" : "lg:justify-center"
-        }`}>
+        }`}
+      >
         {/* Image Section */}
         <div
           className={`w-full ${
             showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-          } flex justify-center relative`}>
+          } flex justify-center relative`}
+        >
           {/* Favorite Icon - only for dish and bag */}
           {(itemType === "dish" || itemType === "bag") && (
             <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
@@ -694,7 +706,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         <div
           className={`w-full ${
             showShoppingCart ? "lg:w-4/12" : "lg:w-5/12"
-          } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+          } px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+        >
           <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
             {getCategory().charAt(0).toUpperCase() + getCategory().slice(1)}
           </h1>
@@ -728,7 +741,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
             <Link
               to={`/CharityPage/vendor/${item.vendorId}`}
-              className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+              className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+            >
               <img
                 src="/icons/person.svg"
                 alt="person"
