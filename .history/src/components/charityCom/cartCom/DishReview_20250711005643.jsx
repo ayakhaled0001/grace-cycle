@@ -57,7 +57,6 @@ function DishReview({
   vendorReviews,
   vendorReviewsSummary,
   customTitle,
-  showRatingSection = true,
 }) {
   // Get reviews from different sources based on itemType
   const vendorDetailsState = useSelector((state) => state.vendorDetails);
@@ -254,41 +253,39 @@ function DishReview({
           </div>
 
           {/* Rate this item */}
-          {showRatingSection && (
-            <div className="mt-4 mob470:mt-6 mob560:mt-6 md:mt-8 space-y-2 mob470:space-y-3 mob560:space-y-3 md:space-y-4">
-              <h4 className="text-base mob470:text-lg mob560:text-lg md:text-xl font-bold text-lightBrownYellow">
-                {getRateButtonText()}
-              </h4>
-              <p className="text-gray-600 mb-2 text-xs mob470:text-sm mob560:text-sm md:text-base">
-                Tell others what you think
-              </p>
-              <div className="flex items-center gap-1 mob470:gap-1 mob560:gap-1 md:gap-2 text-gray-300 mb-3 mob470:mb-4 mob560:mb-4">
-                <StarRoundedIcon
-                  style={{ fontSize: "2.5rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "2.5rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "2.5rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "2.5rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
-                />
-                <StarRoundedIcon
-                  style={{ fontSize: "2.5rem" }}
-                  className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
-                />
-              </div>
-              <button className="w-full border border-btnsGreen text-btnsGreen font-semibold py-2 mob470:py-3 mob560:py-3 md:py-2 rounded-lg hover:bg-btnsGreen hover:text-white transition-colors text-xs mob470:text-sm mob560:text-sm md:text-base">
-                Write a review
-              </button>
+          <div className="mt-4 mob470:mt-6 mob560:mt-6 md:mt-8 space-y-2 mob470:space-y-3 mob560:space-y-3 md:space-y-4">
+            <h4 className="text-base mob470:text-lg mob560:text-lg md:text-xl font-bold text-lightBrownYellow">
+              {getRateButtonText()}
+            </h4>
+            <p className="text-gray-600 mb-2 text-xs mob470:text-sm mob560:text-sm md:text-base">
+              Tell others what you think
+            </p>
+            <div className="flex items-center gap-1 mob470:gap-1 mob560:gap-1 md:gap-2 text-gray-300 mb-3 mob470:mb-4 mob560:mb-4">
+              <StarRoundedIcon
+                style={{ fontSize: "2.5rem" }}
+                className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
+              />
+              <StarRoundedIcon
+                style={{ fontSize: "2.5rem" }}
+                className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
+              />
+              <StarRoundedIcon
+                style={{ fontSize: "2.5rem" }}
+                className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
+              />
+              <StarRoundedIcon
+                style={{ fontSize: "2.5rem" }}
+                className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
+              />
+              <StarRoundedIcon
+                style={{ fontSize: "2.5rem" }}
+                className="text-[#bdbdbd] hover:text-semiBrightYellow cursor-pointer transition-colors"
+              />
             </div>
-          )}
+            <button className="w-full border border-btnsGreen text-btnsGreen font-semibold py-2 mob470:py-3 mob560:py-3 md:py-2 rounded-lg hover:bg-btnsGreen hover:text-white transition-colors text-xs mob470:text-sm mob560:text-sm md:text-base">
+              Write a review
+            </button>
+          </div>
         </div>
 
         {/* Right Column: Reviews List */}
@@ -329,7 +326,6 @@ DishReview.propTypes = {
   vendorReviews: PropTypes.array,
   vendorReviewsSummary: PropTypes.object,
   customTitle: PropTypes.string,
-  showRatingSection: PropTypes.bool,
 };
 
 export default DishReview;

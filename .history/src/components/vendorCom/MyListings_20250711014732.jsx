@@ -1,25 +1,44 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
 import { Skeleton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import {
-  getVendorListings,
-  deleteVendorListing,
-  clearError,
-} from "../../redux/VendorListingSlice";
 
 const MyListings = () => {
-  const dispatch = useDispatch();
   const [activeTab, setActiveTab] = useState("products");
+  const isLoading = false; // This would be set from API calls
 
-  // Redux state
-  const { vendorListings, isLoading, error, totalCount } = useSelector(
-    (state) => state.vendorListing
-  );
+  // Mock data - replace with actual data from API
+  const mockProducts = [
+    {
+      id: 1,
+      name: "Grilled Chicken Shawarma",
+      quantity: 15,
+      originalPrice: 45.0,
+      discountedPrice: 32.0,
+      image: "/homeMedia/personreview1.png",
+      status: "active",
+    },
+    {
+      id: 2,
+      name: "Beef Kebab",
+      quantity: 8,
+      originalPrice: 55.0,
+      discountedPrice: 38.5,
+      image: "/homeMedia/personreview2.png",
+      status: "active",
+    },
+    {
+      id: 3,
+      name: "Vegetarian Falafel",
+      quantity: 0,
+      originalPrice: 35.0,
+      discountedPrice: 24.5,
+      image: "/homeMedia/personreview3.png",
+      status: "inactive",
+    },
+  ];
 
-  // Mock data for magic bags - replace with actual API when available
   const mockBags = [
     {
       id: 1,
@@ -32,42 +51,21 @@ const MyListings = () => {
     },
   ];
 
-  const currentData = activeTab === "products" ? vendorListings : mockBags;
-
-  // Fetch vendor listings on component mount
-  useEffect(() => {
-    if (activeTab === "products") {
-      dispatch(getVendorListings());
-    }
-  }, [dispatch, activeTab]);
-
-  // Clear error when component unmounts
-  useEffect(() => {
-    return () => {
-      dispatch(clearError());
-    };
-  }, [dispatch]);
+  const currentData = activeTab === "products" ? mockProducts : mockBags;
 
   const handleEdit = (id) => {
     console.log("Edit item:", id);
-    // Add edit functionality - navigate to edit page
+    // Add edit functionality
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this item?")) {
-      try {
-        await dispatch(deleteVendorListing(id)).unwrap();
-        // Optionally show success message
-      } catch (error) {
-        console.error("Failed to delete item:", error);
-        // Optionally show error message
-      }
-    }
+  const handleDelete = (id) => {
+    console.log("Delete item:", id);
+    // Add delete functionality
   };
 
   const handleView = (id) => {
     console.log("View item:", id);
-    // Add view functionality - navigate to view page
+    // Add view functionality
   };
 
   const formatPrice = (price) => {
@@ -116,7 +114,7 @@ const MyListings = () => {
                   ? "bg-white text-btnsGreen shadow-sm"
                   : "text-gray-600 hover:text-gray-900"
               }`}>
-              Products ({totalCount})
+              Products ({mockProducts.length})
             </button>
             <button
               onClick={() => setActiveTab("bags")}
@@ -130,13 +128,6 @@ const MyListings = () => {
           </div>
         </div>
       </div>
-
-      {/* Error Display */}
-      {error && (
-        <div className="px-6 py-3 bg-red-50 border-b border-red-200">
-          <p className="text-red-600 text-sm">{error}</p>
-        </div>
-      )}
 
       {/* Table Header */}
       <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
@@ -185,7 +176,7 @@ const MyListings = () => {
                 {/* Product Image */}
                 <div className="col-span-3 flex items-center space-x-3">
                   <img
-                    src={item.picUrl || item.image}
+                    src={item.image}
                     alt={item.name}
                     className="w-12 h-12 rounded-lg object-cover"
                     onError={(e) => {
@@ -219,14 +210,14 @@ const MyListings = () => {
                 {/* Price Before */}
                 <div className="col-span-2">
                   <p className="text-sm text-gray-500 line-through">
-                    {formatPrice(item.unitPrice || item.originalPrice)}
+                    {formatPrice(item.originalPrice)}
                   </p>
                 </div>
 
                 {/* Price After */}
                 <div className="col-span-2">
                   <p className="text-sm font-semibold text-btnsGreen">
-                    {formatPrice(item.newPrice || item.discountedPrice)}
+                    {formatPrice(item.discountedPrice)}
                   </p>
                 </div>
 
