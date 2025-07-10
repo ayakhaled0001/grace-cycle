@@ -17,7 +17,7 @@ function CartPage() {
     const fetchCart = async () => {
       const resultAction = await dispatch(fetchUserCart());
       if (fetchUserCart.fulfilled.match(resultAction)) {
-        // Group cart items by vendorId to avoid duplicates
+        // Group cart items by vendorId to avoid duplicates2
         const rawCartData = resultAction.payload;
         const groupedCart = {};
 
