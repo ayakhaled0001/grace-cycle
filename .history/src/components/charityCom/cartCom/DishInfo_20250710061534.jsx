@@ -519,7 +519,7 @@ const CartSection = ({
         />
       </button>
     </div>
-    {/* .. */}
+    {/*  */}
     <p className="font-nunito text-lg mob470:text-xl mob560:text-xl md:text-2xl border border-nescafe py-2 md:py-1 rounded-md px-2 md:px-1">
       Total: <span>EGP {(price * selectedQuantity).toFixed(2)}</span>
     </p>
