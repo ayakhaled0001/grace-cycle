@@ -13,10 +13,8 @@ function HomeNav({ backgroundColor }) {
 
   // Get cart items count from redux
   const cart = useSelector((state) => state.servicesFood.cart || []);
-  // If cart is an array of carts, sum all itemsCount
-  const cartCount = Array.isArray(cart)
-    ? cart.reduce((acc, c) => acc + (c.itemsCount || 0), 0)
-    : 0;
+  // Count unique vendors/restaurants in cart (same as CartPage logic)
+  const cartCount = Array.isArray(cart) ? cart.length : 0;
 
   const toggleMenu = () => setIsOpen(!isOpen);
 

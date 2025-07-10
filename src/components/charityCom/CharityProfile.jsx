@@ -1,5 +1,6 @@
 import React from "react";
 import HomeNav from "../homeCom/HomeNav";
+import { useRef, useState } from "react";
 
 const charityData = {
   name: "Charity",
@@ -13,19 +14,56 @@ const charityData = {
 };
 
 export default function CharityProfile() {
+  const [avatar, setAvatar] = useState(charityData.avatar);
+  const fileInputRef = useRef(null);
+  const [isEditingOrgName, setIsEditingOrgName] = useState(false);
+  const [orgName, setOrgName] = useState(charityData.orgName);
+
+  // عند اختيار صورة جديدة
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        setAvatar(ev.target.result); // عرض الصورة الجديدة مباشرة
+        // يمكنك هنا إرسال الصورة للباك إذا أردت
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // عند الضغط على الصورة
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleSaveOrgName = () => {
+    setIsEditingOrgName(false);
+    // يمكنك هنا إرسال orgName للباكند إذا أردت
+  };
+
   return (
     <>
-      <HomeNav backgroundColor="#F9F8F3" />
-      <div className="min-h-screen bg-[#F9F8F3] py-8 px-2 md:px-8">
-        <h2 className="text-lg md:text-xl font-nunitoBold text-[#225A4B] mb-6">
+      <HomeNav backgroundColor="bg-[#EEEADF]" />
+      <div className="min-h-screen bg-[#F9F8F3] py-8 px-2 md:px-8 font-nunitoBold">
+        <h2 className="text-lg md:text-xl font-nunitoBold text-[#225A4B] mb-6 w-[80%] mx-auto">
           Profile
         </h2>
         {/* Profile Card */}
-        <div className="bg-white rounded-lg border border-[#E5E5E5] shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-8 max-w-2xl mx-auto mb-6">
+        <div className="bg-transparent rounded-lg border border-[#E5E5E5] shadow-sm p-4 md:p-6 flex flex-col md:flex-row items-center md:items-start gap-4 md:gap-8  mx-auto mb-6  w-[80%]">
           <img
-            src={charityData.avatar}
+            src={avatar}
             alt="profile"
-            className="w-20 h-20 rounded-full object-cover border-2 border-[#E5E5E5]"
+            className="w-20 h-20 rounded-full object-cover border-2 border-[#E5E5E5] cursor-pointer"
+            onClick={handleImageClick}
+            title="Click to change profile picture"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleImageChange}
           />
           <div className="flex-1 w-full">
             <div className="flex items-center justify-between mb-1">
@@ -34,64 +72,55 @@ export default function CharityProfile() {
                   {charityData.name}
                 </div>
                 <div className="text-sm text-gray-500">
-                  {charityData.orgName}
+                  {isEditingOrgName ? (
+                    <input
+                      className="text-sm text-gray-500 border rounded px-2 py-1"
+                      value={orgName}
+                      onChange={(e) => setOrgName(e.target.value)}
+                      autoFocus
+                    />
+                  ) : (
+                    orgName
+                  )}
                 </div>
               </div>
-              <button className="flex items-center gap-1 bg-[#225A4B] hover:bg-[#174032] text-white px-3 py-1 rounded-md text-sm font-semibold transition-colors">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                  <path
-                    fill="currentColor"
-                    d="M5 20h14v2H5v-2zm14.71-13.29a1 1 0 0 0-1.42 0l-1.34 1.34 2.12 2.12 1.34-1.34a1 1 0 0 0 0-1.42l-.7-.7zm-2.05 2.76-2.12-2.12L6 15.59V18h2.41l9.25-9.53z"
-                  />
-                </svg>
-                Edit
-              </button>
             </div>
           </div>
         </div>
         {/* Personal Info Card */}
-        <div className="bg-white rounded-lg border border-[#E5E5E5] shadow-sm p-4 md:p-6 max-w-2xl mx-auto">
+        <div className="bg-transparent rounded-lg border border-[#E5E5E5] shadow-sm p-4 md:p-6 mx-auto w-[80%]">
           <div className="flex items-center justify-between mb-4">
-            <div className="text-md font-bold text-[#225A4B]">
+            <div className="text-md font-bold text-xl">
               Personal information
             </div>
-            <button className="flex items-center gap-1 bg-[#225A4B] hover:bg-[#174032] text-white px-3 py-1 rounded-md text-sm font-semibold transition-colors">
-              <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
-                <path
-                  fill="currentColor"
-                  d="M5 20h14v2H5v-2zm14.71-13.29a1 1 0 0 0-1.42 0l-1.34 1.34 2.12 2.12 1.34-1.34a1 1 0 0 0 0-1.42l-.7-.7zm-2.05 2.76-2.12-2.12L6 15.59V18h2.41l9.25-9.53z"
-                />
-              </svg>
-              Edit
-            </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm">
-            <div>
-              <span className="text-gray-500">Email address</span>
-              <div className="font-semibold text-gray-800">
+            <div className="mb-4 p-3">
+              <span className="text-[#225A4B]">Email address</span>
+              <div className="font-semibold text-black">
                 {charityData.email}
               </div>
             </div>
-            <div>
-              <span className="text-gray-500">Phone</span>
+            <div className="mb-4 p-3">
+              <span className="text-[#225A4B] text-lg">Phone</span>
               <div className="font-semibold text-gray-800">
                 {charityData.phone}
               </div>
             </div>
-            <div>
-              <span className="text-gray-500">Password</span>
+            <div className="mb-4 p-3">
+              <span className="text-[#225A4B] text-lg">Password</span>
               <div className="font-semibold text-gray-800">
                 {charityData.password}
               </div>
             </div>
-            <div className="md:col-span-2">
-              <span className="text-gray-500">Address</span>
+            <div className="md:col-span-2 mb-4 p-3">
+              <span className="text-[#225A4B] text-lg">Address</span>
               <div className="font-semibold text-gray-800">
                 {charityData.address}
               </div>
             </div>
-            <div className="md:col-span-2">
-              <span className="text-gray-500">Bio</span>
+            <div className="md:col-span-2 mb-4 p-3">
+              <span className="text-[#225A4B] text-lg">Bio</span>
               <div className="text-gray-700">{charityData.bio}</div>
             </div>
           </div>
