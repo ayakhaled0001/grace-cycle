@@ -35,7 +35,7 @@ function CartPage() {
             };
           }
 
-          // Add items count and total
+          // Add items count and total1
           if (item.itemsCount > 0) {
             groupedCart[vendorId].itemsCount += item.itemsCount;
             groupedCart[vendorId].itemsTotal += item.itemsTotal || 0;
