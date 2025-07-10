@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserCart } from "../../redux/FoodSlice";
-import HomeNav from "../../components/homeCom/HomeNav";
 import HomeFooter from "../../components/homeCom/HomeFooter";
 
 function CartPage() {

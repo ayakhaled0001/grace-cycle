@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserCart } from "../../redux/FoodSlice";
-import HomeNav from "../../components/homeCom/HomeNav";
 import HomeFooter from "../../components/homeCom/HomeFooter";
 
 function CartPage() {
@@ -155,8 +154,8 @@ function CartPage() {
               Your cart is empty
             </h2>
             <p className="text-lg text-gray-600 mb-8 max-w-md">
-              Looks like you haven't added any items to your cart yet. Start
-              shopping to discover amazing food and magic bags!
+              Looks like you haven&apos;t added any items to your cart yet.
+              Start shopping to discover amazing food and magic bags!
             </p>
 
             {/* Action Buttons */}
