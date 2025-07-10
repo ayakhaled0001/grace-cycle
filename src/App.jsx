@@ -22,6 +22,7 @@ import CartDetailsPage from "./pages/charity/CartDetailsPage";
 import FavoriteItemsPage from "./pages/charity/FavoriteItemsPage";
 import MagicBagsInfo from "./pages/charity/MagicBagsInfo";
 import VendorDetails from "./pages/charity/VendorDetails";
+import CharityProfile from "./components/charityCom/CharityProfile";
 // import GlobalLoader from "./components/loadersCom/GlobalLoader";
 // import { useEffect, useState } from "react";
 
@@ -44,6 +45,7 @@ function App() {
           <Route path="vendor/:vendorId" element={<VendorDetails />} />
         </Route>
         <Route path="/favorites" element={<FavoriteItemsPage />} />
+        <Route path="/charityProfile" element={<CharityProfile />} />
 
         <Route path="/VendorPage" element={<VendorPage />}>
           <Route path="overview" element={<Overview />} />
