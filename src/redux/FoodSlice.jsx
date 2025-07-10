@@ -345,6 +345,19 @@ const foodSlice = createSlice({
         item.id === id ? { ...item, isFav: !item.isFav } : item
       );
     },
+    // Add foodListing data to favorites
+    addFoodListingToFavorites(state, action) {
+      const foodData = action.payload;
+      const existingItem = state.favoriteFoods.find(
+        (item) => item.id === foodData.id
+      );
+      if (!existingItem) {
+        state.favoriteFoods.push({
+          ...foodData,
+          isFav: true,
+        });
+      }
+    },
     // --------------------------------------
     addBagToCartState: (state, action) => {
       const bagId = action.payload;
@@ -550,6 +563,8 @@ const foodSlice = createSlice({
             if (foodItem) {
               state.favoriteFoods.push(foodItem);
             }
+            // Note: If not found in regular arrays, it might be from foodListing
+            // The foodListing data will be handled separately
           }
         } else {
           // Remove from favorites
@@ -557,6 +572,10 @@ const foodSlice = createSlice({
             (item) => item.id !== foodId
           );
         }
+
+        // Also update the foodListing state if it exists
+        // This ensures the favorite status is consistent across all slices
+        // Note: We'll handle this in the component by dispatching to foodListing slice
       })
       .addCase(addToCart.pending, (state) => {
         state.loading = true;
@@ -619,7 +638,7 @@ const foodSlice = createSlice({
 });
 
 export const {
-  toggleFav,
+  toggleFav, addFoodListingToFavorites,
   addBagToCartState,
   removeBagFromCartState,
   setCartBags,
