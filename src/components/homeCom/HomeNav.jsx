@@ -5,11 +5,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
 import { Link } from "react-router-dom";
 import { fetchUserCart } from "../../redux/FoodSlice";
+import Swal from "sweetalert2";
 
 function HomeNav({ backgroundColor }) {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // صورة البروفايل من localStorage
+  const [profileAvatar, setProfileAvatar] = useState(null);
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem("charityProfileAvatar");
+    if (savedAvatar) setProfileAvatar(savedAvatar);
+  }, []);
+
+  // ترحيب بعد تسجيل الدخول
+  useEffect(() => {
+    let intervalId;
+    if (sessionStorage.getItem("showWelcomeAfterLogin")) {
+      intervalId = setInterval(() => {
+        if (localStorage.getItem("token")) {
+          Swal.fire({
+            icon: "success",
+            title: "Welcome back!",
+            text: "Glad to see you again!",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+          sessionStorage.removeItem("showWelcomeAfterLogin");
+          clearInterval(intervalId);
+        }
+      }, 500);
+    }
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Get cart items count from redux
   const cart = useSelector((state) => state.servicesFood.cart || []);
@@ -95,9 +124,9 @@ function HomeNav({ backgroundColor }) {
                 className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-all"
               >
                 <img
-                  src="../../public/homeMedia/usericon.png"
+                  src={profileAvatar || "../../public/homeMedia/usericon.png"}
                   alt="User Profile"
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full object-cover"
                 />
               </NavLink>
               <Link
@@ -136,12 +165,7 @@ function HomeNav({ backgroundColor }) {
                   )}
                 </div>
               </Link>
-              <button
-                onClick={handleLogout}
-                className="font-nunitoBold border-solid border-[#BC0101] border-2 w-[50%] text-[#BC0101] rounded-[11px] hover:bg-[#BC0101] hover:text-white transition-all text-center my-auto py-2"
-              >
-                Logout
-              </button>
+              {/* زر Logout تم حذفه */}
             </>
           ) : (
             <>
@@ -156,6 +180,9 @@ function HomeNav({ backgroundColor }) {
                 to="/login"
                 className="font-nunitoBold border-solid border-btnsGreen border-2 w-6/12
              text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center my-auto py-2"
+                onClick={() =>
+                  sessionStorage.setItem("showWelcomeAfterLogin", "1")
+                }
               >
                 Log in
               </NavLink>

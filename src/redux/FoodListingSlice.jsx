@@ -8,7 +8,6 @@ export const fetchFoodListing = createAsyncThunk(
   "foodListing/fetchFoodListing",
   async (foodId, thunkAPI) => {
     try {
-      console.log("Fetching food listing for ID:", foodId);
 
       // Get token from localStorage
       const token = localStorage.getItem("token");

@@ -7,6 +7,8 @@ import {
   toggleFavorite,
   addFoodListingToFavorites,
   addBagToCartState,
+  setSelectedCategory,
+  fetchRecommendedItems,
 } from "../../../redux/FoodSlice";
 import { toggleBagFavorite } from "../../../redux/BagsSlice";
 import Swal from "sweetalert2";
@@ -61,17 +63,45 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
   // Helper functions
   const getCategory = () => {
-    if (itemType === "bag") return "magic bags";
-    if (categories?.length) return categories[0].toLowerCase();
+    console.log("getCategory called with:", { itemType, categories, itemId });
+
+    if (itemType === "bag") {
+      console.log("Returning magic bags");
+      return "magic bags";
+    }
+
+    if (categories?.length) {
+      console.log("Using categories from foodListing:", categories[0]);
+      return categories[0].toLowerCase();
+    }
 
     const allDishes = [...mainDishes, ...bakedGoods, ...dessert, ...drinks];
     const item = allDishes.find((d) => d.id === parseInt(itemId));
+    console.log("Found item in allDishes:", item);
 
-    if (!item) return "food";
-    if (mainDishes.includes(item)) return "main dishes";
-    if (bakedGoods.includes(item)) return "baked goods";
-    if (dessert.includes(item)) return "desserts";
-    if (drinks.includes(item)) return "drinks";
+    if (!item) {
+      console.log("Item not found, returning food");
+      return "food";
+    }
+
+    if (mainDishes.includes(item)) {
+      console.log("Item found in mainDishes");
+      return "main dishes";
+    }
+    if (bakedGoods.includes(item)) {
+      console.log("Item found in bakedGoods");
+      return "baked goods";
+    }
+    if (dessert.includes(item)) {
+      console.log("Item found in dessert");
+      return "desserts";
+    }
+    if (drinks.includes(item)) {
+      console.log("Item found in drinks");
+      return "drinks";
+    }
+
+    console.log("Item not found in any category, returning food");
     return "food";
   };
 
@@ -255,6 +285,10 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
         // Update local state to track bag in cart
         dispatch(addBagToCartState(item.id));
 
+        // Set selected category and fetch recommended items for magic bags
+        dispatch(setSelectedCategory("magic bags"));
+        dispatch(fetchRecommendedItems("magic bags"));
+
         Swal.fire({
           icon: "success",
           title: "Bag Added to Cart!",
@@ -296,6 +330,12 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
       setLoading(false);
 
       if (addToCart.fulfilled.match(result)) {
+        // Set selected category and fetch recommended items
+        const category = getCategory();
+        console.log("Adding item to cart, category:", category);
+        dispatch(setSelectedCategory(category));
+        dispatch(fetchRecommendedItems(category));
+
         Swal.fire({
           icon: "success",
           title: "Added to Cart!",

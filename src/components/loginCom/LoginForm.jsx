@@ -9,6 +9,7 @@ import signupphoto from "../../assets/images/signupphoto.png";
 import TextField from "@mui/material/TextField";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../redux/AuthSlice";
+import Swal from "sweetalert2";
 
 export default function LoginForm() {
   const [email, setEmail] = React.useState("");
@@ -59,6 +60,13 @@ export default function LoginForm() {
         .unwrap()
         .then((action) => {
           console.log("Login successful:", action);
+          Swal.fire({
+            icon: "success",
+            title: "Welcome back!",
+            text: "Glad to see you again!",
+            timer: 2000,
+            showConfirmButton: false,
+          });
           navigate("/");
         })
         .catch((err) => {
