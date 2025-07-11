@@ -5,18 +5,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
 import { Link } from "react-router-dom";
 import { fetchUserCart } from "../../redux/FoodSlice";
+import Swal from "sweetalert2";
 
 function HomeNav({ backgroundColor }) {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // صورة البروفايل من localStorage
+  const [profileAvatar, setProfileAvatar] = useState(null);
+  useEffect(() => {
+    const savedAvatar = localStorage.getItem("charityProfileAvatar");
+    if (savedAvatar) setProfileAvatar(savedAvatar);
+  }, []);
+
+  // ترحيب بعد تسجيل الدخول
+  useEffect(() => {
+    let intervalId;
+    if (sessionStorage.getItem("showWelcomeAfterLogin")) {
+      intervalId = setInterval(() => {
+        if (localStorage.getItem("token")) {
+          Swal.fire({
+            icon: "success",
+            title: "Welcome back!",
+            text: "Glad to see you again!",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+          sessionStorage.removeItem("showWelcomeAfterLogin");
+          clearInterval(intervalId);
+        }
+      }, 500);
+    }
+    return () => clearInterval(intervalId);
+  }, []);
+
   // Get cart items count from redux
   const cart = useSelector((state) => state.servicesFood.cart || []);
-  // If cart is an array of carts, sum all itemsCount
-  const cartCount = Array.isArray(cart)
-    ? cart.reduce((acc, c) => acc + (c.itemsCount || 0), 0)
-    : 0;
+  // Count unique vendors/restaurants in cart (same as CartPage logic)
+  const cartCount = Array.isArray(cart) ? cart.length : 0;
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
@@ -51,13 +78,13 @@ function HomeNav({ backgroundColor }) {
   return (
     <>
       <nav
-        className={`sticky z-50 ${backgroundColor} top-0 flex justify-around m-auto h-24 lgHome:py-5 minScreen:py-3 minScreen:h-20 w-full font-nunitoBold  minScreen:justify-between minScreen:px-3`}
+        className={`sticky z-50 ${backgroundColor} top-0 flex justify-around m-auto px-4 h-24 lgHome:py-5 minScreen:py-3 minScreen:h-20 w-full font-nunitoBold  minScreen:justify-between minScreen:px-3`}
       >
         <div className="w-[20%] flex items-center justify-center ">
           <img src="/logo.png" alt="grace cycle" className="w-40" />
         </div>
 
-        <ul className="flex items-center justify-center w-[50%] ml-5 minScreen:hidden lgHome:flex">
+        <ul className="w-[50%] flex items-center justify-end ml-5 minScreen:hidden lgHome:flex">
           <li className="mr-20">
             <NavLink to="/" className={`text-lg hover:text-lightBrownYellow`}>
               Home
@@ -89,61 +116,65 @@ function HomeNav({ backgroundColor }) {
           </li>
         </ul>
 
-        <div className="flex items-center justify-center gap-3 w-[30%] h-12 minScreen:hidden lgHome:flex">
+        <div className="w-[30%] flex items-center justify-center gap-3 h-12 minScreen:hidden lgHome:flex">
           {isLoggedIn ? (
             <>
-              <NavLink
-                to="/charityProfile"
+              <button
                 className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center hover:bg-gray-400 transition-all"
+                onClick={() => {
+                  if (userType === "Vendor") {
+                    navigate("/VendorPage/settings");
+                  } else {
+                    navigate("/charityProfile");
+                  }
+                }}
+                style={{ border: "none", background: "none", padding: 0 }}
               >
                 <img
-                  src="../../public/homeMedia/usericon.png"
+                  src={profileAvatar || "../../public/homeMedia/usericon.png"}
                   alt="User Profile"
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 rounded-full object-cover"
                 />
-              </NavLink>
-              <Link
-                to="/CharityPage/cart"
-                className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[10%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors"
-              >
-                <div
-                  style={{
-                    position: "relative",
-                    width: "22px",
-                    height: "22px",
-                  }}
-                >
-                  <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
-                  {cartCount > 0 && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "-15px",
-                        right: "-18px",
-                        background: "#BC0101",
-                        color: "white",
-                        borderRadius: "50%",
-                        width: "20px",
-                        height: "20px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "12px",
-                        fontWeight: "bold",
-                        zIndex: 2,
-                      }}
-                    >
-                      {cartCount}
-                    </span>
-                  )}
-                </div>
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="font-nunitoBold border-solid border-[#BC0101] border-2 w-[50%] text-[#BC0101] rounded-[11px] hover:bg-[#BC0101] hover:text-white transition-all text-center my-auto py-2"
-              >
-                Logout
               </button>
+              {userType !== "Vendor" && (
+                <Link
+                  to="/CharityPage/cart"
+                  className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[10%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors"
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "22px",
+                      height: "22px",
+                    }}
+                  >
+                    <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
+                    {cartCount > 0 && (
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "-15px",
+                          right: "-18px",
+                          background: "#BC0101",
+                          color: "white",
+                          borderRadius: "50%",
+                          width: "20px",
+                          height: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "12px",
+                          fontWeight: "bold",
+                          zIndex: 2,
+                        }}
+                      >
+                        {cartCount}
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              )}
+              {/* زر Logout تم حذفه */}
             </>
           ) : (
             <>
@@ -158,6 +189,9 @@ function HomeNav({ backgroundColor }) {
                 to="/login"
                 className="font-nunitoBold border-solid border-btnsGreen border-2 w-6/12
              text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center my-auto py-2"
+                onClick={() =>
+                  sessionStorage.setItem("showWelcomeAfterLogin", "1")
+                }
               >
                 Log in
               </NavLink>

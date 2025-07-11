@@ -6,6 +6,9 @@ import {
   addToCart,
   toggleFavorite,
   addFoodListingToFavorites,
+  addBagToCartState,
+  setSelectedCategory,
+  fetchRecommendedItems,
 } from "../../../redux/FoodSlice";
 import { toggleBagFavorite } from "../../../redux/BagsSlice";
 import Swal from "sweetalert2";
@@ -19,6 +22,7 @@ import { Skeleton } from "@mui/material";
 import VendorInfoCard from "./VendorInfoCard";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { getVendorDetails } from "../../../redux/VendorDetailsSlice";
+import axios from "axios";
 
 function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
   const dispatch = useDispatch();
@@ -59,17 +63,45 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
   // Helper functions
   const getCategory = () => {
-    if (itemType === "bag") return "magic bags";
-    if (categories?.length) return categories[0].toLowerCase();
+    console.log("getCategory called with:", { itemType, categories, itemId });
+
+    if (itemType === "bag") {
+      console.log("Returning magic bags");
+      return "magic bags";
+    }
+
+    if (categories?.length) {
+      console.log("Using categories from foodListing:", categories[0]);
+      return categories[0].toLowerCase();
+    }
 
     const allDishes = [...mainDishes, ...bakedGoods, ...dessert, ...drinks];
     const item = allDishes.find((d) => d.id === parseInt(itemId));
+    console.log("Found item in allDishes:", item);
 
-    if (!item) return "food";
-    if (mainDishes.includes(item)) return "main dishes";
-    if (bakedGoods.includes(item)) return "baked goods";
-    if (dessert.includes(item)) return "desserts";
-    if (drinks.includes(item)) return "drinks";
+    if (!item) {
+      console.log("Item not found, returning food");
+      return "food";
+    }
+
+    if (mainDishes.includes(item)) {
+      console.log("Item found in mainDishes");
+      return "main dishes";
+    }
+    if (bakedGoods.includes(item)) {
+      console.log("Item found in bakedGoods");
+      return "baked goods";
+    }
+    if (dessert.includes(item)) {
+      console.log("Item found in dessert");
+      return "desserts";
+    }
+    if (drinks.includes(item)) {
+      console.log("Item found in drinks");
+      return "drinks";
+    }
+
+    console.log("Item not found in any category, returning food");
     return "food";
   };
 
@@ -208,31 +240,110 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
 
   // Add to cart handler
   const handleAddToCart = async () => {
-    const payload = {
-      vendorId: item.vendorId,
-      item: {
-        id: item.id,
-        name: item.name,
-        picUrl: item.picUrl,
-        unitPrice: item.unitPrice,
-        newPrice: item.newPrice,
-        quantity: selectedQuantity,
-      },
-      vendorName: item.vName || "Unknown Vendor",
-    };
+    if (itemType === "bag") {
+      // Handle bag addition
+      const token = localStorage.getItem("token");
+      if (!token) {
+        Swal.fire({
+          icon: "error",
+          title: "Authentication Error",
+          text: "Please log in to add items to cart",
+          showConfirmButton: true,
+        });
+        return;
+      }
 
-    setLoading(true);
-    const result = await dispatch(addToCart(payload));
-    setLoading(false);
+      setLoading(true);
+      try {
+        const bagPayload = {
+          vendorId: item.vendorId || "cb5ba1ee-bb67-418e-aeda-8c628ddc58ff",
+          bag: {
+            id: item.id,
+            name: item.name,
+            picUrl: item.picUrl,
+            unitPrice: item.unitPrice || item.price,
+            newPrice: item.newPrice,
+            quantity: selectedQuantity,
+            foods: item.foods || ["falafel", "Foul", "Bread"],
+          },
+          vendorName: item.vName || "Vendor1",
+        };
 
-    if (addToCart.fulfilled.match(result)) {
-      Swal.fire({
-        icon: "success",
-        title: "Added to Cart!",
-        text: "Item added successfully",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+        const response = await axios.post(
+          "https://gracecycleapi.azurewebsites.net/api/webcart/add-bag",
+          bagPayload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Bag added to cart:", response.data);
+
+        // Update local state to track bag in cart
+        dispatch(addBagToCartState(item.id));
+
+        // Set selected category and fetch recommended items for magic bags
+        dispatch(setSelectedCategory("magic bags"));
+        dispatch(fetchRecommendedItems("magic bags"));
+
+        Swal.fire({
+          icon: "success",
+          title: "Bag Added to Cart!",
+          text: "This magic bag has been added to your cart successfully",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      } catch (error) {
+        console.log(
+          "Add bag to cart error:",
+          error.response?.data || error.message
+        );
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to add bag to cart",
+          showConfirmButton: true,
+        });
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Handle regular item addition
+      const payload = {
+        vendorId: item.vendorId,
+        item: {
+          id: item.id,
+          name: item.name,
+          picUrl: item.picUrl,
+          unitPrice: item.unitPrice,
+          newPrice: item.newPrice,
+          quantity: selectedQuantity,
+        },
+        vendorName: item.vName || "Unknown Vendor",
+      };
+
+      setLoading(true);
+      const result = await dispatch(addToCart(payload));
+      setLoading(false);
+
+      if (addToCart.fulfilled.match(result)) {
+        // Set selected category and fetch recommended items
+        const category = getCategory();
+        console.log("Adding item to cart, category:", category);
+        dispatch(setSelectedCategory(category));
+        dispatch(fetchRecommendedItems(category));
+
+        Swal.fire({
+          icon: "success",
+          title: "Added to Cart!",
+          text: "Item added successfully",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      }
     }
   };
 
@@ -244,7 +355,8 @@ function DishInfo({ itemId, itemType = "dish", showShoppingCart = true }) {
       <div
         className={`flex flex-col lg:flex-row justify-center gap-3 mob470:gap-4 mob560:gap-6 px-2 mob470:px-3 mob560:px-4 md:px-6 lg:px-8 ${
           showShoppingCart ? "" : "lg:justify-center"
-        }`}>
+        }`}
+      >
         {/* Image Section */}
         <ImageSection
           item={item}
@@ -346,7 +458,8 @@ const VendorError = ({ error }) => (
       {error.includes("UnAuthorized") && (
         <Link
           to="/login"
-          className="inline-block bg-btnsGreen text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+          className="inline-block bg-btnsGreen text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors"
+        >
           Go to Login
         </Link>
       )}
@@ -373,7 +486,8 @@ const ImageSection = ({
   <div
     className={`w-full ${
       showShoppingCart ? "lg:w-6/12" : "lg:w-5/12"
-    } flex justify-center relative`}>
+    } flex justify-center relative`}
+  >
     {showFavorite && (
       <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute left-3 bottom-3 z-10">
         <FavoriteOutlinedIcon
@@ -403,7 +517,8 @@ const InfoSection = ({ item, itemType, category, vendorId }) => {
 
   return (
     <div
-      className={`w-full lg:w-4/12 px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}>
+      className={`w-full lg:w-4/12 px-0 mob470:px-1 mob560:px-2 md:px-4 space-y-3 mob470:space-y-3 mob560:space-y-4`}
+    >
       <h1 className="text-lightBrownYellow font-semibold font-nunitoBold text-lg mob470:text-xl mob560:text-xl md:text-2xl">
         {categoryName}
       </h1>
@@ -438,7 +553,8 @@ const InfoSection = ({ item, itemType, category, vendorId }) => {
         {vendorId ? (
           <Link
             to={`/CharityPage/vendor/${vendorId}`}
-            className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer">
+            className="flex items-center pt-1 underline text-btnsGreen text-sm mob470:text-base mob560:text-base md:text-lg hover:text-green-700 transition-colors cursor-pointer"
+          >
             <img
               src="/icons/person.svg"
               alt="person"
@@ -499,7 +615,8 @@ const CartSection = ({
     <div className="flex items-center justify-around my-3 mob470:my-4 mob560:my-4">
       <button
         onClick={onDecrement}
-        className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors">
+        className="border-2 border-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:py-2 md:px-2 hover:bg-green-600 hover:text-white transition-colors"
+      >
         <img
           src="/icons/minus.svg"
           alt="discard item"
@@ -511,7 +628,8 @@ const CartSection = ({
       </span>
       <button
         onClick={onIncrement}
-        className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors">
+        className="border-2 border-btnsGreen bg-btnsGreen rounded-md p-2 mob470:p-3 mob560:p-3 md:p-2 hover:bg-green-600 transition-colors"
+      >
         <img
           src="/icons/add.svg"
           alt="add item"
@@ -527,7 +645,8 @@ const CartSection = ({
     <button
       onClick={onAddToCart}
       className="text-sm mob470:text-base mob560:text-base md:text-lg py-2 mob470:py-3 mob560:py-3 md:py-2 bg-btnsGreen text-white w-full rounded-md my-4"
-      disabled={loading}>
+      disabled={loading}
+    >
       {loading ? "Adding..." : "Add to Cart"}
     </button>
   </div>

@@ -9,9 +9,11 @@ import {
   deleteVendorListing,
   clearError,
 } from "../../redux/VendorListingSlice";
+import { useNavigate } from "react-router-dom";
 
 const MyListings = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("products");
 
   // Redux state
@@ -81,7 +83,8 @@ const MyListings = () => {
           status === "active"
             ? "bg-green-100 text-green-800"
             : "bg-red-100 text-red-800"
-        }`}>
+        }`}
+      >
         {status === "active" ? "Active" : "Inactive"}
       </span>
     );
@@ -101,178 +104,175 @@ const MyListings = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm">
-      {/* Header */}
-      <div className="p-6 border-b border-gray-200">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <h1 className="text-2xl font-bold text-gray-900">Your Listings</h1>
-
-          {/* Tab Buttons */}
-          <div className="flex bg-gray-100 rounded-lg p-1">
-            <button
-              onClick={() => setActiveTab("products")}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === "products"
-                  ? "bg-white text-btnsGreen shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}>
-              Products ({totalCount})
-            </button>
-            <button
-              onClick={() => setActiveTab("bags")}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                activeTab === "bags"
-                  ? "bg-white text-btnsGreen shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}>
-              Magic Bags ({mockBags.length})
-            </button>
-          </div>
+    <div className="bg-offWhite min-h-screen p-2 md:p-4">
+      <div className="flex justify-end h-10 mb-8">
+        <div className="flex border-2 border-[#225A4B] rounded-2xl overflow-hidden bg-[#F5F3EB]">
+          <button
+            className={`px-8 py-3 text-xl font-nunitoBold transition-all ${
+              activeTab === "products"
+                ? "bg-[#225A4B] text-white"
+                : "bg-[#F5F3EB] text-[#225A4B]"
+            } flex justify-center items-center`}
+            onClick={() => setActiveTab("products")}
+          >
+            Products
+          </button>
+          <button
+            className={`px-8 py-3 text-xl font-nunitoBold transition-all ${
+              activeTab === "bags"
+                ? "bg-[#225A4B] text-white"
+                : "bg-[#F5F3EB] text-[#225A4B]"
+            } flex justify-center items-center`}
+            onClick={() => setActiveTab("bags")}
+          >
+            Magic Bags
+          </button>
         </div>
       </div>
+      <h1 className="text-xl md:text-2xl font-nunitoBold text-[#225A4A] mb-4 md:mb-6">
+        Your Listings
+      </h1>
 
       {/* Error Display */}
       {error && (
-        <div className="px-6 py-3 bg-red-50 border-b border-red-200">
+        <div className="px-6 py-3 bg-red-50 border-b border-red-200 rounded-lg mb-4">
           <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
-      {/* Table Header */}
-      <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-        <div className="grid grid-cols-12 gap-4 text-sm font-semibold text-gray-700">
-          <div className="col-span-3">Product</div>
-          <div className="col-span-2">Name</div>
-          <div className="col-span-1">Quantity</div>
-          <div className="col-span-2">Price Before</div>
-          <div className="col-span-2">Price After</div>
-          <div className="col-span-1">Status</div>
-          <div className="col-span-1">Actions</div>
-        </div>
-      </div>
-
-      {/* Table Body */}
-      <div className="divide-y divide-gray-200">
-        {currentData.length === 0 ? (
-          <div className="p-8 text-center">
-            <div className="text-gray-400 mb-4">
-              <svg
-                className="mx-auto h-12 w-12"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                />
-              </svg>
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              No {activeTab} found
-            </h3>
-            <p className="text-gray-500">
-              Get started by adding your first {activeTab.slice(0, -1)}.
-            </p>
+      {/* Table Header & Body Responsive Wrapper */}
+      <div className="w-full">
+        {/* Header for md+ screens */}
+        <div className="hidden md:block px-4 py-4 bg-[#F5F3EB] border-2 border-[#A6A6A6] rounded-lg mb-2">
+          <div className="grid grid-cols-11 gap-4 text-base font-nunitoBold text-[#225A4A]">
+            <div className="col-span-3">Product</div>
+            <div className="col-span-2">Name</div>
+            <div className="col-span-1">Quantity</div>
+            <div className="col-span-2">Price Before</div>
+            <div className="col-span-2">Price After</div>
+            <div className="col-span-1">Actions</div>
           </div>
-        ) : (
-          currentData.map((item) => (
-            <div
-              key={item.id}
-              className="px-6 py-4 hover:bg-gray-50 transition-colors">
-              <div className="grid grid-cols-12 gap-4 items-center">
+        </div>
+        {/* Table Body */}
+        <div className="divide-y divide-[#A6A6A6]">
+          {currentData.length === 0 ? (
+            <div className="p-8 text-center">
+              <div className="text-gray-400 mb-4">
+                <svg
+                  className="mx-auto h-12 w-12"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No {activeTab} found
+              </h3>
+              <p className="text-gray-500">
+                Get started by adding your first {activeTab.slice(0, -1)}.
+              </p>
+            </div>
+          ) : (
+            currentData.map((item) => (
+              <div
+                key={item.id}
+                className="my-2 md:my-4 bg-white border-2 border-[#A6A6A6] rounded-lg px-2 md:px-4 py-2 md:py-3 flex flex-col md:grid md:grid-cols-11 gap-2 md:gap-4 items-start md:items-center shadow-sm"
+              >
                 {/* Product Image */}
-                <div className="col-span-3 flex items-center space-x-3">
+                <div className="flex md:col-span-3 items-center gap-3 w-full">
+                  <span className="block md:hidden text-xs font-nunitoBold text-[#225A4A] mb-1">
+                    Product
+                  </span>
                   <img
                     src={item.picUrl || item.image}
                     alt={item.name}
-                    className="w-12 h-12 rounded-lg object-cover"
+                    className="w-20 h-16 rounded-lg object-cover border border-[#A6A6A6]"
                     onError={(e) => {
                       e.target.src = "/homeMedia/personreview1.png";
                     }}
                   />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 truncate">
-                      {item.name}
-                    </p>
-                  </div>
                 </div>
-
                 {/* Name */}
-                <div className="col-span-2">
-                  <p className="text-sm text-gray-900">{item.name}</p>
+                <div className="flex md:col-span-2 items-center w-full">
+                  <span className="block md:hidden text-xs font-nunitoBold text-[#225A4A] mb-1">
+                    Name
+                  </span>
+                  <span className="text-lg font-nunitoBold text-[#225A4A] truncate">
+                    {item.name}
+                  </span>
                 </div>
-
                 {/* Quantity */}
-                <div className="col-span-1">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      item.quantity > 0
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}>
+                <div className="flex md:col-span-1 items-center w-full">
+                  <span className="block md:hidden text-xs font-nunitoBold text-[#225A4A] mb-1">
+                    Quantity
+                  </span>
+                  <span className="text-gray-700 font-nunitoBold">
                     {item.quantity}
                   </span>
                 </div>
-
                 {/* Price Before */}
-                <div className="col-span-2">
-                  <p className="text-sm text-gray-500 line-through">
+                <div className="flex md:col-span-2 items-center w-full">
+                  <span className="block md:hidden text-xs font-nunitoBold text-[#225A4A] mb-1">
+                    Price Before
+                  </span>
+                  <span className="text-gray-700 line-through">
                     {formatPrice(item.unitPrice || item.originalPrice)}
-                  </p>
+                  </span>
                 </div>
-
                 {/* Price After */}
-                <div className="col-span-2">
-                  <p className="text-sm font-semibold text-btnsGreen">
+                <div className="flex md:col-span-2 items-center w-full">
+                  <span className="block md:hidden text-xs font-nunitoBold text-[#225A4A] mb-1">
+                    Price After
+                  </span>
+                  <span className="text-[#225A4A] font-nunitoBold">
                     {formatPrice(item.newPrice || item.discountedPrice)}
-                  </p>
+                  </span>
                 </div>
-
-                {/* Status */}
-                <div className="col-span-1">{getStatusBadge(item.status)}</div>
-
                 {/* Actions */}
-                <div className="col-span-1 flex items-center space-x-2">
-                  <button
-                    onClick={() => handleView(item.id)}
-                    className="p-1 text-gray-400 hover:text-blue-600 transition-colors"
-                    title="View">
-                    <VisibilityIcon fontSize="small" />
-                  </button>
-                  <button
-                    onClick={() => handleEdit(item.id)}
-                    className="p-1 text-gray-400 hover:text-yellow-600 transition-colors"
-                    title="Edit">
-                    <EditIcon fontSize="small" />
-                  </button>
-                  <button
+                <div className="flex flex-col md:flex-row gap-2 items-center w-full md:col-span-1">
+                  <span className="block md:hidden text-xs font-nunitoBold text-[#225A4A] mb-1">
+                    Actions
+                  </span>
+                  <img
+                    src="/icons/delete.svg"
+                    alt="delete"
+                    className="w-4 h-6 cursor-pointer md:ml-2"
                     onClick={() => handleDelete(item.id)}
-                    className="p-1 text-gray-400 hover:text-red-600 transition-colors"
-                    title="Delete">
-                    <DeleteIcon fontSize="small" />
-                  </button>
+                  />
                 </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* Footer */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-gray-500">
-            Showing {currentData.length} {activeTab.slice(0, -1)}
-            {currentData.length !== 1 ? "s" : ""}
-          </p>
-          <button className="px-4 py-2 bg-btnsGreen text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium">
-            Add New{" "}
-            {activeTab.slice(0, -1).charAt(0).toUpperCase() +
-              activeTab.slice(0, -1).slice(1)}
-          </button>
+            ))
+          )}
         </div>
+      </div>
+      {/* Footer */}
+      <div className="px-2 md:px-4 py-2 md:py-4 bg-[#F5F3EB] border-2 border-[#A6A6A6] rounded-lg mt-4 flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0">
+        <p className="text-base text-[#225A4A] font-nunitoBold">
+          Showing {currentData.length} {activeTab.slice(0, -1)}
+          {currentData.length !== 1 ? "s" : ""}
+        </p>
+        {activeTab === "products" ? (
+          <button
+            className="bg-[#225A4A] font-nunitoBold text-lg rounded-md text-white px-6 py-2 hover:bg-[#174032] transition-colors w-full md:w-auto"
+            onClick={() => navigate("/VendorPage/addNewItem")}
+          >
+            Add New Product
+          </button>
+        ) : (
+          <button
+            className="bg-[#225A4A] font-nunitoBold text-lg rounded-md text-white px-6 py-2 hover:bg-[#174032] transition-colors w-full md:w-auto"
+            onClick={() => navigate("/VendorPage/addNewBag")}
+          >
+            Add New Bag
+          </button>
+        )}
       </div>
     </div>
   );

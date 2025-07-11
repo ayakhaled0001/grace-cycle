@@ -110,7 +110,12 @@ function CartPage() {
         {/* Error State */}
         {error && (
           <div className="text-center py-8">
-            <p className="text-red-600 text-lg">Error loading cart: {error}</p>
+            <p className="text-red-600 text-lg">
+              Error loading cart:{" "}
+              {typeof error === "string"
+                ? error
+                : error?.message || "Unknown error occurred"}
+            </p>
           </div>
         )}
 
@@ -125,7 +130,8 @@ function CartPage() {
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="text-gray-400">
+                className="text-gray-400"
+              >
                 <path
                   d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"
                   stroke="currentColor"
@@ -163,13 +169,15 @@ function CartPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/CharityPage"
-                className="px-8 py-4 bg-btnsGreen text-white rounded-lg font-semibold text-lg hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2">
+                className="px-8 py-4 bg-btnsGreen text-white rounded-lg font-semibold text-lg hover:bg-green-700 transition-colors duration-200 flex items-center justify-center gap-2"
+              >
                 <svg
                   width="20"
                   height="20"
                   viewBox="0 0 24 24"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path
                     d="M16 4H18C19.1046 4 20 4.89543 20 6V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V6C4 4.89543 4.89543 4 6 4H8"
                     stroke="currentColor"
@@ -203,7 +211,8 @@ function CartPage() {
                       ? "border-4 border-btnsGreen"
                       : "border border-btnsGreen"
                   } bg-paleWhiteGrey`}
-                  onClick={() => handleItemClick(item.vendorId)}>
+                  onClick={() => handleItemClick(item.vendorId)}
+                >
                   {/* First Row - Restaurant Name and Date */}
                   <div className="flex flex-row justify-content items-center mb-3 gap-2">
                     <h2 className="text-md md:text-lg lg:text-xl font-nunitoBold leading-none">
@@ -219,7 +228,8 @@ function CartPage() {
                     <div className="flex flex-row justify-between items-center gap-2">
                       <div
                         className="px-3 py-1 rounded-md text-white text-sm font-semibold w-fit"
-                        style={{ backgroundColor: "#3F7D6C" }}>
+                        style={{ backgroundColor: "#3F7D6C" }}
+                      >
                         {item.itemsCount} items
                       </div>
                       <div className="flex items-center gap-2">
@@ -231,7 +241,8 @@ function CartPage() {
                         />
                         <span
                           className="text-base md:text-md font-semibold"
-                          style={{ color: "#3F7D6C" }}>
+                          style={{ color: "#3F7D6C" }}
+                        >
                           total: EGP
                           <span className="text-xl font-nunitoBold">
                             {" "}
@@ -246,7 +257,8 @@ function CartPage() {
                     <div className="flex flex-row justify-between items-center gap-2 mt-2">
                       <div
                         className="px-3 py-1 rounded-md text-white text-sm font-semibold w-fit"
-                        style={{ backgroundColor: "#624C04" }}>
+                        style={{ backgroundColor: "#624C04" }}
+                      >
                         {item.bagsCount} bags
                       </div>
                       <div className="flex items-center gap-2">
@@ -258,7 +270,8 @@ function CartPage() {
                         />
                         <span
                           className="text-base md:text-md font-semibold"
-                          style={{ color: "#624C04" }}>
+                          style={{ color: "#624C04" }}
+                        >
                           total: EGP
                           <span className="text-xl font-nunitoBold">
                             {" "}
@@ -281,7 +294,8 @@ function CartPage() {
                   selectedItems.length === 0
                     ? "bg-btnsGreen text-white opacity-50 cursor-not-allowed"
                     : "bg-btnsGreen text-white hover:bg-green-900 opacity-100"
-                }`}>
+                }`}
+              >
                 Continue
               </button>
             </div>

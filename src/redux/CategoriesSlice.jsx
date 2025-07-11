@@ -9,9 +9,7 @@ export const fetchCategories = createAsyncThunk(
   "categories/fetchCategories",
   async (_, thunkAPI) => {
     try {
-      console.log("Fetching categories from:", CategoriesBaseUrl);
       const response = await axios.get(CategoriesBaseUrl);
-      console.log("Categories response:", response.data);
       return response.data;
     } catch (error) {
       console.log("Error fetching categories:", error);

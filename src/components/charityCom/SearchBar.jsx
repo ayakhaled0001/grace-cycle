@@ -63,10 +63,8 @@ export default function SearchBar({
 
   // Get cart items count from redux (if available)
   const cart = useSelector((state) => state.servicesFood.cart || []);
-  // If cart is an array of carts, sum all itemsCount
-  const cartCount = Array.isArray(cart)
-    ? cart.reduce((acc, c) => acc + (c.itemsCount || 0), 0)
-    : 0;
+  // Count unique vendors/restaurants in cart (same as CartPage logic)
+  const cartCount = Array.isArray(cart) ? cart.length : 0;
 
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [currentSearchType, setCurrentSearchType] = useState("All");
@@ -276,7 +274,8 @@ export default function SearchBar({
           <div className="flex items-center border border-lightGrey rounded-xl pr-2 w-full sm:w-[60%] relative overflow-hidden">
             <button
               onClick={handleSearch}
-              className="bg-btnsGreen text-white p-2 w-12 sm:w-14 rounded-l-md hover:bg-green-900 transition-colors">
+              className="bg-btnsGreen text-white p-2 w-12 sm:w-14 rounded-l-md hover:bg-green-900 transition-colors"
+            >
               <Search className="w-4 h-4" />
             </button>
             <input
@@ -290,7 +289,8 @@ export default function SearchBar({
             <select
               className="bg-verylightGrey border border-lightGrey rounded-md cursor-pointer px-1 sm:px-2 h-full mr-2 text-sm sm:text-base"
               value={currentSearchType}
-              onChange={handleSearchTypeChange}>
+              onChange={handleSearchTypeChange}
+            >
               <option value="All">All</option>
               <option value="Food">Food</option>
               <option value="Vendor">Vendor</option>
@@ -299,15 +299,18 @@ export default function SearchBar({
           </div>
           <button
             className="flex items-center justify-center border border-lightGrey rounded-xl p-2 w-full sm:w-[20%] hover:bg-gray-50 text-sm sm:text-base"
-            onClick={() => setIsFilterModalOpen(true)}>
+            onClick={() => setIsFilterModalOpen(true)}
+          >
             <TuneIcon className="mr-2" />
             Filter
           </button>
           <Link
             to="/CharityPage/cart"
-            className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors">
+            className="flex items-center justify-center border border-lightGrey rounded-xl p-2 h-10 w-full sm:w-[5%] bg-btnsGreen text-white cursor-pointer hover:bg-green-900 transition-colors"
+          >
             <div
-              style={{ position: "relative", width: "22px", height: "22px" }}>
+              style={{ position: "relative", width: "22px", height: "22px" }}
+            >
               <img src="/icons/cart.svg" alt="cart icon" width={"22"} />
               {cartCount > 0 && (
                 <span
@@ -326,7 +329,8 @@ export default function SearchBar({
                     fontSize: "12px",
                     fontWeight: "bold",
                     zIndex: 2,
-                  }}>
+                  }}
+                >
                   {cartCount}
                 </span>
               )}
@@ -344,7 +348,8 @@ export default function SearchBar({
             <select
               className="bg-verylightGrey border border-lightGrey rounded-md px-2 cursor-pointer w-full sm:w-[80%] text-sm sm:text-base"
               value={currentSortBy}
-              onChange={handleSortChange}>
+              onChange={handleSortChange}
+            >
               {currentSearchType === "Vendor" ? (
                 <>
                   <option value="rating">Rating</option>

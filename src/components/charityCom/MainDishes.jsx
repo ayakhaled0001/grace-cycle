@@ -9,6 +9,11 @@ function MainDishes() {
   const dispatch = useDispatch();
   const { mainDishes, loading } = useSelector((state) => state.servicesFood);
 
+  // Determine width based on user type
+  const userType =
+    typeof window !== "undefined" ? localStorage.getItem("userType") : null;
+  const sectionWidth = userType === "Charity" ? "w-11/12 md:w-10/12" : "w-full";
+
   useEffect(() => {
     dispatch(fetchMainDishes());
   }, [dispatch]);
@@ -16,7 +21,9 @@ function MainDishes() {
   console.log("loading state :", loading);
 
   return (
-    <section className="w-11/12 md:w-10/12 mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
+    <section
+      className={`${sectionWidth} mx-auto bg-semiDarkBeige my-5 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold`}
+    >
       <div className="absolute -top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-4 gap-2">
         <span className="bg-white p-1 rounded-md text-base md:text-lg font-semibold text-center sm:text-left">
           Main dishes
@@ -31,7 +38,8 @@ function MainDishes() {
           ? Array.from({ length: 3 }).map((_, idx) => (
               <div
                 className="w-full max-w-xs border border-stone-700 rounded-xl relative"
-                key={idx}>
+                key={idx}
+              >
                 <Skeleton
                   variant="rectangular"
                   width="100%"
@@ -55,7 +63,8 @@ function MainDishes() {
           : mainDishes.map((food) => (
               <div
                 className="w-full max-w-xs border border-stone-700 rounded-xl relative"
-                key={food.id}>
+                key={food.id}
+              >
                 <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
                   <span className=" bg-semiDarkBeige px-2 py-1 rounded-md">
                     {food.quantity}+ left
@@ -134,7 +143,8 @@ function MainDishes() {
                       ) : (
                         <Link
                           to={`/CharityPage/cart/${food.id}`}
-                          className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300">
+                          className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300"
+                        >
                           More Details
                         </Link>
                       )}

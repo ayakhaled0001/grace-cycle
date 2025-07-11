@@ -155,6 +155,94 @@ export const toggleFavorite = createAsyncThunk(
   }
 );
 
+// Fetch recommended items based on category
+export const fetchRecommendedItems = createAsyncThunk(
+  "services/fetchRecommendedItems",
+  async (category, thunkAPI) => {
+    try {
+      console.log("Fetching recommended items for category:", category);
+
+      // Map category names to API category names
+      const categoryMapping = {
+        "main dishes": "Main Dishes",
+        "baked goods": "Baked goods",
+        desserts: "Dessert",
+        drinks: "Drinks",
+        "magic bags": "Magic Bags",
+      };
+
+      const apiCategory =
+        categoryMapping[category.toLowerCase()] || "Main Dishes";
+
+      console.log("Mapped to API category:", apiCategory);
+
+      console.log("Making API call to:", `${BaseUrl}`);
+      const response = await axios.get(`${BaseUrl}`);
+      console.log("API Response:", response.data);
+
+      let recommendedItems = [];
+
+      // If category is magic bags or random, get random items from all categories
+      if (
+        category.toLowerCase() === "magic bags" ||
+        category.toLowerCase() === "random"
+      ) {
+        console.log(
+          `${category} category detected - getting random items from all categories`
+        );
+
+        // Collect all items from all categories
+        const allItems = [];
+        Object.keys(response.data).forEach((catKey) => {
+          if (Array.isArray(response.data[catKey])) {
+            allItems.push(...response.data[catKey]);
+          }
+        });
+
+        console.log("Total items from all categories:", allItems.length);
+
+        // Shuffle and get exactly 8 random items (or all if less than 8)
+        const shuffled = allItems.sort(() => 0.5 - Math.random());
+        recommendedItems = shuffled.slice(0, Math.min(8, shuffled.length));
+
+        // If we have less than 8 items, duplicate some to reach 8
+        while (recommendedItems.length < 8 && shuffled.length > 0) {
+          const randomItem =
+            shuffled[Math.floor(Math.random() * shuffled.length)];
+          recommendedItems.push(randomItem);
+        }
+
+        console.log("Random items selected:", recommendedItems.length);
+      } else {
+        // For other categories, get items from specific category
+        const categoryItems = response.data[apiCategory] || [];
+        console.log("Category items found:", categoryItems.length);
+        recommendedItems = categoryItems.slice(
+          0,
+          Math.min(8, categoryItems.length)
+        );
+
+        // If we have less than 8 items, duplicate some to reach 8
+        while (recommendedItems.length < 8 && categoryItems.length > 0) {
+          const randomItem =
+            categoryItems[Math.floor(Math.random() * categoryItems.length)];
+          recommendedItems.push(randomItem);
+        }
+      }
+
+      console.log("Final recommended items count:", recommendedItems.length);
+      console.log("Target count: 8");
+      console.log("Final recommended items:", recommendedItems);
+
+      return recommendedItems;
+    } catch (error) {
+      console.log("Error fetching recommended items:", error);
+      console.log("Error details:", error.response?.data || error.message);
+      return thunkAPI.rejectWithValue("Failed to fetch recommended items");
+    }
+  }
+);
+
 // Fetch user favorite foods
 export const fetchUserFavoriteFoods = createAsyncThunk(
   "services/fetchUserFavoriteFoods",
@@ -330,6 +418,10 @@ const initialState = {
   error: null,
   cart: [],
   cartBags: [], // Array to track bags in cart
+  selectedCategory: null, // Category of item added to cart
+  recommendedItems: [], // Items recommended based on selected category
+  recommendedLoading: false,
+  recommendedError: null,
 };
 
 // food slice
@@ -371,6 +463,33 @@ const foodSlice = createSlice({
     },
     setCartBags: (state, action) => {
       state.cartBags = action.payload;
+    },
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
+      // Save to localStorage
+      localStorage.setItem("selectedCategory", action.payload);
+    },
+    clearRecommendedItems: (state) => {
+      state.recommendedItems = [];
+      state.selectedCategory = null;
+      localStorage.removeItem("selectedCategory");
+      localStorage.removeItem("recommendedItems");
+    },
+    loadSelectedCategoryFromStorage: (state) => {
+      const savedCategory = localStorage.getItem("selectedCategory");
+      if (savedCategory) {
+        state.selectedCategory = savedCategory;
+      }
+
+      // Also load recommended items from localStorage
+      const savedRecommendedItems = localStorage.getItem("recommendedItems");
+      if (savedRecommendedItems) {
+        try {
+          state.recommendedItems = JSON.parse(savedRecommendedItems);
+        } catch (error) {
+          console.log("Error parsing saved recommended items:", error);
+        }
+      }
     },
   },
   extraReducers: (builder) => {
@@ -498,6 +617,23 @@ const foodSlice = createSlice({
       .addCase(fetchUserFavoriteFoods.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchRecommendedItems.pending, (state) => {
+        state.recommendedLoading = true;
+        state.recommendedError = null;
+      })
+      .addCase(fetchRecommendedItems.fulfilled, (state, action) => {
+        state.recommendedLoading = false;
+        state.recommendedItems = action.payload;
+        // Save recommended items to localStorage
+        localStorage.setItem(
+          "recommendedItems",
+          JSON.stringify(action.payload)
+        );
+      })
+      .addCase(fetchRecommendedItems.rejected, (state, action) => {
+        state.recommendedLoading = false;
+        state.recommendedError = action.payload;
       })
       .addCase(toggleFavorite.fulfilled, (state, action) => {
         const { foodId, isAdded } = action.payload;
@@ -638,10 +774,14 @@ const foodSlice = createSlice({
 });
 
 export const {
-  toggleFav, addFoodListingToFavorites,
+  toggleFav,
+  addFoodListingToFavorites,
   addBagToCartState,
   removeBagFromCartState,
   setCartBags,
+  setSelectedCategory,
+  clearRecommendedItems,
+  loadSelectedCategoryFromStorage,
 } = foodSlice.actions;
 export default foodSlice.reducer;
 

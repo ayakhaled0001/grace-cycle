@@ -1,31 +1,52 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/AuthSlice";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [activePage, setActivePage] = React.useState("Overview");
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (
+      location.pathname === "/VendorPage" ||
+      location.pathname === "/VendorPage/"
+    ) {
+      navigate("/VendorPage/addNewItem", { replace: true });
+    }
+  }, [location, navigate]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const handleMenuClick = (page, path) => {
-    setActivePage(page);
+  const handleMenuClick = (path) => {
     navigate(path);
     if (window.innerWidth < 640) {
       setIsMenuOpen(false);
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/");
-    if (window.innerWidth < 640) {
-      setIsMenuOpen(false);
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#225A4A",
+      cancelButtonColor: "#BC0101",
+      confirmButtonText: "Yes, logout",
+      cancelButtonText: "Cancel",
+    });
+    if (result.isConfirmed) {
+      dispatch(logout());
+      navigate("/");
+      if (window.innerWidth < 640) {
+        setIsMenuOpen(false);
+      }
     }
   };
 
@@ -33,7 +54,9 @@ const Dashboard = () => {
     <div>
       {/* Navbar for small screens */}
       <div className="sm:hidden fixed top-0 left-0 w-full bg-[#EBE8DB] shadow-lg flex justify-between items-center p-4 z-50">
-        <h2 className="text-xl font-nunitoBold">{activePage}</h2>
+        <h2 className="text-xl font-nunitoBold">
+          {location.pathname.split("/").pop()}
+        </h2>
         <button onClick={toggleMenu} className="focus:outline-none text-2xl">
           ☰
         </button>
@@ -47,32 +70,10 @@ const Dashboard = () => {
       >
         <h2 className="sidebar-header text-xl font-bold p-4">Dashboard</h2>
         <ul className="sidebar-menu space-y-4 p-4 w-full">
-          <li
-            onClick={() => handleMenuClick("Overview", "/VendorPage/overview")}
-          >
+          <li onClick={() => handleMenuClick("/VendorPage/addNewItem")}>
             <div
               className={`flex items-center space-x-2 px-6 py-2 ${
-                activePage === "Overview"
-                  ? "bg-[#C1BFB3]"
-                  : "hover:bg-[#C1BFB3]"
-              } cursor-pointer transition-all duration-300`}
-            >
-              <img
-                src="../../../public/DashboardIcons/vector1.svg"
-                className="w-6"
-                alt="Overview"
-              />
-              <span>Overview</span>
-            </div>
-          </li>
-          <li
-            onClick={() =>
-              handleMenuClick("Add New Item", "/VendorPage/addNewItem")
-            }
-          >
-            <div
-              className={`flex items-center space-x-2 px-6 py-2 ${
-                activePage === "Add New Item"
+                location.pathname === "/VendorPage/addNewItem"
                   ? "bg-[#C1BFB3]"
                   : "hover:bg-[#C1BFB3]"
               } cursor-pointer transition-all duration-300`}
@@ -85,14 +86,10 @@ const Dashboard = () => {
               <span>Add New Item</span>
             </div>
           </li>
-          <li
-            onClick={() =>
-              handleMenuClick("My Listings", "/VendorPage/myListings")
-            }
-          >
+          <li onClick={() => handleMenuClick("/VendorPage/myListings")}>
             <div
               className={`flex items-center space-x-2 px-6 py-2 ${
-                activePage === "My Listings"
+                location.pathname === "/VendorPage/myListings"
                   ? "bg-[#C1BFB3]"
                   : "hover:bg-[#C1BFB3]"
               } cursor-pointer transition-all duration-300`}
@@ -105,10 +102,12 @@ const Dashboard = () => {
               <span>My Listings</span>
             </div>
           </li>
-          <li onClick={() => handleMenuClick("Orders", "/VendorPage/orders")}>
+          <li onClick={() => handleMenuClick("/VendorPage/orders")}>
             <div
               className={`flex items-center space-x-2 px-6 py-2 ${
-                activePage === "Orders" ? "bg-[#C1BFB3]" : "hover:bg-[#C1BFB3]"
+                location.pathname === "/VendorPage/orders"
+                  ? "bg-[#C1BFB3]"
+                  : "hover:bg-[#C1BFB3]"
               } cursor-pointer transition-all duration-300`}
             >
               <img
@@ -120,12 +119,10 @@ const Dashboard = () => {
             </div>
           </li>
           <hr className="border-t my-4" />
-          <li
-            onClick={() => handleMenuClick("Settings", "/VendorPage/settings")}
-          >
+          <li onClick={() => handleMenuClick("/VendorPage/settings")}>
             <div
               className={`flex items-center space-x-2 px-6 py-2 ${
-                activePage === "Settings"
+                location.pathname === "/VendorPage/settings"
                   ? "bg-[#C1BFB3]"
                   : "hover:bg-[#C1BFB3]"
               } cursor-pointer transition-all duration-300`}
@@ -150,7 +147,7 @@ const Dashboard = () => {
               <span>Logout</span>
             </div>
           </li>
-          <li onClick={() => handleMenuClick("Home", "/")}>
+          <li onClick={() => handleMenuClick("/")}>
             <div className="flex items-center px-6 py-2 pt-4 cursor-pointer">
               <img
                 src="../../../public/logo.png"
