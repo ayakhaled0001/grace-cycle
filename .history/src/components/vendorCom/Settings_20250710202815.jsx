@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchVendorProfile,
   updateVendorProfile,
+  updateProfileField,
 } from "../../redux/VendorSettingsSlice";
 import Swal from "sweetalert2";
 

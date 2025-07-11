@@ -13,15 +13,8 @@ import HomeFooter from "../../components/homeCom/HomeFooter";
 export default function VendorDetails() {
   const { vendorId } = useParams();
   const dispatch = useDispatch();
-  const {
-    vendorDetails,
-    itemsOffered,
-    similarItems,
-    reviews,
-    reviewsSummary,
-    isLoading,
-    error,
-  } = useSelector((state) => state.vendorDetails);
+  const { vendorDetails, itemsOffered, similarItems, isLoading, error } =
+    useSelector((state) => state.vendorDetails);
 
   // Fetch vendor details data when component mounts
   useEffect(() => {
@@ -181,8 +174,8 @@ export default function VendorDetails() {
         <section className="mb-8 lg:w-10/12 lg:mx-auto">
           <DishReview
             itemType="vendor"
-            vendorReviews={reviews}
-            vendorReviewsSummary={reviewsSummary}
+            vendorReviews={vendorDetails?.reviews}
+            vendorReviewsSummary={vendorDetails?.reviewsSummary}
           />
         </section>
 

@@ -12,7 +12,6 @@ import vendorDetailsReducer from "./VendorDetailsSlice";
 import foodListingReducer from "./FoodListingSlice";
 import bagDetailsReducer from "./BagDetailsSlice";
 import vendorSettingsReducer from "./VendorSettingsSlice";
-import vendorListingReducer from "./VendorListingSlice";
 
 export const store = configureStore({
   reducer: {
@@ -29,6 +28,5 @@ export const store = configureStore({
     foodListing: foodListingReducer,
     bagDetails: bagDetailsReducer,
     vendorSettings: vendorSettingsReducer,
-    vendorListing: vendorListingReducer,
   },
 });

@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchVendorProfile,
   updateVendorProfile,
+  updateProfileField,
 } from "../../redux/VendorSettingsSlice";
 import Swal from "sweetalert2";
 
