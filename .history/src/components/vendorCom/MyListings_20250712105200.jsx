@@ -54,30 +54,17 @@ const MyListings = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log(
-      "Attempting to delete item with ID:",
-      id,
-      "Active tab:",
-      activeTab
-    );
-
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         if (activeTab === "products") {
-          console.log("Deleting product with ID:", id);
           await dispatch(deleteVendorListing(id)).unwrap();
-          // Refresh products list
-          dispatch(getVendorListings());
         } else if (activeTab === "bags") {
-          console.log("Deleting bag with ID:", id);
           await dispatch(deleteBag(id)).unwrap();
-          // Refresh bags list
-          dispatch(getVendorBagListings());
         }
-        console.log("Item deleted successfully");
+        // Optionally show success message
       } catch (error) {
         console.error("Failed to delete item:", error);
-        alert("Failed to delete item. Please try again.");
+        // Optionally show error message
       }
     }
   };
@@ -122,6 +109,9 @@ const MyListings = () => {
 
   return (
     <div className="bg-offWhite min-h-screen p-2 md:p-4">
+      {/* Debug Info - Remove in production */}
+      {debugInfo}
+
       <div className="flex justify-end h-10 mb-8">
         <div className="flex border-2 border-[#225A4B] rounded-2xl overflow-hidden bg-[#F5F3EB]">
           <button

@@ -126,7 +126,7 @@ export const AddBagsSlice = createSlice({
         state.deleteError = null;
         state.deleteSuccess = false;
       })
-      .addCase(deleteBag.fulfilled, (state) => {
+      .addCase(deleteBag.fulfilled, (state, action) => {
         state.deleteLoading = false;
         state.deleteSuccess = true;
         state.deleteError = null;

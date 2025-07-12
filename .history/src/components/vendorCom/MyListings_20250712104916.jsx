@@ -48,36 +48,41 @@ const MyListings = () => {
     };
   }, [dispatch]);
 
+  // Debug authentication status
+  const token = localStorage.getItem("token");
+  const userType = localStorage.getItem("userType");
+
+  // Debug section (remove in production)
+  const debugInfo = (
+    <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <h3 className="text-sm font-bold text-yellow-800 mb-2">Debug Info:</h3>
+      <p className="text-xs text-yellow-700">
+        Token: {token ? "Present" : "Missing"}
+      </p>
+      <p className="text-xs text-yellow-700">
+        User Type: {userType || "Not set"}
+      </p>
+      <p className="text-xs text-yellow-700">Active Tab: {activeTab}</p>
+    </div>
+  );
+
   const handleEdit = (id) => {
     console.log("Edit item:", id);
     // Add edit functionality - navigate to edit page
   };
 
   const handleDelete = async (id) => {
-    console.log(
-      "Attempting to delete item with ID:",
-      id,
-      "Active tab:",
-      activeTab
-    );
-
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         if (activeTab === "products") {
-          console.log("Deleting product with ID:", id);
           await dispatch(deleteVendorListing(id)).unwrap();
-          // Refresh products list
-          dispatch(getVendorListings());
         } else if (activeTab === "bags") {
-          console.log("Deleting bag with ID:", id);
           await dispatch(deleteBag(id)).unwrap();
-          // Refresh bags list
-          dispatch(getVendorBagListings());
         }
-        console.log("Item deleted successfully");
+        // Optionally show success message
       } catch (error) {
         console.error("Failed to delete item:", error);
-        alert("Failed to delete item. Please try again.");
+        // Optionally show error message
       }
     }
   };
