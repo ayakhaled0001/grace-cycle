@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const ReceivingAddress = () => {
   const [selected, setSelected] = useState("branch");
+  const [customAddress, setCustomAddress] = useState("");
 
   const optionStyle = (isActive) =>
     `flex items-center gap-3 cursor-pointer p-2 rounded-md transition-all font-nunitoBold 
@@ -51,6 +52,21 @@ const ReceivingAddress = () => {
             <span>Egypt, Cairo, Alf maskan</span>
           </span>
         </label>
+        {/* Custom Address Input */}
+        {selected === "address" && (
+          <div className="mt-2 p-4 rounded-md transition-all duration-300 ease-in-out transform origin-top">
+            <label className="block text-sm font-nunitoBold text-[#225A4B] mb-2">
+              Enter your detailed address:
+            </label>
+            <input
+              type="text"
+              value={customAddress}
+              onChange={(e) => setCustomAddress(e.target.value)}
+              placeholder="Enter your full address here..."
+              className="bg-[#EFF0E9] w-full p-3 border border-gray-300 rounded-md font-nunitoBold focus:outline-none focus:border-[#225A4B] focus:ring-1 focus:ring-[#225A4B]"
+            />
+          </div>
+        )}
         <label className={optionStyle(selected === "new")}>
           <input
             type="radio"
@@ -68,6 +84,37 @@ const ReceivingAddress = () => {
             <span>Add new address</span>
           </span>
         </label>
+
+        {/* Custom Address Input for New Address */}
+        {selected === "new" && (
+          <div className="mt-2 p-4 rounded-md transition-all duration-300 ease-in-out transform origin-top">
+            <label className="block text-sm font-nunitoBold text-[#225A4B] mb-2">
+              Enter your new address:
+            </label>
+            <input
+              type="text"
+              value={customAddress}
+              onChange={(e) => setCustomAddress(e.target.value)}
+              placeholder="Enter your new address here..."
+              className="bg-[#EFF0E9] w-full p-3 border border-gray-300 rounded-md font-nunitoBold focus:outline-none focus:border-[#225A4B] focus:ring-1 focus:ring-[#225A4B]"
+            />
+          </div>
+        )}
+        {/* Custom Address Input */}
+        {selected === "address" && (
+          <div className="mt-2 p-4 rounded-md transition-all duration-300 ease-in-out transform origin-top">
+            <label className="block text-sm font-nunitoBold text-[#225A4B] mb-2">
+              Enter your detailed address:
+            </label>
+            <input
+              type="text"
+              value={customAddress}
+              onChange={(e) => setCustomAddress(e.target.value)}
+              placeholder="Enter your full address here..."
+              className="bg-[#EFF0E9] w-full p-3 border border-gray-300 rounded-md font-nunitoBold focus:outline-none focus:border-[#225A4B] focus:ring-1 focus:ring-[#225A4B]"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

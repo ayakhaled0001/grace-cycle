@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const PaymentMethod = () => {
   const [method, setMethod] = useState("card");
+  const [selectedCard, setSelectedCard] = useState("instapay");
   const [card, setCard] = useState({
     number: "",
     name: "",
@@ -51,20 +52,48 @@ const PaymentMethod = () => {
         style={{ cursor: "pointer" }}
       >
         <div className="flex gap-6 mb-4 justify-center">
-          <div className="w-20 h-10 border border-[#225A4B] rounded-lg p-1 bg-transparent flex items-center justify-center">
+          <div
+            className={`w-20 h-10 border rounded-lg p-1 bg-transparent flex items-center justify-center cursor-pointer transition-all ${
+              selectedCard === "instapay"
+                ? "border-2 border-[#225A4B]"
+                : "border border-gray-300"
+            }`}
+            onClick={() => setSelectedCard("instapay")}
+          >
             <img src="/icons/instapay.svg" alt="instapay" />
           </div>
-          <div className="w-20 h-10 border border-[#225A4B] rounded-lg p-1 bg-transparent flex items-center justify-center">
+          <div
+            className={`w-20 h-10 border rounded-lg p-1 bg-transparent flex items-center justify-center cursor-pointer transition-all ${
+              selectedCard === "paypal"
+                ? "border-2 border-[#225A4B]"
+                : "border border-gray-300"
+            }`}
+            onClick={() => setSelectedCard("paypal")}
+          >
             <img src="/icons/paypal.svg" alt="paypal" />
           </div>
-          <div className="w-20 h-10 border border-[#225A4B] rounded-lg p-1 bg-transparent flex items-center justify-center">
+          <div
+            className={`w-20 h-10 border rounded-lg p-1 bg-transparent flex items-center justify-center cursor-pointer transition-all ${
+              selectedCard === "visa"
+                ? "border-2 border-[#225A4B]"
+                : "border border-gray-300"
+            }`}
+            onClick={() => setSelectedCard("visa")}
+          >
             <img
               src="/icons/visa.svg"
               alt="visa"
               className="w-10 h-6 object-contain"
             />
           </div>
-          <div className="w-20 h-10 border border-[#225A4B] rounded-lg p-1 bg-transparent flex items-center justify-center">
+          <div
+            className={`w-20 h-10 border rounded-lg p-1 bg-transparent flex items-center justify-center cursor-pointer transition-all ${
+              selectedCard === "mastercard"
+                ? "border-2 border-[#225A4B]"
+                : "border border-gray-300"
+            }`}
+            onClick={() => setSelectedCard("mastercard")}
+          >
             <img src="/icons/mastercard.svg" alt="mastercard" />
           </div>
         </div>

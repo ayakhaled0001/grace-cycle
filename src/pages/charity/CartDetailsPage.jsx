@@ -945,7 +945,10 @@ function CartDetailsPage() {
                 >
                   Checkout
                 </button>
-                <button className="w-full py-3 bg-transparent text-btnsGreen border border-btnsGreen rounded-md font-semibold hover:bg-btnsGreen hover:text-white transition-colors">
+                <button
+                  className="w-full py-3 bg-transparent text-btnsGreen border border-btnsGreen rounded-md font-semibold hover:bg-btnsGreen hover:text-white transition-colors"
+                  onClick={() => navigate("/CharityPage")}
+                >
                   Add Items
                 </button>
               </div>
