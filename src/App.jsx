@@ -30,6 +30,8 @@ import VendorDetails from "./pages/charity/VendorDetails";
 import CharityProfile from "./components/charityCom/CharityProfile";
 import AddNewBag from "./components/vendorCom/AddNewBag";
 import PublicServicesPage from "./pages/home/PublicServicesPage";
+import PaymentPage from "./pages/charity/PaymentPage";
+import OrderSuccess from "./pages/charity/order-success";
 // import GlobalLoader from "./components/loadersCom/GlobalLoader";
 import { useEffect } from "react";
 
@@ -61,6 +63,8 @@ function App() {
             <Route path="magicbags/:bagId" element={<MagicBagsInfo />} />
             <Route path="vendor/:vendorId" element={<VendorDetails />} />
           </Route>
+          <Route path="/CharityPage/payment" element={<PaymentPage />} />
+          <Route path="/CharityPage/order-success" element={<OrderSuccess />} />
           <Route path="/favorites" element={<FavoriteItemsPage />} />
           <Route path="/charityProfile" element={<CharityProfile />} />
           <Route path="/PublicServicesPage" element={<PublicServicesPage />} />
