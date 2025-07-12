@@ -46,7 +46,7 @@ const AddNewItemForm = ({ type }) => {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [categoriesError, setCategoriesError] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const {
   //   loading: addBagLoading,
   //   success: addBagSuccess,

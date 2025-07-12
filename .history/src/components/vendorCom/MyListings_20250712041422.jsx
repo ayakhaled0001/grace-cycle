@@ -55,11 +55,7 @@ const MyListings = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
-        if (activeTab === "products") {
-          await dispatch(deleteVendorListing(id)).unwrap();
-        } else if (activeTab === "bags") {
-          await dispatch(deleteVendorBag(id)).unwrap();
-        }
+        await dispatch(deleteVendorListing(id)).unwrap();
         // Optionally show success message
       } catch (error) {
         console.error("Failed to delete item:", error);
@@ -74,10 +70,7 @@ const MyListings = () => {
   };
 
   const formatPrice = (price) => {
-    if (price === null || price === undefined || isNaN(price)) {
-      return "$0.00";
-    }
-    return `$${Number(price).toFixed(2)}`;
+    return `$${price.toFixed(2)}`;
   };
 
   const getStatusBadge = (status) => {
@@ -222,9 +215,7 @@ const MyListings = () => {
                     Price Before
                   </span>
                   <span className="text-gray-700 line-through">
-                    {formatPrice(
-                      item.unitPrice || item.originalPrice || item.price
-                    )}
+                    {formatPrice(item.unitPrice || item.originalPrice)}
                   </span>
                 </div>
                 {/* Price After */}

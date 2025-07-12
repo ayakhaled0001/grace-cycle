@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-// import { addBag } from "../../redux/AddBagsSlice";
-import { addVendorBag } from "../../redux/VendorBagListingSlice";
 
 const CATEGORIES_API = "https://gracecycleapi.azurewebsites.net/api/categories";
 
@@ -46,12 +43,6 @@ const AddNewItemForm = ({ type }) => {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [categoriesError, setCategoriesError] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  // const {
-  //   loading: addBagLoading,
-  //   success: addBagSuccess,
-  //   error: addBagError,
-  // } = useSelector((state) => state.addBag);
 
   // Helper to get token
   const getToken = () => localStorage.getItem("token");
@@ -191,50 +182,16 @@ const AddNewItemForm = ({ type }) => {
       }
     }
 
-    // Prepare the payload based on type
-    let payload;
-
-    if (type === "bag") {
-      // Bag payload structure - ensure all required fields are present
-      payload = {
-        name: formData.foodName || "",
-        description: formData.description || "",
-        picUrl: picUrl || "",
-        quantity: Number(formData.quantity) || 0,
-        newPrice: Number(formData.discountPrice) || 0,
-        foodIds:
-          selectedCategoryIds && selectedCategoryIds.length > 0
-            ? selectedCategoryIds
-            : [1, 2, 3], // Default food IDs if none selected
-      };
-
-      // Validate required fields
-      if (
-        !payload.name ||
-        !payload.picUrl ||
-        payload.quantity <= 0 ||
-        payload.newPrice <= 0
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "Missing Required Fields",
-          text: "Please fill in all required fields: Bag Name, Quantity, and Price.",
-          confirmButtonText: "OK",
-        });
-        return;
-      }
-    } else {
-      // Food item payload structure
-      payload = {
-        Name: formData.foodName,
-        Description: formData.description,
-        PicUrl: picUrl,
-        Quantity: Number(formData.quantity),
-        UnitPrice: Number(formData.originalPrice),
-        NewPrice: Number(formData.discountPrice),
-        CategoryIds: selectedCategoryIds,
-      };
-    }
+    // Prepare the payload
+    const payload = {
+      Name: formData.foodName,
+      Description: formData.description,
+      PicUrl: picUrl,
+      Quantity: Number(formData.quantity),
+      UnitPrice: Number(formData.originalPrice),
+      NewPrice: Number(formData.discountPrice),
+      CategoryIds: selectedCategoryIds,
+    };
 
     // Extract food name from PicUrl (before extension)
     let extractedFoodName = "";
@@ -261,76 +218,30 @@ const AddNewItemForm = ({ type }) => {
     }
 
     try {
-      if (type === "bag") {
-        // Temporarily disabled - use fetch for bags too
-        const res = await fetch(
-          "https://gracecycleapi.azurewebsites.net/api/Bags/add-Bag",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-        if (!res.ok) throw new Error("Failed to add bag. Please try again.");
-        // Add the bag to the vendor bag listings
-        dispatch(
-          addVendorBag({
-            picUrl: picUrl,
-            name: formData.foodName,
-            quantity: Number(formData.quantity),
-            price: Number(formData.originalPrice),
-            newPrice: Number(formData.discountPrice),
-          })
-        );
-
-        await Swal.fire({
-          icon: "success",
-          title: "Bag added successfully!",
-          text: "Bag has been added to your listings.",
-          confirmButtonText: "OK",
-        });
-      } else {
-        // Use fetch for adding food items (existing logic)
-        const res = await fetch(
-          "https://gracecycleapi.azurewebsites.net/api/Foods/add-food",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-        if (!res.ok)
-          throw new Error("Failed to add product. Please try again.");
-        await Swal.fire({
-          icon: "success",
-          title: "Added successfully!",
-          text: "Product added successfully.",
-          confirmButtonText: "OK",
-        });
-      }
+      const res = await fetch(
+        "https://gracecycleapi.azurewebsites.net/api/Foods/add-food",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+      if (!res.ok) throw new Error("Failed to add product. Please try again.");
+      await Swal.fire({
+        icon: "success",
+        title: "Added successfully!",
+        text: "Product added successfully.",
+        confirmButtonText: "OK",
+      });
       navigate("/VendorPage/myListings");
     } catch (err) {
-      console.error("API Error:", err);
-      let errorMessage = "An error occurred during addition.";
-
-      if (err.message) {
-        errorMessage = err.message;
-      } else if (err.payload) {
-        errorMessage = err.payload;
-      } else if (err.error) {
-        errorMessage = err.error;
-      }
-
       Swal.fire({
         icon: "error",
         title: "Error!",
-        text: errorMessage,
+        text: err.message || "An error occurred during addition.",
         confirmButtonText: "OK",
       });
     }
@@ -352,13 +263,15 @@ const AddNewItemForm = ({ type }) => {
     <>
       <div
         className="font-bold text-xl md:text-2xl text-center mb-8 text-[#BC0101] tracking-wide font-nunitoExtralight rounded-lg animate-bounce"
-        style={{ letterSpacing: "0.04em" }}>
+        style={{ letterSpacing: "0.04em" }}
+      >
         Join us in reducing food waste! <br />
         Every item you add makes a difference
       </div>
       <form
         onSubmit={handleSubmit}
-        className="w-full p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+        className="w-full p-6 grid grid-cols-1 md:grid-cols-2 gap-8"
+      >
         {/* Left column */}
         <div className="flex flex-col gap-4">
           <label className="font-nunitoBold text-lg">
@@ -433,7 +346,8 @@ const AddNewItemForm = ({ type }) => {
                   categories.map((cat) => (
                     <label
                       key={cat.id || cat._id || cat.name}
-                      className="flex items-center gap-2 cursor-pointer">
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
                       <input
                         type="checkbox"
                         checked={formData.selectedItems.includes(cat.name)}
@@ -477,7 +391,8 @@ const AddNewItemForm = ({ type }) => {
                   </p>
                   <label
                     htmlFor="image"
-                    className="bg-[#225A4A] mt-1 font-nunitoBold text-lg rounded-md text-white px-4 py-1 cursor-pointer">
+                    className="bg-[#225A4A] mt-1 font-nunitoBold text-lg rounded-md text-white px-4 py-1 cursor-pointer"
+                  >
                     Upload
                   </label>
                 </>
@@ -514,10 +429,9 @@ const AddNewItemForm = ({ type }) => {
             <button
               type="submit"
               className="bg-[#225A4A] font-nunitoBold text-lg w-1/2 rounded-md text-white px-4 py-2"
-              disabled={uploadingImage}>
-              {uploadingImage
-                ? "Adding..."
-                : `Add ${type === "bag" ? "Bag" : "Item"}`}
+              disabled={uploadingImage}
+            >
+              {uploadingImage ? "Adding..." : "Add"}
             </button>
             <button
               type="button"
@@ -535,7 +449,8 @@ const AddNewItemForm = ({ type }) => {
                   selectedItems: [],
                 })
               }
-              disabled={uploadingImage}>
+              disabled={uploadingImage}
+            >
               Cancel
             </button>
           </div>

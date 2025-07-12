@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 // import { addBag } from "../../redux/AddBagsSlice";
-import { addVendorBag } from "../../redux/VendorBagListingSlice";
 
 const CATEGORIES_API = "https://gracecycleapi.azurewebsites.net/api/categories";
 
@@ -47,11 +46,11 @@ const AddNewItemForm = ({ type }) => {
   const [categoriesError, setCategoriesError] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const {
-  //   loading: addBagLoading,
-  //   success: addBagSuccess,
-  //   error: addBagError,
-  // } = useSelector((state) => state.addBag);
+  const {
+    loading: addBagLoading,
+    success: addBagSuccess,
+    error: addBagError,
+  } = useSelector((state) => state.addBag);
 
   // Helper to get token
   const getToken = () => localStorage.getItem("token");
@@ -262,34 +261,12 @@ const AddNewItemForm = ({ type }) => {
 
     try {
       if (type === "bag") {
-        // Temporarily disabled - use fetch for bags too
-        const res = await fetch(
-          "https://gracecycleapi.azurewebsites.net/api/Bags/add-Bag",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-        if (!res.ok) throw new Error("Failed to add bag. Please try again.");
-        // Add the bag to the vendor bag listings
-        dispatch(
-          addVendorBag({
-            picUrl: picUrl,
-            name: formData.foodName,
-            quantity: Number(formData.quantity),
-            price: Number(formData.originalPrice),
-            newPrice: Number(formData.discountPrice),
-          })
-        );
-
+        // Use Redux action for adding bags
+        const result = await dispatch(addBag(payload)).unwrap();
         await Swal.fire({
           icon: "success",
           title: "Bag added successfully!",
-          text: "Bag has been added to your listings.",
+          text: result || "Bag has been added to your listings.",
           confirmButtonText: "OK",
         });
       } else {
@@ -514,8 +491,8 @@ const AddNewItemForm = ({ type }) => {
             <button
               type="submit"
               className="bg-[#225A4A] font-nunitoBold text-lg w-1/2 rounded-md text-white px-4 py-2"
-              disabled={uploadingImage}>
-              {uploadingImage
+              disabled={uploadingImage || addBagLoading}>
+              {uploadingImage || addBagLoading
                 ? "Adding..."
                 : `Add ${type === "bag" ? "Bag" : "Item"}`}
             </button>
@@ -535,7 +512,7 @@ const AddNewItemForm = ({ type }) => {
                   selectedItems: [],
                 })
               }
-              disabled={uploadingImage}>
+              disabled={uploadingImage || addBagLoading}>
               Cancel
             </button>
           </div>

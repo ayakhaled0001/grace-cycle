@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Skeleton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   getVendorListings,
   deleteVendorListing,
   clearError,
 } from "../../redux/VendorListingSlice";
-import {
-  getVendorBagListings,
-  deleteVendorBag,
-  clearError as clearBagError,
-} from "../../redux/VendorBagListingSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MyListings = () => {
   const dispatch = useDispatch();
@@ -22,20 +21,26 @@ const MyListings = () => {
   const { vendorListings, isLoading, error, totalCount } = useSelector(
     (state) => state.vendorListing
   );
-  const {
-    vendorBags,
-    isLoading: bagsLoading,
-    error: bagsError,
-  } = useSelector((state) => state.vendorBagListing);
 
-  const currentData = activeTab === "products" ? vendorListings : vendorBags;
+  // Mock data for magic bags - replace with actual API when available
+  const mockBags = [
+    {
+      id: 1,
+      name: "Surprise Magic Bag",
+      quantity: 5,
+      originalPrice: 80.0,
+      discountedPrice: 56.0,
+      image: "/services/magicbags.png",
+      status: "active",
+    },
+  ];
+
+  const currentData = activeTab === "products" ? vendorListings : mockBags;
 
   // Fetch vendor listings on component mount
   useEffect(() => {
     if (activeTab === "products") {
       dispatch(getVendorListings());
-    } else if (activeTab === "bags") {
-      dispatch(getVendorBagListings());
     }
   }, [dispatch, activeTab]);
 
@@ -43,7 +48,6 @@ const MyListings = () => {
   useEffect(() => {
     return () => {
       dispatch(clearError());
-      dispatch(clearBagError());
     };
   }, [dispatch]);
 
@@ -55,11 +59,7 @@ const MyListings = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
-        if (activeTab === "products") {
-          await dispatch(deleteVendorListing(id)).unwrap();
-        } else if (activeTab === "bags") {
-          await dispatch(deleteVendorBag(id)).unwrap();
-        }
+        await dispatch(deleteVendorListing(id)).unwrap();
         // Optionally show success message
       } catch (error) {
         console.error("Failed to delete item:", error);
@@ -74,10 +74,7 @@ const MyListings = () => {
   };
 
   const formatPrice = (price) => {
-    if (price === null || price === undefined || isNaN(price)) {
-      return "$0.00";
-    }
-    return `$${Number(price).toFixed(2)}`;
+    return `$${price.toFixed(2)}`;
   };
 
   const getStatusBadge = (status) => {
@@ -93,7 +90,7 @@ const MyListings = () => {
     );
   };
 
-  if (isLoading || bagsLoading) {
+  if (isLoading) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-sm">
         <Skeleton variant="text" width="30%" height={40} />
@@ -135,9 +132,9 @@ const MyListings = () => {
       </h1>
 
       {/* Error Display */}
-      {(error || bagsError) && (
+      {error && (
         <div className="px-6 py-3 bg-red-50 border-b border-red-200 rounded-lg mb-4">
-          <p className="text-red-600 text-sm">{error || bagsError}</p>
+          <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
@@ -222,9 +219,7 @@ const MyListings = () => {
                     Price Before
                   </span>
                   <span className="text-gray-700 line-through">
-                    {formatPrice(
-                      item.unitPrice || item.originalPrice || item.price
-                    )}
+                    {formatPrice(item.unitPrice || item.originalPrice)}
                   </span>
                 </div>
                 {/* Price After */}

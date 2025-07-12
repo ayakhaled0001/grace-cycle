@@ -46,7 +46,7 @@ const AddNewItemForm = ({ type }) => {
   const [loadingCategories, setLoadingCategories] = useState(false);
   const [categoriesError, setCategoriesError] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   // const {
   //   loading: addBagLoading,
   //   success: addBagSuccess,
@@ -275,17 +275,6 @@ const AddNewItemForm = ({ type }) => {
           }
         );
         if (!res.ok) throw new Error("Failed to add bag. Please try again.");
-        // Add the bag to the vendor bag listings
-        dispatch(
-          addVendorBag({
-            picUrl: picUrl,
-            name: formData.foodName,
-            quantity: Number(formData.quantity),
-            price: Number(formData.originalPrice),
-            newPrice: Number(formData.discountPrice),
-          })
-        );
-
         await Swal.fire({
           icon: "success",
           title: "Bag added successfully!",

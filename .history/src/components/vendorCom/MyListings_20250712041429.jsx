@@ -74,10 +74,7 @@ const MyListings = () => {
   };
 
   const formatPrice = (price) => {
-    if (price === null || price === undefined || isNaN(price)) {
-      return "$0.00";
-    }
-    return `$${Number(price).toFixed(2)}`;
+    return `$${price.toFixed(2)}`;
   };
 
   const getStatusBadge = (status) => {
@@ -222,9 +219,7 @@ const MyListings = () => {
                     Price Before
                   </span>
                   <span className="text-gray-700 line-through">
-                    {formatPrice(
-                      item.unitPrice || item.originalPrice || item.price
-                    )}
+                    {formatPrice(item.unitPrice || item.originalPrice)}
                   </span>
                 </div>
                 {/* Price After */}

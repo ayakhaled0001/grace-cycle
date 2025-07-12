@@ -1,41 +1,63 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Skeleton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   getVendorListings,
   deleteVendorListing,
   clearError,
 } from "../../redux/VendorListingSlice";
-import {
-  getVendorBagListings,
-  deleteVendorBag,
-  clearError as clearBagError,
-} from "../../redux/VendorBagListingSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MyListings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("products");
+  const [bags, setBags] = useState([]);
+  const [bagsLoading, setBagsLoading] = useState(false);
+  const [bagsError, setBagsError] = useState(null);
 
   // Redux state
   const { vendorListings, isLoading, error, totalCount } = useSelector(
     (state) => state.vendorListing
   );
-  const {
-    vendorBags,
-    isLoading: bagsLoading,
-    error: bagsError,
-  } = useSelector((state) => state.vendorBagListing);
 
-  const currentData = activeTab === "products" ? vendorListings : vendorBags;
+  const currentData = activeTab === "products" ? vendorListings : bags;
+
+  // Helper to get token
+  const getToken = () => localStorage.getItem("token");
+
+  // Function to fetch vendor bags
+  const fetchVendorBags = async () => {
+    setBagsLoading(true);
+    setBagsError(null);
+    try {
+      // Get bags from localStorage (temporary solution until backend endpoint is ready)
+      const storedBags = localStorage.getItem("vendorBags");
+      if (storedBags) {
+        const parsedBags = JSON.parse(storedBags);
+        setBags(parsedBags);
+      } else {
+        setBags([]);
+      }
+    } catch (error) {
+      console.error("Error fetching bags:", error);
+      setBagsError("Failed to fetch bags");
+      setBags([]);
+    } finally {
+      setBagsLoading(false);
+    }
+  };
 
   // Fetch vendor listings on component mount
   useEffect(() => {
     if (activeTab === "products") {
       dispatch(getVendorListings());
     } else if (activeTab === "bags") {
-      dispatch(getVendorBagListings());
+      fetchVendorBags();
     }
   }, [dispatch, activeTab]);
 
@@ -43,7 +65,6 @@ const MyListings = () => {
   useEffect(() => {
     return () => {
       dispatch(clearError());
-      dispatch(clearBagError());
     };
   }, [dispatch]);
 
@@ -58,7 +79,14 @@ const MyListings = () => {
         if (activeTab === "products") {
           await dispatch(deleteVendorListing(id)).unwrap();
         } else if (activeTab === "bags") {
-          await dispatch(deleteVendorBag(id)).unwrap();
+          // Delete bag from localStorage
+          const storedBags = localStorage.getItem("vendorBags");
+          if (storedBags) {
+            const existingBags = JSON.parse(storedBags);
+            const updatedBags = existingBags.filter((bag) => bag.id !== id);
+            localStorage.setItem("vendorBags", JSON.stringify(updatedBags));
+            setBags(updatedBags);
+          }
         }
         // Optionally show success message
       } catch (error) {
@@ -74,10 +102,7 @@ const MyListings = () => {
   };
 
   const formatPrice = (price) => {
-    if (price === null || price === undefined || isNaN(price)) {
-      return "$0.00";
-    }
-    return `$${Number(price).toFixed(2)}`;
+    return `$${price.toFixed(2)}`;
   };
 
   const getStatusBadge = (status) => {
@@ -222,9 +247,7 @@ const MyListings = () => {
                     Price Before
                   </span>
                   <span className="text-gray-700 line-through">
-                    {formatPrice(
-                      item.unitPrice || item.originalPrice || item.price
-                    )}
+                    {formatPrice(item.unitPrice || item.originalPrice)}
                   </span>
                 </div>
                 {/* Price After */}

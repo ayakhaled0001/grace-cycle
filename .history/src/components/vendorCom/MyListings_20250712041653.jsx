@@ -222,9 +222,7 @@ const MyListings = () => {
                     Price Before
                   </span>
                   <span className="text-gray-700 line-through">
-                    {formatPrice(
-                      item.unitPrice || item.originalPrice || item.price
-                    )}
+                    {formatPrice(item.unitPrice || item.originalPrice)}
                   </span>
                 </div>
                 {/* Price After */}

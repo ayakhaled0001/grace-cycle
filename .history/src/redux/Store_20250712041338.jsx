@@ -22,7 +22,6 @@ export const store = configureStore({
     forgetPassword: ForgetPasswordSlice,
     bags: bagsReducer,
     addBag: addBagsReducer,
-    vendorBagListing: vendorBagListingReducer,
     servicesFood: foodReducer,
     foodFilter: foodFilterReducer,
     categories: categoriesReducer,
