@@ -1,182 +1,120 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Skeleton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   getVendorListings,
   deleteVendorListing,
   clearError,
 } from "../../redux/VendorListingSlice";
-import {
-  getVendorBagListings,
-  clearError as clearBagError,
-} from "../../redux/VendorBagListingSlice";
-import { deleteBag, clearDeleteState } from "../../redux/AddBagsSlice";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const MyListings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("products");
+  const [bags, setBags] = useState([]);
+  const [bagsLoading, setBagsLoading] = useState(false);
+  const [bagsError, setBagsError] = useState(null);
 
   // Redux state
-  const { vendorListings, isLoading, error } = useSelector(
+  const { vendorListings, isLoading, error, totalCount } = useSelector(
     (state) => state.vendorListing
   );
-  const {
-    vendorBags,
-    isLoading: bagsLoading,
-    error: bagsError,
-  } = useSelector((state) => state.vendorBagListing);
 
-  const currentData = activeTab === "products" ? vendorListings : vendorBags;
+  const currentData = activeTab === "products" ? vendorListings : bags;
 
-  // Authentication check
-  const checkAuthentication = () => {
-    const token = localStorage.getItem("token");
-    const userType = localStorage.getItem("userType");
+  // Helper to get token
+  const getToken = () => localStorage.getItem("token");
 
-    if (!token) {
-      alert("Please log in to access this page.");
-      navigate("/log-in");
-      return false;
+  // Function to fetch vendor bags
+  const fetchVendorBags = async () => {
+    setBagsLoading(true);
+    setBagsError(null);
+    try {
+      const token = getToken();
+      if (!token) {
+        setBagsError("No authentication token found");
+        return;
+      }
+
+      const response = await axios.get(
+        "https://gracecycleapi.azurewebsites.net/api/Bags/vendor-bags",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setBags(response.data || []);
+    } catch (error) {
+      console.error("Error fetching bags:", error);
+      setBagsError(error.response?.data?.message || "Failed to fetch bags");
+      setBags([]);
+    } finally {
+      setBagsLoading(false);
     }
-
-    if (userType !== "Vendor") {
-      alert("Access denied. This page is for vendors only.");
-      navigate("/");
-      return false;
-    }
-
-    return true;
   };
 
   // Fetch vendor listings on component mount
   useEffect(() => {
-    if (!checkAuthentication()) return;
-
     if (activeTab === "products") {
       dispatch(getVendorListings());
     } else if (activeTab === "bags") {
-      dispatch(getVendorBagListings());
+      fetchVendorBags();
     }
-  }, [dispatch, activeTab, navigate]);
+  }, [dispatch, activeTab]);
 
   // Clear error when component unmounts
   useEffect(() => {
     return () => {
       dispatch(clearError());
-      dispatch(clearBagError());
-      dispatch(clearDeleteState());
     };
   }, [dispatch]);
 
-  // const handleEdit = (id) => {
-  //   console.log("Edit item:", id);
-  //   // Add edit functionality - navigate to edit page
-  // };
+  const handleEdit = (id) => {
+    console.log("Edit item:", id);
+    // Add edit functionality - navigate to edit page
+  };
 
   const handleDelete = async (id) => {
-    // Check authentication before delete
-    if (!checkAuthentication()) return;
-
-    console.log(
-      "Attempting to delete item with ID:",
-      id,
-      "Active tab:",
-      activeTab
-    );
-
     if (window.confirm("Are you sure you want to delete this item?")) {
-      let retryCount = 0;
-      const maxRetries = 2;
-
-      const attemptDelete = async () => {
-        try {
-          if (activeTab === "products") {
-            console.log(
-              `Attempt ${retryCount + 1}: Deleting product with ID:`,
-              id
-            );
-            await dispatch(deleteVendorListing(id)).unwrap();
-            // Refresh products list
-            dispatch(getVendorListings());
-            alert("Product deleted successfully!");
-          } else if (activeTab === "bags") {
-            console.log(`Attempt ${retryCount + 1}: Deleting bag with ID:`, id);
-            await dispatch(deleteBag(id)).unwrap();
-            // Refresh bags list
-            dispatch(getVendorBagListings());
-            alert("Magic bag deleted successfully!");
-          }
-          console.log("Item deleted successfully");
-          return true;
-        } catch (error) {
-          console.error(`Attempt ${retryCount + 1} failed:`, error);
-
-          // Handle specific error types
-          if (error.includes("401") || error.includes("Unauthorized")) {
-            alert("Session expired. Please log in again.");
-            localStorage.clear();
-            navigate("/log-in");
-            return false;
-          } else if (error.includes("403") || error.includes("Forbidden")) {
-            alert("You don't have permission to delete this item.");
-            return false;
-          } else if (
-            error.includes("500") ||
-            error.includes("Internal Server Error")
-          ) {
-            retryCount++;
-            if (retryCount <= maxRetries) {
-              console.log(`Retrying delete (${retryCount}/${maxRetries})...`);
-              // Wait 2 seconds before retrying
-              await new Promise((resolve) => setTimeout(resolve, 2000));
-              return await attemptDelete();
-            } else {
-              alert(
-                "Server error occurred after multiple attempts. Please try again later or contact support."
-              );
-              return false;
-            }
-          } else {
-            alert(
-              `Failed to delete ${activeTab.slice(0, -1)}. Please try again.`
-            );
-            return false;
-          }
-        }
-      };
-
-      await attemptDelete();
+      try {
+        await dispatch(deleteVendorListing(id)).unwrap();
+        // Optionally show success message
+      } catch (error) {
+        console.error("Failed to delete item:", error);
+        // Optionally show error message
+      }
     }
   };
 
-  // const handleView = (id) => {
-  //   console.log("View item:", id);
-  //   // Add view functionality - navigate to view page
-  // };
+  const handleView = (id) => {
+    console.log("View item:", id);
+    // Add view functionality - navigate to view page
+  };
 
   const formatPrice = (price) => {
-    if (price === null || price === undefined || isNaN(price)) {
-      return "$0.00";
-    }
-    return `$${Number(price).toFixed(2)}`;
+    return `$${price.toFixed(2)}`;
   };
 
-  // const getStatusBadge = (status) => {
-  //   return (
-  //     <span
-  //       className={`px-2 py-1 rounded-full text-xs font-semibold ${
-  //         status === "active"
-  //           ? "bg-green-100 text-green-800"
-  //           : "bg-red-100 text-red-800"
-  //       }`}>
-  //       {status === "active" ? "Active" : "Inactive"}
-  //     </span>
-  //   );
-  // };
+  const getStatusBadge = (status) => {
+    return (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+          status === "active"
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+        }`}>
+        {status === "active" ? "Active" : "Inactive"}
+      </span>
+    );
+  };
 
-  if (isLoading || bagsLoading) {
+  if (isLoading) {
     return (
       <div className="p-6 bg-white rounded-lg shadow-sm">
         <Skeleton variant="text" width="30%" height={40} />
@@ -218,9 +156,9 @@ const MyListings = () => {
       </h1>
 
       {/* Error Display */}
-      {(error || bagsError) && (
+      {error && (
         <div className="px-6 py-3 bg-red-50 border-b border-red-200 rounded-lg mb-4">
-          <p className="text-red-600 text-sm">{error || bagsError}</p>
+          <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
@@ -305,9 +243,7 @@ const MyListings = () => {
                     Price Before
                   </span>
                   <span className="text-gray-700 line-through">
-                    {formatPrice(
-                      item.unitPrice || item.originalPrice || item.price
-                    )}
+                    {formatPrice(item.unitPrice || item.originalPrice)}
                   </span>
                 </div>
                 {/* Price After */}

@@ -151,10 +151,10 @@ const MyListings = () => {
     }
   };
 
-  // const handleView = (id) => {
-  //   console.log("View item:", id);
-  //   // Add view functionality - navigate to view page
-  // };
+  const handleView = (id) => {
+    console.log("View item:", id);
+    // Add view functionality - navigate to view page
+  };
 
   const formatPrice = (price) => {
     if (price === null || price === undefined || isNaN(price)) {
@@ -163,18 +163,18 @@ const MyListings = () => {
     return `$${Number(price).toFixed(2)}`;
   };
 
-  // const getStatusBadge = (status) => {
-  //   return (
-  //     <span
-  //       className={`px-2 py-1 rounded-full text-xs font-semibold ${
-  //         status === "active"
-  //           ? "bg-green-100 text-green-800"
-  //           : "bg-red-100 text-red-800"
-  //       }`}>
-  //       {status === "active" ? "Active" : "Inactive"}
-  //     </span>
-  //   );
-  // };
+  const getStatusBadge = (status) => {
+    return (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+          status === "active"
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+        }`}>
+        {status === "active" ? "Active" : "Inactive"}
+      </span>
+    );
+  };
 
   if (isLoading || bagsLoading) {
     return (

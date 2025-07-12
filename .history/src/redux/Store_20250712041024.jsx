@@ -3,7 +3,6 @@ import AuthSlice from "./AuthSlice";
 import ForgetPasswordSlice from "./ForgetPassSlice";
 import bagsReducer from "./BagsSlice";
 import addBagsReducer from "./AddBagsSlice";
-import vendorBagListingReducer from "./VendorBagListingSlice";
 import foodReducer from "./FoodSlice";
 import foodFilterReducer from "./FoodFilterSlice";
 import categoriesReducer from "./CategoriesSlice";
@@ -22,7 +21,6 @@ export const store = configureStore({
     forgetPassword: ForgetPasswordSlice,
     bags: bagsReducer,
     addBag: addBagsReducer,
-    vendorBagListing: vendorBagListingReducer,
     servicesFood: foodReducer,
     foodFilter: foodFilterReducer,
     categories: categoriesReducer,

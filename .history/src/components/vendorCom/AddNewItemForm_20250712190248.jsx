@@ -60,28 +60,9 @@ const AddNewItemForm = ({ type }) => {
   const getToken = () => localStorage.getItem("token");
 
   useEffect(() => {
-    // Fetch food items for vendor when adding a bag
+    // Only fetch food items for vendor when adding a bag
     if (type === "bag") {
       dispatch(getFoodForVendor());
-    }
-
-    // Fetch categories when adding a product
-    if (type === "product") {
-      setLoadingCategories(true);
-      fetch(CATEGORIES_API)
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch categories");
-          return res.json();
-        })
-        .then((data) => {
-          setCategories(Array.isArray(data) ? data : []);
-          setCategoriesError(null);
-        })
-        .catch(() => {
-          setCategoriesError("Failed to load categories");
-          setCategories([]);
-        })
-        .finally(() => setLoadingCategories(false));
     }
 
     // Cleanup on unmount
@@ -106,19 +87,13 @@ const AddNewItemForm = ({ type }) => {
       return;
     }
 
-    // Map selectedItems to their IDs based on type
-    let selectedIds = [];
-    if (type === "bag") {
-      // For bags, map food names to food IDs
-      selectedIds = foodForVendor
-        .filter((food) => formData.selectedItems.includes(food.name))
-        .map((food) => food.id);
-    } else if (type === "product") {
-      // For products, map category names to category IDs
-      selectedIds = categories
-        .filter((cat) => formData.selectedItems.includes(cat.name))
-        .map((cat) => cat.id || cat._id);
-    }
+    // Map selectedItems (food names) to their IDs - only for bags
+    const selectedFoodIds =
+      type === "bag"
+        ? foodForVendor
+            .filter((food) => formData.selectedItems.includes(food.name))
+            .map((food) => food.id)
+        : [];
 
     let picUrl = "";
     let usedMatchedImage = false;
@@ -230,7 +205,9 @@ const AddNewItemForm = ({ type }) => {
         quantity: Number(formData.quantity) || 0,
         newPrice: Number(formData.discountPrice) || 0,
         foodIds:
-          selectedIds && selectedIds.length > 0 ? selectedIds : [1, 2, 3], // Default food IDs if none selected
+          selectedFoodIds && selectedFoodIds.length > 0
+            ? selectedFoodIds
+            : [1, 2, 3], // Default food IDs if none selected
       };
 
       // Validate required fields
@@ -257,7 +234,7 @@ const AddNewItemForm = ({ type }) => {
         Quantity: Number(formData.quantity),
         UnitPrice: Number(formData.originalPrice),
         NewPrice: Number(formData.discountPrice),
-        CategoryIds: selectedIds,
+        CategoryIds: selectedFoodIds,
       };
     }
 
@@ -466,41 +443,6 @@ const AddNewItemForm = ({ type }) => {
                         className="w-5 h-5 accent-[#225A4A]"
                       />
                       <span className="text-base">{food.name}</span>
-                    </label>
-                  ))}
-              </div>
-            </label>
-          )}
-          {type === "product" && (
-            <label className="font-nunitoBold text-lg">
-              Select categories
-              <div className="border-2 border-[#225A4A] rounded-lg bg-offWhite h-32 overflow-y-auto mt-1 flex flex-col gap-2 p-2 w-full">
-                {loadingCategories && (
-                  <span className="text-gray-500">Loading categories...</span>
-                )}
-                {categoriesError && (
-                  <span className="text-red-500">{categoriesError}</span>
-                )}
-                {!loadingCategories &&
-                  !categoriesError &&
-                  categories.length === 0 && (
-                    <span className="text-gray-500">
-                      No categories available
-                    </span>
-                  )}
-                {!loadingCategories &&
-                  !categoriesError &&
-                  categories.map((cat) => (
-                    <label
-                      key={cat.id || cat._id || cat.name}
-                      className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.selectedItems.includes(cat.name)}
-                        onChange={() => handleItemSelect(cat.name)}
-                        className="w-5 h-5 accent-[#225A4A]"
-                      />
-                      <span className="text-base">{cat.name}</span>
                     </label>
                   ))}
               </div>

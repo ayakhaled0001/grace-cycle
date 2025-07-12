@@ -1,13 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { addBag } from "../../redux/AddBagsSlice";
-import { addVendorBag } from "../../redux/VendorBagListingSlice";
-import {
-  getFoodForVendor,
-  clearFoodForVendorState,
-} from "../../redux/AddBagsSlice";
+import { addBag } from "../../redux/AddBagsSlice";
 
 const CATEGORIES_API = "https://gracecycleapi.azurewebsites.net/api/categories";
 
@@ -51,46 +46,32 @@ const AddNewItemForm = ({ type }) => {
   const [categoriesError, setCategoriesError] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // Get food for vendor from Redux state
-  const { foodForVendor, foodForVendorLoading, foodForVendorError } =
-    useSelector((state) => state.addBag);
+  const {
+    loading: addBagLoading,
+    success: addBagSuccess,
+    error: addBagError,
+  } = useSelector((state) => state.addBag);
 
   // Helper to get token
   const getToken = () => localStorage.getItem("token");
 
   useEffect(() => {
-    // Fetch food items for vendor when adding a bag
-    if (type === "bag") {
-      dispatch(getFoodForVendor());
-    }
-
-    // Fetch categories when adding a product
-    if (type === "product") {
-      setLoadingCategories(true);
-      fetch(CATEGORIES_API)
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch categories");
-          return res.json();
-        })
-        .then((data) => {
-          setCategories(Array.isArray(data) ? data : []);
-          setCategoriesError(null);
-        })
-        .catch(() => {
-          setCategoriesError("Failed to load categories");
-          setCategories([]);
-        })
-        .finally(() => setLoadingCategories(false));
-    }
-
-    // Cleanup on unmount
-    return () => {
-      if (type === "bag") {
-        dispatch(clearFoodForVendorState());
-      }
-    };
-  }, [dispatch, type]);
+    setLoadingCategories(true);
+    fetch(CATEGORIES_API)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch categories");
+        return res.json();
+      })
+      .then((data) => {
+        setCategories(Array.isArray(data) ? data : []);
+        setCategoriesError(null);
+      })
+      .catch((err) => {
+        setCategoriesError("Failed to load categories");
+        setCategories([]);
+      })
+      .finally(() => setLoadingCategories(false));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -106,19 +87,10 @@ const AddNewItemForm = ({ type }) => {
       return;
     }
 
-    // Map selectedItems to their IDs based on type
-    let selectedIds = [];
-    if (type === "bag") {
-      // For bags, map food names to food IDs
-      selectedIds = foodForVendor
-        .filter((food) => formData.selectedItems.includes(food.name))
-        .map((food) => food.id);
-    } else if (type === "product") {
-      // For products, map category names to category IDs
-      selectedIds = categories
-        .filter((cat) => formData.selectedItems.includes(cat.name))
-        .map((cat) => cat.id || cat._id);
-    }
+    // Map selectedItems (category names) to their IDs
+    const selectedCategoryIds = categories
+      .filter((cat) => formData.selectedItems.includes(cat.name))
+      .map((cat) => cat.id || cat._id);
 
     let picUrl = "";
     let usedMatchedImage = false;
@@ -129,7 +101,7 @@ const AddNewItemForm = ({ type }) => {
         // Try to match bag image by name
         const foundBagImg = BAG_IMAGES.find((url) => {
           // extract the name part from the url before extension
-          const match = url.match(/\/([^/]+)\.[a-zA-Z0-9]+$/);
+          const match = url.match(/\/([^\/]+)\.[a-zA-Z0-9]+$/);
           if (match) {
             return match[1].toLowerCase() === fileName;
           }
@@ -142,7 +114,7 @@ const AddNewItemForm = ({ type }) => {
       } else {
         // Try to match food image by name
         const foundFoodImg = FOOD_IMAGES.find((url) => {
-          const match = url.match(/\/([^/]+)\.[a-zA-Z0-9]+$/);
+          const match = url.match(/\/([^\/]+)\.[a-zA-Z0-9]+$/);
           if (match) {
             return match[1].toLowerCase() === fileName;
           }
@@ -183,7 +155,7 @@ const AddNewItemForm = ({ type }) => {
           const imgData = await res.json();
           picUrl = imgData.secure_url || "";
         }
-      } catch {
+      } catch (err) {
         setUploadingImage(false);
         Swal.fire({
           icon: "error",
@@ -222,32 +194,15 @@ const AddNewItemForm = ({ type }) => {
     let payload;
 
     if (type === "bag") {
-      // Bag payload structure - ensure all required fields are present
+      // Bag payload structure
       payload = {
-        name: formData.foodName || "",
-        description: formData.description || "",
-        picUrl: picUrl || "",
-        quantity: Number(formData.quantity) || 0,
-        newPrice: Number(formData.discountPrice) || 0,
-        foodIds:
-          selectedIds && selectedIds.length > 0 ? selectedIds : [1, 2, 3], // Default food IDs if none selected
+        name: formData.foodName,
+        description: formData.description,
+        picUrl: picUrl,
+        quantity: Number(formData.quantity),
+        newPrice: Number(formData.discountPrice),
+        foodIds: selectedCategoryIds, // Using selectedCategoryIds as foodIds for bags
       };
-
-      // Validate required fields
-      if (
-        !payload.name ||
-        !payload.picUrl ||
-        payload.quantity <= 0 ||
-        payload.newPrice <= 0
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "Missing Required Fields",
-          text: "Please fill in all required fields: Bag Name, Quantity, and Price.",
-          confirmButtonText: "OK",
-        });
-        return;
-      }
     } else {
       // Food item payload structure
       payload = {
@@ -257,14 +212,14 @@ const AddNewItemForm = ({ type }) => {
         Quantity: Number(formData.quantity),
         UnitPrice: Number(formData.originalPrice),
         NewPrice: Number(formData.discountPrice),
-        CategoryIds: selectedIds,
+        CategoryIds: selectedCategoryIds,
       };
     }
 
     // Extract food name from PicUrl (before extension)
     let extractedFoodName = "";
     if (picUrl) {
-      const match = picUrl.match(/\/([^/]+)\.[a-zA-Z0-9]+$/);
+      const match = picUrl.match(/\/([^\/]+)\.[a-zA-Z0-9]+$/);
       if (match) {
         extractedFoodName = match[1];
       }
@@ -287,34 +242,12 @@ const AddNewItemForm = ({ type }) => {
 
     try {
       if (type === "bag") {
-        // Temporarily disabled - use fetch for bags too
-        const res = await fetch(
-          "https://gracecycleapi.azurewebsites.net/api/Bags/add-Bag",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify(payload),
-          }
-        );
-        if (!res.ok) throw new Error("Failed to add bag. Please try again.");
-        // Add the bag to the vendor bag listings
-        dispatch(
-          addVendorBag({
-            picUrl: picUrl,
-            name: formData.foodName,
-            quantity: Number(formData.quantity),
-            price: Number(formData.originalPrice),
-            newPrice: Number(formData.discountPrice),
-          })
-        );
-
+        // Use Redux action for adding bags
+        const result = await dispatch(addBag(payload)).unwrap();
         await Swal.fire({
           icon: "success",
           title: "Bag added successfully!",
-          text: "Bag has been added to your listings.",
+          text: result || "Bag has been added to your listings.",
           confirmButtonText: "OK",
         });
       } else {
@@ -341,21 +274,10 @@ const AddNewItemForm = ({ type }) => {
       }
       navigate("/VendorPage/myListings");
     } catch (err) {
-      console.error("API Error:", err);
-      let errorMessage = "An error occurred during addition.";
-
-      if (err.message) {
-        errorMessage = err.message;
-      } else if (err.payload) {
-        errorMessage = err.payload;
-      } else if (err.error) {
-        errorMessage = err.error;
-      }
-
       Swal.fire({
         icon: "error",
         title: "Error!",
-        text: errorMessage,
+        text: err.message || "An error occurred during addition.",
         confirmButtonText: "OK",
       });
     }
@@ -436,47 +358,12 @@ const AddNewItemForm = ({ type }) => {
               />
             </label>
           </div>
-          {type === "bag" && (
+          {(type === "bag" || type === "product") && (
             <label className="font-nunitoBold text-lg">
               Select items
               <div className="border-2 border-[#225A4A] rounded-lg bg-offWhite h-32 overflow-y-auto mt-1 flex flex-col gap-2 p-2 w-full">
-                {foodForVendorLoading && (
-                  <span className="text-gray-500">Loading food items...</span>
-                )}
-                {foodForVendorError && (
-                  <span className="text-red-500">{foodForVendorError}</span>
-                )}
-                {!foodForVendorLoading &&
-                  !foodForVendorError &&
-                  foodForVendor.length === 0 && (
-                    <span className="text-gray-500">
-                      No food items available
-                    </span>
-                  )}
-                {!foodForVendorLoading &&
-                  !foodForVendorError &&
-                  foodForVendor.map((food) => (
-                    <label
-                      key={food.id}
-                      className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={formData.selectedItems.includes(food.name)}
-                        onChange={() => handleItemSelect(food.name)}
-                        className="w-5 h-5 accent-[#225A4A]"
-                      />
-                      <span className="text-base">{food.name}</span>
-                    </label>
-                  ))}
-              </div>
-            </label>
-          )}
-          {type === "product" && (
-            <label className="font-nunitoBold text-lg">
-              Select categories
-              <div className="border-2 border-[#225A4A] rounded-lg bg-offWhite h-32 overflow-y-auto mt-1 flex flex-col gap-2 p-2 w-full">
                 {loadingCategories && (
-                  <span className="text-gray-500">Loading categories...</span>
+                  <span className="text-gray-500">Loading...</span>
                 )}
                 {categoriesError && (
                   <span className="text-red-500">{categoriesError}</span>
@@ -574,8 +461,8 @@ const AddNewItemForm = ({ type }) => {
             <button
               type="submit"
               className="bg-[#225A4A] font-nunitoBold text-lg w-1/2 rounded-md text-white px-4 py-2"
-              disabled={uploadingImage}>
-              {uploadingImage
+              disabled={uploadingImage || addBagLoading}>
+              {uploadingImage || addBagLoading
                 ? "Adding..."
                 : `Add ${type === "bag" ? "Bag" : "Item"}`}
             </button>
@@ -595,7 +482,7 @@ const AddNewItemForm = ({ type }) => {
                   selectedItems: [],
                 })
               }
-              disabled={uploadingImage}>
+              disabled={uploadingImage || addBagLoading}>
               Cancel
             </button>
           </div>

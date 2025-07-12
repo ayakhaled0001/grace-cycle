@@ -117,58 +117,15 @@ export const deleteVendorListing = createAsyncThunk(
         },
       };
 
-      console.log("Attempting to delete food with ID:", id);
-      console.log("Delete URL:", `${BaseUrl}api/Foods/DeleteItem/${id}`);
-      console.log("Request config:", config);
-
-      // Try alternative endpoint if the first one fails
-      let response;
-      try {
-        response = await axios.delete(
-          `${BaseUrl}api/Foods/DeleteItem/${id}`,
-          config
-        );
-      } catch (firstError) {
-        console.log("First endpoint failed, trying alternative...");
-        try {
-          response = await axios.delete(
-            `${BaseUrl}api/Foods/delete-food/${id}`,
-            config
-          );
-        } catch (secondError) {
-          console.log("Both endpoints failed");
-          console.log("Second error:", secondError);
-          throw firstError; // Throw the original error
-        }
-      }
-      console.log("Delete response:", response.data);
+      await axios.delete(`${BaseUrl}api/Foods/DeleteItem/${id}`, config);
       return id;
     } catch (err) {
       console.log("Error deleting vendor listing:", err);
       console.log("Error status:", err.response?.status);
       console.log("Error data:", err.response?.data);
-      console.log("Error message:", err.message);
-
-      // Handle specific error cases
-      if (err.response?.status === 401) {
-        return thunkAPI.rejectWithValue(
-          "401: Unauthorized - Please log in again"
-        );
-      } else if (err.response?.status === 403) {
-        return thunkAPI.rejectWithValue(
-          "403: Forbidden - You don't have permission"
-        );
-      } else if (err.response?.status === 500) {
-        return thunkAPI.rejectWithValue(
-          "500: Internal Server Error - Please try again later"
-        );
-      } else if (err.response?.data?.message) {
-        return thunkAPI.rejectWithValue(err.response.data.message);
-      } else {
-        return thunkAPI.rejectWithValue(
-          `Error deleting vendor listing: ${err.message}`
-        );
-      }
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || "Error deleting vendor listing"
+      );
     }
   }
 );
@@ -205,7 +162,7 @@ export const VendorListingSlice = createSlice({
       .addCase(getVendorListings.fulfilled, (state, action) => {
         state.isLoading = false;
         state.vendorListings = action.payload.map((item, index) => ({
-          id: item.id || item.foodId || item._id || index + 1, // Use actual food ID from API
+          id: index + 1, // Add ID if not provided by API
           name: item.name,
           picUrl: item.picUrl,
           quantity: item.quantity,
