@@ -121,26 +121,10 @@ export const deleteVendorListing = createAsyncThunk(
       console.log("Delete URL:", `${BaseUrl}api/Foods/DeleteItem/${id}`);
       console.log("Request config:", config);
 
-      // Try alternative endpoint if the first one fails
-      let response;
-      try {
-        response = await axios.delete(
-          `${BaseUrl}api/Foods/DeleteItem/${id}`,
-          config
-        );
-      } catch (firstError) {
-        console.log("First endpoint failed, trying alternative...");
-        try {
-          response = await axios.delete(
-            `${BaseUrl}api/Foods/delete-food/${id}`,
-            config
-          );
-        } catch (secondError) {
-          console.log("Both endpoints failed");
-          console.log("Second error:", secondError);
-          throw firstError; // Throw the original error
-        }
-      }
+      const response = await axios.delete(
+        `${BaseUrl}api/Foods/DeleteItem/${id}`,
+        config
+      );
       console.log("Delete response:", response.data);
       return id;
     } catch (err) {

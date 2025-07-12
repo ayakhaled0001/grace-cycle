@@ -137,7 +137,6 @@ export const deleteVendorListing = createAsyncThunk(
           );
         } catch (secondError) {
           console.log("Both endpoints failed");
-          console.log("Second error:", secondError);
           throw firstError; // Throw the original error
         }
       }

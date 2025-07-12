@@ -70,10 +70,10 @@ const MyListings = () => {
     };
   }, [dispatch]);
 
-  // const handleEdit = (id) => {
-  //   console.log("Edit item:", id);
-  //   // Add edit functionality - navigate to edit page
-  // };
+  const handleEdit = (id) => {
+    console.log("Edit item:", id);
+    // Add edit functionality - navigate to edit page
+  };
 
   const handleDelete = async (id) => {
     // Check authentication before delete
@@ -87,74 +87,49 @@ const MyListings = () => {
     );
 
     if (window.confirm("Are you sure you want to delete this item?")) {
-      let retryCount = 0;
-      const maxRetries = 2;
-
-      const attemptDelete = async () => {
-        try {
-          if (activeTab === "products") {
-            console.log(
-              `Attempt ${retryCount + 1}: Deleting product with ID:`,
-              id
-            );
-            await dispatch(deleteVendorListing(id)).unwrap();
-            // Refresh products list
-            dispatch(getVendorListings());
-            alert("Product deleted successfully!");
-          } else if (activeTab === "bags") {
-            console.log(`Attempt ${retryCount + 1}: Deleting bag with ID:`, id);
-            await dispatch(deleteBag(id)).unwrap();
-            // Refresh bags list
-            dispatch(getVendorBagListings());
-            alert("Magic bag deleted successfully!");
-          }
-          console.log("Item deleted successfully");
-          return true;
-        } catch (error) {
-          console.error(`Attempt ${retryCount + 1} failed:`, error);
-
-          // Handle specific error types
-          if (error.includes("401") || error.includes("Unauthorized")) {
-            alert("Session expired. Please log in again.");
-            localStorage.clear();
-            navigate("/log-in");
-            return false;
-          } else if (error.includes("403") || error.includes("Forbidden")) {
-            alert("You don't have permission to delete this item.");
-            return false;
-          } else if (
-            error.includes("500") ||
-            error.includes("Internal Server Error")
-          ) {
-            retryCount++;
-            if (retryCount <= maxRetries) {
-              console.log(`Retrying delete (${retryCount}/${maxRetries})...`);
-              // Wait 2 seconds before retrying
-              await new Promise((resolve) => setTimeout(resolve, 2000));
-              return await attemptDelete();
-            } else {
-              alert(
-                "Server error occurred after multiple attempts. Please try again later or contact support."
-              );
-              return false;
-            }
-          } else {
-            alert(
-              `Failed to delete ${activeTab.slice(0, -1)}. Please try again.`
-            );
-            return false;
-          }
+      try {
+        if (activeTab === "products") {
+          console.log("Deleting product with ID:", id);
+          await dispatch(deleteVendorListing(id)).unwrap();
+          // Refresh products list
+          dispatch(getVendorListings());
+          alert("Product deleted successfully!");
+        } else if (activeTab === "bags") {
+          console.log("Deleting bag with ID:", id);
+          await dispatch(deleteBag(id)).unwrap();
+          // Refresh bags list
+          dispatch(getVendorBagListings());
+          alert("Magic bag deleted successfully!");
         }
-      };
+        console.log("Item deleted successfully");
+      } catch (error) {
+        console.error("Failed to delete item:", error);
 
-      await attemptDelete();
+        // Handle specific error types
+        if (error.includes("401") || error.includes("Unauthorized")) {
+          alert("Session expired. Please log in again.");
+          localStorage.clear();
+          navigate("/log-in");
+        } else if (error.includes("403") || error.includes("Forbidden")) {
+          alert("You don't have permission to delete this item.");
+        } else if (
+          error.includes("500") ||
+          error.includes("Internal Server Error")
+        ) {
+          alert("Server error occurred. Please try again later.");
+        } else {
+          alert(
+            `Failed to delete ${activeTab.slice(0, -1)}. Please try again.`
+          );
+        }
+      }
     }
   };
 
-  // const handleView = (id) => {
-  //   console.log("View item:", id);
-  //   // Add view functionality - navigate to view page
-  // };
+  const handleView = (id) => {
+    console.log("View item:", id);
+    // Add view functionality - navigate to view page
+  };
 
   const formatPrice = (price) => {
     if (price === null || price === undefined || isNaN(price)) {
@@ -163,18 +138,18 @@ const MyListings = () => {
     return `$${Number(price).toFixed(2)}`;
   };
 
-  // const getStatusBadge = (status) => {
-  //   return (
-  //     <span
-  //       className={`px-2 py-1 rounded-full text-xs font-semibold ${
-  //         status === "active"
-  //           ? "bg-green-100 text-green-800"
-  //           : "bg-red-100 text-red-800"
-  //       }`}>
-  //       {status === "active" ? "Active" : "Inactive"}
-  //     </span>
-  //   );
-  // };
+  const getStatusBadge = (status) => {
+    return (
+      <span
+        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+          status === "active"
+            ? "bg-green-100 text-green-800"
+            : "bg-red-100 text-red-800"
+        }`}>
+        {status === "active" ? "Active" : "Inactive"}
+      </span>
+    );
+  };
 
   if (isLoading || bagsLoading) {
     return (

@@ -5,7 +5,15 @@ import axios from "axios";
 const BaseUrl = "https://gracecycleapi.azurewebsites.net/";
 
 // =================== Initial State =======================
-// Note: initialState is now defined inline in the slice
+const initialState = {
+  loading: false,
+  error: null,
+  success: false,
+  message: "",
+  deleteLoading: false,
+  deleteError: null,
+  deleteSuccess: false,
+};
 
 // =================== Request: Add Bag =======================
 export const addBag = createAsyncThunk(

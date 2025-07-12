@@ -5,7 +5,15 @@ import axios from "axios";
 const BaseUrl = "https://gracecycleapi.azurewebsites.net/";
 
 // =================== Initial State =======================
-// Note: initialState is now defined inline in the slice
+const initialState = {
+  loading: false,
+  error: null,
+  success: false,
+  message: "",
+  deleteLoading: false,
+  deleteError: null,
+  deleteSuccess: false,
+};
 
 // =================== Request: Add Bag =======================
 export const addBag = createAsyncThunk(
@@ -87,49 +95,10 @@ export const deleteBag = createAsyncThunk(
   }
 );
 
-// =================== Request: Get Food For Vendor =======================
-export const getFoodForVendor = createAsyncThunk(
-  "addBag/getFoodForVendor",
-  async (_, thunkAPI) => {
-    try {
-      // Get token from localStorage
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.log("No token found in localStorage");
-        return thunkAPI.rejectWithValue("No authentication token found");
-      }
-
-      const response = await axios.get(`${BaseUrl}api/Foods/FoodForVendor`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response.data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || "Error fetching food for vendor"
-      );
-    }
-  }
-);
-
 // =================== Add Bags Slice =======================
 export const AddBagsSlice = createSlice({
   name: "addBag",
-  initialState: {
-    loading: false,
-    error: null,
-    success: false,
-    message: "",
-    deleteLoading: false,
-    deleteError: null,
-    deleteSuccess: false,
-    foodForVendor: [],
-    foodForVendorLoading: false,
-    foodForVendorError: null,
-  },
+  initialState,
   reducers: {
     clearAddBagState: (state) => {
       state.loading = false;
@@ -148,11 +117,6 @@ export const AddBagsSlice = createSlice({
     },
     resetDeleteSuccess: (state) => {
       state.deleteSuccess = false;
-    },
-    clearFoodForVendorState: (state) => {
-      state.foodForVendor = [];
-      state.foodForVendorLoading = false;
-      state.foodForVendorError = null;
     },
   },
   extraReducers: (builder) => {
@@ -192,21 +156,6 @@ export const AddBagsSlice = createSlice({
         state.deleteLoading = false;
         state.deleteError = action.payload;
         state.deleteSuccess = false;
-      })
-
-      // ***************** Get Food For Vendor *******************
-      .addCase(getFoodForVendor.pending, (state) => {
-        state.foodForVendorLoading = true;
-        state.foodForVendorError = null;
-      })
-      .addCase(getFoodForVendor.fulfilled, (state, action) => {
-        state.foodForVendorLoading = false;
-        state.foodForVendor = action.payload;
-        state.foodForVendorError = null;
-      })
-      .addCase(getFoodForVendor.rejected, (state, action) => {
-        state.foodForVendorLoading = false;
-        state.foodForVendorError = action.payload;
       });
   },
 });
@@ -216,6 +165,5 @@ export const {
   resetSuccess,
   clearDeleteState,
   resetDeleteSuccess,
-  clearFoodForVendorState,
 } = AddBagsSlice.actions;
 export default AddBagsSlice.reducer;
