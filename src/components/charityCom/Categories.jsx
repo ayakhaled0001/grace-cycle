@@ -5,7 +5,11 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   fetchRecommendedItems,
   loadSelectedCategoryFromStorage,
+  toggleFavorite,
+  addFoodListingToFavorites,
+  fetchUserFavoriteFoods,
 } from "../../redux/FoodSlice";
+import { updateFavoriteStatus } from "../../redux/FoodListingSlice";
 import { Skeleton } from "@mui/material";
 
 // Skeleton component for loading state
@@ -76,12 +80,51 @@ const data = [
 
 function Categories() {
   const dispatch = useDispatch();
-  const { recommendedItems, recommendedLoading, selectedCategory, cart } =
-    useSelector((state) => state.servicesFood);
+  const {
+    recommendedItems,
+    recommendedLoading,
+    selectedCategory,
+    cart,
+    favoriteFoods,
+  } = useSelector((state) => state.servicesFood);
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const itemsPerSlide = 4;
   const totalSlides = Math.ceil(recommendedItems.length / itemsPerSlide);
+
+  // Favorite toggle handler for recommended items
+  const handleToggleFavorite = (item) => {
+    const isCurrentlyFavorited = favoriteFoods.some(
+      (fav) => fav.id === item.id
+    );
+
+    // Dispatch the toggle action
+    dispatch(toggleFavorite({ foodId: item.id, isCurrentlyFavorited }));
+
+    // Update the foodListing state to keep it in sync
+    dispatch(
+      updateFavoriteStatus({
+        foodId: item.id,
+        isFavourite: !isCurrentlyFavorited,
+      })
+    );
+
+    // If adding to favorites, add the food data to favorites
+    if (!isCurrentlyFavorited) {
+      const foodData = {
+        id: item.id,
+        name: item.name,
+        picUrl: item.picUrl,
+        rating: item.rating,
+        unitPrice: item.unitPrice,
+        newPrice: item.newPrice,
+        vName: item.vName,
+        vendorId: item.vendorId,
+        isFav: true,
+      };
+      dispatch(addFoodListingToFavorites(foodData));
+    }
+  };
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
@@ -98,6 +141,7 @@ function Categories() {
   // Load selected category from localStorage on component mount
   useEffect(() => {
     dispatch(loadSelectedCategoryFromStorage());
+    dispatch(fetchUserFavoriteFoods()); // Fetch user's favorite foods
 
     // If no category is loaded and no recommended items, load random items
     setTimeout(() => {
@@ -223,7 +267,7 @@ function Categories() {
                       {recommendedItems.map((item) => (
                         <div
                           key={item.id}
-                          className="flex-shrink-0 w-full mob470:w-1/2 mob560:w-1/2 md:w-1/3 lg:w-1/4 px-2"
+                          className="flex-shrink-0 w-full mob470:w-1/2 mob560:w-1/2 md:w-1/3 lg:w-1/4 px-4"
                         >
                           <div className="border border-stone-700 rounded-xl relative bg-white">
                             <div className="flex absolute justify-between m-2 mob470:m-3 left-0 right-0 z-10">
@@ -248,8 +292,19 @@ function Categories() {
 
                             <div className="p-2 mob470:p-3 relative">
                               <div className="flex justify-between">
-                                <span className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute -left-3 mob470:-left-4 -top-8 mob470:-top-10">
-                                  <FavoriteOutlined className="cursor-pointer text-lg mob470:text-xl text-paleBarkYellow" />
+                                <span
+                                  className="shadow-xl rounded-full bg-semiDarkBeige p-2 mob470:p-3 absolute -left-3 mob470:-left-4 -top-8 mob470:-top-10 cursor-pointer hover:bg-gray-200 transition-colors"
+                                  onClick={() => handleToggleFavorite(item)}
+                                >
+                                  <FavoriteOutlined
+                                    className={`text-lg mob470:text-xl ${
+                                      favoriteFoods.some(
+                                        (fav) => fav.id === item.id
+                                      )
+                                        ? "text-[#577A71]"
+                                        : "text-paleBarkYellow"
+                                    }`}
+                                  />
                                 </span>
                                 <span className="bg-semiBrightYellow py-2 mob470:py-3 px-1 mob470:px-1.5 rounded-full text-sm mob470:text-base mob560:text-lg md:text-xl font-bold absolute right-2 -top-12 mob470:-top-16">
                                   %{item.discountPercentage || 0}

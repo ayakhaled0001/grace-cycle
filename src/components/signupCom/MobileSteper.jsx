@@ -1,7 +1,5 @@
 import React from "react";
-import { Divider } from "antd";
 import { Link } from "react-router-dom";
-import google from "../../assets/icons/google.svg";
 import MobileStepper from "@mui/material/MobileStepper";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -68,28 +66,7 @@ const MobileSteper = ({ activeStep, setActiveStep, onSubmit, loading }) => {
               </span>
             </Link>
           </p>
-          <Divider style={{ borderColor: "#000", width: "10px" }}>OR</Divider>
-          <Button
-            size="small"
-            sx={{
-              marginTop: "10px",
-              height: { xs: "40px", sm: "46px" },
-              width: { xs: "100%", sm: "387px" },
-              color: "#225A4B",
-              fontFamily: "'Nunito', sans-serif",
-              textTransform: "capitalize",
-              fontSize: { xs: "16px", sm: "18px" },
-              border: "solid #225A4B 1px",
-              borderRadius: "8px",
-            }}
-          >
-            <img
-              src={google}
-              alt="Google"
-              className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
-            />
-            Google
-          </Button>
+          {/* Google button removed */}
         </>
       }
     />
