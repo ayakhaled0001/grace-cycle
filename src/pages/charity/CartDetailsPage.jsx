@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCartDetails,
@@ -16,6 +16,7 @@ function CartDetailsPage() {
   const { restaurantId } = useParams();
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.servicesFood);
+  const navigate = useNavigate();
 
   const [cartDetails, setCartDetails] = useState(null);
   const [quantities, setQuantities] = useState({});
@@ -938,10 +939,16 @@ function CartDetailsPage() {
 
               {/* Buttons */}
               <div className="mt-6 space-y-3">
-                <button className="w-full py-3 bg-btnsGreen text-white rounded-md font-semibold hover:bg-green-900 transition-colors">
+                <button
+                  className="w-full py-3 bg-btnsGreen text-white rounded-md font-semibold hover:bg-green-900 transition-colors"
+                  onClick={() => navigate("/CharityPage/payment")}
+                >
                   Checkout
                 </button>
-                <button className="w-full py-3 bg-transparent text-btnsGreen border border-btnsGreen rounded-md font-semibold hover:bg-btnsGreen hover:text-white transition-colors">
+                <button
+                  className="w-full py-3 bg-transparent text-btnsGreen border border-btnsGreen rounded-md font-semibold hover:bg-btnsGreen hover:text-white transition-colors"
+                  onClick={() => navigate("/CharityPage")}
+                >
                   Add Items
                 </button>
               </div>

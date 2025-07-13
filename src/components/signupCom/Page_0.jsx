@@ -37,11 +37,7 @@ const Page_0 = ({ onChange, formData, errors }) => {
             control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
             label={<span className="text-sm sm:text-base">Vendor</span>}
           />
-          <FormControlLabel
-            value="factory"
-            control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
-            label={<span className="text-sm sm:text-base">Factory</span>}
-          />
+
           <FormControlLabel
             value="charity"
             control={<Radio sx={{ "&.Mui-checked": { color: "#5B5B5BCC" } }} />}
