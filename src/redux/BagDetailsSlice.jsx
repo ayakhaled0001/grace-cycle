@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Try using the same pattern as food details
-const BaseUrl = "https://gracecycleapi.azurewebsites.net/api/web/home/bags";
+const BaseUrl = "https://grace-cyle.runasp.net/api/web/home/bags";
 
 // Thunk to fetch bag details by ID
 export const fetchBagDetails = createAsyncThunk(

@@ -37,17 +37,17 @@ function HomeProblemsSec() {
           viewport={{ margin: "0px 0px 10px 0px" }}
           className={`${styles.imgsFlow} hidden lgHome:flex w-5/12 my-10  justify-center`}>
           <img
-            src="../../../public/homeMedia/probImg1.png"
+            src="../../../homeMedia/probImg1.png"
             alt="wasted food"
             className={`${styles.imgsFlow1}`}
           />
           <img
-            src="../../../public/homeMedia/probImg2.png"
+            src="../../../homeMedia/probImg2.png"
             alt="wasted food"
             className={`${styles.imgsFlow2}`}
           />
           <img
-            src="../../../public/homeMedia/probImg3.png"
+            src="../../../homeMedia/probImg3.png"
             alt="wasted food"
             className={`${styles.imgsFlow3}`}
           />
@@ -142,3 +142,4 @@ function HomeProblemsSec() {
 }
 
 export default HomeProblemsSec;
+

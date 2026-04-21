@@ -3,9 +3,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 const VendorBaseUrl =
-  "https://gracecycleapi.azurewebsites.net/api/web/discover/vendors";
+  "https://grace-cyle.runasp.net/api/web/discover/vendors";
 const FavVendorBaseUrl =
-  "https://gracecycleapi.azurewebsites.net/api/web/fav/vendors";
+  "https://grace-cyle.runasp.net/api/web/fav/vendors";
 
 export const fetchAllVendors = createAsyncThunk(
   "vendorFilter/fetchAllVendors",

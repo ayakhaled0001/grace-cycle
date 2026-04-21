@@ -28,7 +28,7 @@ const ReceivingAddress = () => {
           />
           <span className="flex items-center gap-2">
             <img
-              src="/public/icons/branch.svg"
+              src="/icons/branch.svg"
               alt="branch"
               className="w-6 h-6"
             />
@@ -45,7 +45,7 @@ const ReceivingAddress = () => {
           />
           <span className="flex items-center gap-2">
             <img
-              src="/public/icons/paymentLoc.svg"
+              src="/icons/paymentLoc.svg"
               alt="location"
               className="w-6 h-6"
             />
@@ -77,7 +77,7 @@ const ReceivingAddress = () => {
           />
           <span className="flex items-center gap-2">
             <img
-              src="/public/icons/addLoc.svg"
+              src="/icons/addLoc.svg"
               alt="add location"
               className="w-6 h-6"
             />
@@ -121,3 +121,4 @@ const ReceivingAddress = () => {
 };
 
 export default ReceivingAddress;
+

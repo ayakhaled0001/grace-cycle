@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BaseUrlListing = "https://gracecycleapi.azurewebsites.net/api/Foods";
+const BaseUrlListing = "https://grace-cyle.runasp.net/api/Foods";
 
 // Async thunk to fetch food listing details by foodId
 export const fetchFoodListing = createAsyncThunk(

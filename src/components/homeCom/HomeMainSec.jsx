@@ -41,7 +41,7 @@ function HomeMainSec() {
           }}
           className={`${styles.mainImgContainer} hidden lgHome:flex  `}>
           <img
-            src="/public/homeMedia/delivery.png"
+            src="/homeMedia/delivery.png"
             alt="delivery"
             className={`${styles.mainImg} `}
           />
@@ -63,3 +63,4 @@ function HomeMainSec() {
 }
 
 export default HomeMainSec;
+

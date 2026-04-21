@@ -12,7 +12,7 @@ const defaultCharityData = {
   password: "Alkhayr4567#",
   address: "Egypt, Cairo, wast albalad, Ahmed Ourabi Street",
   bio: "A charity that works to help the needy. We seek to expand social solidarity among people.",
-  avatar: "/public/homeMedia/usericon.png",
+  avatar: "/homeMedia/usericon.png",
 };
 
 export default function CharityProfile() {
@@ -306,3 +306,4 @@ export default function CharityProfile() {
     </>
   );
 }
+

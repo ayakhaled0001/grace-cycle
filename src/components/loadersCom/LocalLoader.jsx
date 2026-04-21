@@ -3,10 +3,11 @@ function LocalLoader() {
   return (
     <div>
       <div className={styles.loader}>
-        <img src="public/solidGraceCycleLogo.svg" alt="" />
+        <img src="/solidGraceCycleLogo.svg" alt="" />
       </div>
     </div>
   );
 }
 
 export default LocalLoader;
+

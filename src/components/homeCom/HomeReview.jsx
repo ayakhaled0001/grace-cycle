@@ -20,7 +20,7 @@ function HomeReview() {
           }}
           className="flex w-12/12 mob560:w-4/12 lgHome:w-3/12 uppersm:w-72  bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
           <div>
-            <img src="/public/icons/commaGroup.svg" alt="" />
+            <img src="/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-[70px]">
               <p className="">
                 This platform is great for connecting restaurants with people in
@@ -56,7 +56,7 @@ function HomeReview() {
           }}
           className="flex items-between lgHome:w-3/12 w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
           <div>
-            <img src="/public/icons/commaGroup.svg" alt="" />
+            <img src="/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-28">
               <p className=" ">
                 Through this app I can eat well, save money, and help the planet
@@ -91,7 +91,7 @@ function HomeReview() {
           }}
           className="flex lgHome:w-3/12 w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
           <div>
-            <img src="/public/icons/commaGroup.svg" alt="" />
+            <img src="/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-28">
               <p className="">
                 As a restaurant owner, I waste less, reach more customers with
@@ -126,3 +126,4 @@ function HomeReview() {
 }
 
 export default HomeReview;
+

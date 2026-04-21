@@ -131,7 +131,7 @@ function HomeNav({ backgroundColor }) {
                 style={{ border: "none", background: "none", padding: 0 }}
               >
                 <img
-                  src={profileAvatar || "../../public/homeMedia/usericon.png"}
+                  src={profileAvatar || "../../homeMedia/usericon.png"}
                   alt="User Profile"
                   className="w-10 h-10 rounded-full object-cover"
                 />
@@ -282,3 +282,4 @@ HomeNav.propTypes = {
 };
 
 export default HomeNav;
+

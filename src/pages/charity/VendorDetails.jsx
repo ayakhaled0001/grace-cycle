@@ -158,7 +158,7 @@ export default function VendorDetails() {
             <div className="text-center py-8 px-4 bg-semiDarkBeige rounded-lg">
               <div className="mb-4">
                 <img
-                  src="/public/services/magicbags.png"
+                  src="/services/magicbags.png"
                   alt="Magic Bags"
                   className="w-24 h-24 mx-auto opacity-50"
                   onError={(e) => {
@@ -198,3 +198,4 @@ export default function VendorDetails() {
     </>
   );
 }
+

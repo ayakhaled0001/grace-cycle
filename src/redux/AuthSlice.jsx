@@ -13,7 +13,7 @@ const initialState = {
 
 // ===================== BaseUrl ============================
 
-const BaseUrl = "https://gracecycleapi.azurewebsites.net/";
+const BaseUrl = "https://grace-cyle.runasp.net/";
 
 // =================== Signup =======================
 export const signupUser = createAsyncThunk(

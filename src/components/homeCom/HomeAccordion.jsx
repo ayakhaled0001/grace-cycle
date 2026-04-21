@@ -31,7 +31,7 @@ function HomeAccordion() {
   return (
     <section className="flex py-16">
       <img
-        src="/public/homeMedia/salad.png"
+        src="/homeMedia/salad.png"
         alt=""
         className="w-2/5 hidden lgHome:block"
       />
@@ -55,13 +55,13 @@ function HomeAccordion() {
                 /> */}
                 {openIndex === index ? (
                   <img
-                    src="/public/icons/close.svg"
+                    src="/icons/close.svg"
                     alt=""
                     className="w-5 mob560:w-7"
                   />
                 ) : (
                   <img
-                    src="/public/icons/open.svg"
+                    src="/icons/open.svg"
                     alt=""
                     className="w-5 mob560:w-7"
                   />
@@ -79,3 +79,4 @@ function HomeAccordion() {
 }
 
 export default HomeAccordion;
+

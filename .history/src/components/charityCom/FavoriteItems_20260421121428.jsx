@@ -14,10 +14,10 @@ import Swal from "sweetalert2";
 function FavoriteItems() {
   const dispatch = useDispatch();
   const { favoriteFoods, loading, error } = useSelector(
-    (state) => state.servicesFood
+    (state) => state.servicesFood,
   );
   const { favoriteVendors, favVendorsLoading, favVendorsError } = useSelector(
-    (state) => state.vendorFilter
+    (state) => state.vendorFilter,
   );
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function FavoriteItems() {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(
-          toggleVendorFavorite({ vendorId, isCurrentlyFavorited: true })
+          toggleVendorFavorite({ vendorId, isCurrentlyFavorited: true }),
         );
       }
     });
@@ -177,7 +177,7 @@ function FavoriteItems() {
         ) : foodsArray.length === 0 ? (
           <div className="text-center py-8 px-4">
             <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
-              You haven't added any foods to your favorites yet
+              You haven&apos;t added any foods to your favorites yet
             </p>
             <Link
               to="/CharityPage"
@@ -215,12 +215,12 @@ function FavoriteItems() {
                     food.imageUrl ||
                     food.photoUrl ||
                     food.image ||
-                    "/public/services/foodlistingtest.png"
+                    "services/foodlistingtest.png"
                   }
                   alt={food.name || food.title || "Food item"}
                   className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = "/public/services/foodlistingtest.png";
+                    e.target.src = "/services/foodlistingtest.png";
                   }}
                 />
 
@@ -371,7 +371,7 @@ function FavoriteItems() {
         ) : vendorsArray.length === 0 ? (
           <div className="text-center py-8 px-4">
             <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
-              You haven't added any vendors to your favorites yet
+              You haven&apos;t added any vendors to your favorites yet
             </p>
             <Link
               to="/CharityPage"
@@ -404,12 +404,12 @@ function FavoriteItems() {
                     vendor.photoUrl ||
                     vendor.image ||
                     vendor.logoUrl ||
-                    "/public/services/restaurants.png"
+                    "/icons/rectGroup.svg"
                   }
                   alt={vendor.displayName || vendor.name || "Vendor"}
                   className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = "/public/services/restaurants.png";
+                    e.target.src = "/icons/rectGroup.svg";
                   }}
                 />
                 <div className="p-2 relative">
@@ -435,12 +435,12 @@ function FavoriteItems() {
                           vendor.imageUrl ||
                           vendor.photoUrl ||
                           vendor.image ||
-                          "/public/services/restaurants.png"
+                          "/icons/rectGroup.svg"
                         }
                         alt="logo"
                         className="w-9 h-9 object-cover"
                         onError={(e) => {
-                          e.target.src = "/public/services/restaurants.png";
+                          e.target.src = "/icons/rectGroup.svg";
                         }}
                       />
                     </span>
@@ -478,7 +478,7 @@ function FavoriteItems() {
                   </div>
 
                   <Link
-                    to={`/CharityPage/cart/${vendor.id}`}
+                    to={`/CharityPage/vendor/${vendor.userId || vendor.id}`}
                     className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300">
                     More Details
                   </Link>

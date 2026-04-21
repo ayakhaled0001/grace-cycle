@@ -79,7 +79,7 @@ const Dashboard = () => {
               } cursor-pointer transition-all duration-300`}
             >
               <img
-                src="../../../public/DashboardIcons/vector2.svg"
+                src="../../../DashboardIcons/vector2.svg"
                 className="w-6"
                 alt="Add"
               />
@@ -95,7 +95,7 @@ const Dashboard = () => {
               } cursor-pointer transition-all duration-300`}
             >
               <img
-                src="../../../public/DashboardIcons/vector3.svg"
+                src="../../../DashboardIcons/vector3.svg"
                 className="w-6"
                 alt="Listings"
               />
@@ -111,7 +111,7 @@ const Dashboard = () => {
               } cursor-pointer transition-all duration-300`}
             >
               <img
-                src="../../../public/DashboardIcons/vector4.svg"
+                src="../../../DashboardIcons/vector4.svg"
                 className="w-6"
                 alt="Orders"
               />
@@ -128,7 +128,7 @@ const Dashboard = () => {
               } cursor-pointer transition-all duration-300`}
             >
               <img
-                src="../../../public/DashboardIcons/vector5.svg"
+                src="../../../DashboardIcons/vector5.svg"
                 className="w-6"
                 alt="Settings"
               />
@@ -140,7 +140,7 @@ const Dashboard = () => {
               className={`flex items-center space-x-2 px-6 py-2 hover:bg-[#C1BFB3] cursor-pointer transition-all duration-300`}
             >
               <img
-                src="../../../public/DashboardIcons/vector6.svg"
+                src="../../../DashboardIcons/vector6.svg"
                 className="w-6"
                 alt="Logout"
               />
@@ -150,7 +150,7 @@ const Dashboard = () => {
           <li onClick={() => handleMenuClick("/")}>
             <div className="flex items-center px-6 py-2 pt-4 cursor-pointer">
               <img
-                src="../../../public/logo.png"
+                src="../../../logo.png"
                 alt="Logo"
                 style={{ width: "120px" }}
               />
@@ -163,3 +163,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

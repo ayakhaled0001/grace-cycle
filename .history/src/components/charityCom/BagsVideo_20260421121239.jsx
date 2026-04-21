@@ -4,12 +4,11 @@ const BagsVideo = () => {
   return (
     <Box
       id="bags-section"
-      className="w-[95%] md:w-[85%] h-48 sm:h-64 md:h-80 lg:h-96 mx-auto mt-6 md:mt-10 mb-6 md:mb-10 bg-red-200"
-    >
+      className="w-[95%] md:w-[85%] h-48 sm:h-64 md:h-80 lg:h-96 mx-auto mt-6 md:mt-10 mb-6 md:mb-10 bg-red-200">
       <Card className="relative h-[100%]">
         <CardMedia
           component="video"
-          src="../../../services/BagsVideo.mp4"
+          src="/services/BagsVideo.mp4"
           autoPlay
           muted
           loop
@@ -25,8 +24,7 @@ const BagsVideo = () => {
               fontSize: { xs: "1.5rem", sm: "2rem", md: "2.5rem", lg: "3rem" },
               fontWeight: 600,
               textAlign: "center",
-            }}
-          >
+            }}>
             We have Magic Bags for you
           </Typography>
           <Typography
@@ -42,8 +40,7 @@ const BagsVideo = () => {
               fontWeight: 500,
               color: "#E5E1DA",
               textAlign: "center",
-            }}
-          >
+            }}>
             We provide you with different bags from different places. <br />
             Magic bags contain a variety of delicious foods at reduced prices.
           </Typography>
@@ -57,4 +54,3 @@ const BagsVideo = () => {
 };
 
 export default BagsVideo;
-

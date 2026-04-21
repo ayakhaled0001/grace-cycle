@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // ===================== BaseUrl ============================
-const BaseUrl = "https://gracecycleapi.azurewebsites.net/";
+const BaseUrl = "https://grace-cyle.runasp.net/";
 
 // =================== Initial State =======================
 // Note: initialState is now defined inline in the slice

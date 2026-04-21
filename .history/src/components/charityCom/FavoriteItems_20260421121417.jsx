@@ -14,12 +14,11 @@ import Swal from "sweetalert2";
 function FavoriteItems() {
   const dispatch = useDispatch();
   const { favoriteFoods, loading, error } = useSelector(
-    (state) => state.servicesFood
+    (state) => state.servicesFood,
   );
   const { favoriteVendors, favVendorsLoading, favVendorsError } = useSelector(
-    (state) => state.vendorFilter
+    (state) => state.vendorFilter,
   );
-  const { bags } = useSelector((state) => state.bags);
 
   useEffect(() => {
     dispatch(fetchUserFavoriteFoods());
@@ -52,23 +51,8 @@ function FavoriteItems() {
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(
-          toggleVendorFavorite({ vendorId, isCurrentlyFavorited: true })
+          toggleVendorFavorite({ vendorId, isCurrentlyFavorited: true }),
         );
-      }
-    });
-  };
-
-  const handleToggleBagFav = (bagId) => {
-    Swal.fire({
-      title: "Are you sure to delete this item?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#225A4B",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        dispatch(toggleFavorite({ foodId: bagId, isCurrentlyFavorited: true }));
       }
     });
   };
@@ -81,9 +65,6 @@ function FavoriteItems() {
   // Ensure favoriteFoods is an array
   const foodsArray = Array.isArray(favoriteFoods) ? favoriteFoods : [];
   const vendorsArray = Array.isArray(favoriteVendors) ? favoriteVendors : [];
-
-  // Filter bags that are marked as favorites (using the same system as foods)
-  const favoriteBags = bags.filter((bag) => bag.isFavourite || bag.isFav);
 
   if (error) {
     return (
@@ -234,12 +215,12 @@ function FavoriteItems() {
                     food.imageUrl ||
                     food.photoUrl ||
                     food.image ||
-                    "/public/services/foodlistingtest.png"
+                    "services/foodlistingtest.png"
                   }
                   alt={food.name || food.title || "Food item"}
                   className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = "/public/services/foodlistingtest.png";
+                    e.target.src = "/icons/rectGroup.svg";
                   }}
                 />
 
@@ -284,108 +265,6 @@ function FavoriteItems() {
 
                   <Link
                     to={`/CharityPage/cart/${food.id}`}
-                    className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300">
-                    More Details
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* Favorite Bags Section */}
-      <h1 className="text-2xl md:text-3xl font-bold text-center mb-4 md:mb-8 font-nunitoBold">
-        My Favorite Magic Bags
-      </h1>
-      <section className="w-full md:w-10/12 mx-auto bg-semiDarkBeige my-4 md:my-8 flex flex-wrap justify-center py-4 relative rounded-lg font-nunitoBold">
-        <div className="absolute -top-3 md:-top-5 left-1 right-1 flex flex-col sm:flex-row justify-between mx-2 md:mx-4 gap-2">
-          <span className="bg-white p-1 md:p-2 rounded-md text-sm md:text-base lg:text-lg font-semibold text-center sm:text-left">
-            My Favorite Magic Bags ({favoriteBags.length} items)
-          </span>
-        </div>
-
-        {favoriteBags.length === 0 ? (
-          <div className="text-center py-8 px-4">
-            <p className="text-gray-600 font-nunitoBold text-base md:text-lg">
-              You haven&apos;t added any magic bags to your favorites yet
-            </p>
-            <Link
-              to="/CharityPage"
-              className="mt-4 bg-btnsGreen text-white px-4 py-2 rounded-md hover:bg-green-900 transition-colors inline-block text-sm md:text-base">
-              Browse Magic Bags
-            </Link>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center w-full lg:w-[85%] mx-auto p-4">
-            {favoriteBags.map((bag) => (
-              <div
-                className="w-full max-w-xs border border-stone-700 rounded-xl relative mx-auto"
-                key={bag.id}>
-                <div className="flex absolute justify-between m-3 left-0 right-0 overflow-hidden">
-                  <span className="bg-semiDarkBeige px-2 py-1 rounded-md">
-                    {bag.quantity || 0}+ left
-                  </span>
-                  <span className="flex items-center bg-semiDarkBeige px-2 py-1 rounded-md">
-                    <img
-                      src="/icons/star.svg"
-                      alt="star"
-                      className="w-3 text-center mr-1"
-                    />
-                    {bag.rating || 0}
-                  </span>
-                </div>
-
-                <img
-                  src={
-                    bag.picUrl ||
-                    bag.imageUrl ||
-                    bag.photoUrl ||
-                    bag.image ||
-                    "/public/services/magicbags.png"
-                  }
-                  alt={bag.name || "Magic Bag"}
-                  className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
-                  onError={(e) => {
-                    e.target.src = "/public/services/magicbags.png";
-                  }}
-                />
-
-                <div className="p-2 relative">
-                  <div className="flex justify-between">
-                    <span className="shadow-xl rounded-full bg-semiDarkBeige p-3 absolute -left-4 -top-10">
-                      <FavoriteOutlinedIcon
-                        className="cursor-pointer text-btnsGreen"
-                        onClick={() => handleToggleBagFav(bag.id)}
-                      />
-                    </span>
-                    {bag.discount && (
-                      <span className="bg-semiBrightYellow py-3 px-1.5 rounded-full text-xl font-bold absolute right-2 -top-16">
-                        %{bag.discount}
-                      </span>
-                    )}
-                  </div>
-
-                  <h1 className="text-xl font-medium">
-                    {bag.name || "Magic Bag"}
-                  </h1>
-                  <span>{bag.vName || "Unknown Vendor"}</span>
-                  <span>({bag.isOpen ? "opened" : "closed"})</span>
-
-                  <div className="flex justify-between py-2">
-                    <span className="text-lg">Price</span>
-                    <div className="">
-                      <span className="text-sm px-1 line-through">
-                        EGP{bag.price || bag.unitPrice}
-                      </span>
-                      <span className="text-btnsGreen font-semibold text-lg">
-                        EGP{bag.newPrice || bag.price}
-                      </span>
-                    </div>
-                  </div>
-
-                  <Link
-                    to={`/CharityPage/bag/${bag.id}`}
                     className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300">
                     More Details
                   </Link>
@@ -525,12 +404,12 @@ function FavoriteItems() {
                     vendor.photoUrl ||
                     vendor.image ||
                     vendor.logoUrl ||
-                    "/public/services/restaurants.png"
+                    "/icons/rectGroup.svg"
                   }
                   alt={vendor.displayName || vendor.name || "Vendor"}
                   className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = "/public/services/restaurants.png";
+                    e.target.src = "/icons/rectGroup.svg";
                   }}
                 />
                 <div className="p-2 relative">
@@ -556,12 +435,12 @@ function FavoriteItems() {
                           vendor.imageUrl ||
                           vendor.photoUrl ||
                           vendor.image ||
-                          "/public/services/restaurants.png"
+                          "/icons/rectGroup.svg"
                         }
                         alt="logo"
                         className="w-9 h-9 object-cover"
                         onError={(e) => {
-                          e.target.src = "/public/services/restaurants.png";
+                          e.target.src = "/icons/rectGroup.svg";
                         }}
                       />
                     </span>
@@ -599,7 +478,7 @@ function FavoriteItems() {
                   </div>
 
                   <Link
-                    to={`/CharityPage/cart/${vendor.id}`}
+                    to={`/CharityPage/vendor/${vendor.userId || vendor.id}`}
                     className="text-center w-full p-2 border-2 border-btnsGreen rounded-xl text-btnsGreen font-semibold inline-block hover:bg-btnsGreen hover:text-white transition-colors duration-300">
                     More Details
                   </Link>

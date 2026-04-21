@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import Swal from "sweetalert2";
 //
-const BaseUrl = "https://gracecycleapi.azurewebsites.net/api/web/home/foods";
-const FavBaseUrl = "https://gracecycleapi.azurewebsites.net/api/web/fav/foods";
+const BaseUrl = "https://grace-cyle.runasp.net/api/web/home/foods";
+const FavBaseUrl = "https://grace-cyle.runasp.net/api/web/fav/foods";
 
 //fetching all food categories
 
@@ -310,7 +310,7 @@ export const addToCart = createAsyncThunk(
         },
       };
       const response = await axios.post(
-        "https://gracecycleapi.azurewebsites.net/api/webcart/add-item",
+        "https://grace-cyle.runasp.net/api/webcart/add-item",
         payload,
         config
       );
@@ -348,7 +348,7 @@ export const fetchUserCart = createAsyncThunk(
         },
       };
       const response = await axios.get(
-        "https://gracecycleapi.azurewebsites.net/api/webcart",
+        "https://grace-cyle.runasp.net/api/webcart",
         config
       );
       console.log("Fetch user cart response:", response.data);
@@ -382,7 +382,7 @@ export const fetchCartDetails = createAsyncThunk(
         },
       };
       const response = await axios.get(
-        `https://gracecycleapi.azurewebsites.net/api/webcart/${vendorId}`,
+        `https://grace-cyle.runasp.net/api/webcart/${vendorId}`,
         config
       );
       console.log("Fetch cart details response:", response.data);
@@ -409,7 +409,7 @@ export const updateCartItem = createAsyncThunk(
         },
       };
       const response = await axios.put(
-        "https://gracecycleapi.azurewebsites.net/api/webcart/update-item",
+        "https://grace-cyle.runasp.net/api/webcart/update-item",
         payload,
         config
       );
@@ -804,7 +804,7 @@ export const {
 } = foodSlice.actions;
 export default foodSlice.reducer;
 
-// const BaseUrlListing = "https://gracecycleapi.azurewebsites.net/api/web/home/food-listing";
+// const BaseUrlListing = "https://grace-cyle.runasp.net/api/web/home/food-listing";
 
 // // Async thunk to fetch food listing details by foodId
 // export const fetchFoodListing = createAsyncThunk(

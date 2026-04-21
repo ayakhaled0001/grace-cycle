@@ -138,12 +138,12 @@ const VendorResults = ({ onClear }) => {
                     vendor.photoUrl ||
                     vendor.image ||
                     vendor.logoUrl ||
-                    "/public/services/restaurants.png"
+                    "/services/restaurants.png"
                   }
                   alt={vendor.displayName || vendor.name || "Vendor"}
                   className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = "/public/services/restaurants.png";
+                    e.target.src = "/services/restaurants.png";
                   }}
                 />
                 <div className="p-2 relative">
@@ -176,12 +176,12 @@ const VendorResults = ({ onClear }) => {
                           vendor.imageUrl ||
                           vendor.photoUrl ||
                           vendor.image ||
-                          "/public/services/restaurants.png"
+                          "/services/restaurants.png"
                         }
                         alt="logo"
                         className="w-9 h-9 object-cover"
                         onError={(e) => {
-                          e.target.src = "/public/services/restaurants.png";
+                          e.target.src = "/services/restaurants.png";
                         }}
                       />
                     </span>
@@ -291,3 +291,4 @@ VendorResults.propTypes = {
 };
 
 export default VendorResults;
+

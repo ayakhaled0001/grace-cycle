@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BaseUrl =
-  "https://gracecycleapi.azurewebsites.net/api/Vendors/VendorProfile";
+  "https://grace-cyle.runasp.net/api/Vendors/VendorProfile";
 
 // Async thunk to fetch vendor profile
 export const fetchVendorProfile = createAsyncThunk(

@@ -86,7 +86,7 @@ const PublicServicesPage = () => {
           {/* Charity Preview */}
           <div className="w-full bg-white/90 rounded-2xl shadow-lg p-8 mb-10 flex flex-col md:flex-col items-center gap-8">
             <img
-              src="/public/homeMedia/personreview1.png"
+              src="/homeMedia/personreview1.png"
               alt="Charity preview"
               className="w-32 h-32 rounded-full object-cover border-4 border-[#225A4A] shadow-md mb-4 md:mb-0"
             />
@@ -109,7 +109,7 @@ const PublicServicesPage = () => {
           {/* Vendor Preview */}
           <div className="w-full bg-white/90 rounded-2xl shadow-lg p-8 flex flex-col md:flex-col items-center gap-8">
             <img
-              src="/public/services/foodlistingtest.png"
+              src="/services/foodlistingtest.png"
               alt="Vendor preview"
               className="w-32 h-32 rounded-full object-cover border-4 border-[#BC0101] shadow-md mb-4 md:mb-0"
             />
@@ -138,3 +138,4 @@ const PublicServicesPage = () => {
 };
 
 export default PublicServicesPage;
+

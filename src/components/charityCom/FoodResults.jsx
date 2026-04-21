@@ -142,12 +142,12 @@ const FoodResults = ({ onClear }) => {
                     food.imageUrl ||
                     food.photoUrl ||
                     food.image ||
-                    "/public/services/foodlistingtest.png"
+                    "/services/foodlistingtest.png"
                   }
                   alt={food.name || food.title || "Food item"}
                   className="w-full rounded-se-xl rounded-ss-xl h-48 object-cover"
                   onError={(e) => {
-                    e.target.src = "/public/services/foodlistingtest.png";
+                    e.target.src = "/services/foodlistingtest.png";
                   }}
                 />
 
@@ -265,3 +265,4 @@ FoodResults.propTypes = {
 };
 
 export default FoodResults;
+

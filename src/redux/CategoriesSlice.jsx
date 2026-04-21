@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const CategoriesBaseUrl =
-  "https://gracecycleapi.azurewebsites.net/api/categories";
+  "https://grace-cyle.runasp.net/api/categories";
 
 // Async thunk for fetching categories
 export const fetchCategories = createAsyncThunk(

@@ -40,7 +40,7 @@ const PaymentMethod = () => {
             className="accent-btnsGreen"
           />
           <span className="flex items-center gap-2">
-            <img src="/public/icons/cash.svg" alt="cash" className="w-6 h-6" />
+            <img src="/icons/cash.svg" alt="cash" className="w-6 h-6" />
             <span>Cash on Delivery</span>
           </span>
         </label>
@@ -155,3 +155,4 @@ const PaymentMethod = () => {
 };
 
 export default PaymentMethod;
+
