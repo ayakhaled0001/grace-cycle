@@ -2,14 +2,14 @@ import StarIcon from "@mui/icons-material/Star";
 import { motion } from "framer-motion";
 function HomeReview() {
   return (
-    <section className="bg-paleWhiteGrey p-16 text-center ">
-      <h1 className="font-otoma text-3xl  text-center">
+    <section className="bg-paleWhiteGrey px-4 sm:px-6 md:px-10 py-10 md:py-16 text-center">
+      <h1 className="font-otoma text-2xl sm:text-3xl text-center">
         What our customers say
       </h1>
-      <p className=" text-lg font-sans text-center ">
+      <p className="text-base sm:text-lg font-sans text-center mt-2">
         Read testimonials from our happy customers
       </p>
-      <div className="flex justify-evenly text-left mt-10 lgHome:flex-nowrap flex-wrap gap-4  ">
+      <div className="flex justify-evenly text-left mt-8 md:mt-10 lgHome:flex-nowrap flex-wrap gap-4">
         <motion.div
           initial={{ translateY: "-30px" }}
           whileInView={{ translateY: "0px" }}
@@ -18,7 +18,7 @@ function HomeReview() {
             duration: 1,
             ease: "easeInOut",
           }}
-          className="flex w-12/12 mob560:w-4/12 lgHome:w-3/12 uppersm:w-72  bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
+          className="flex w-full sm:w-[80%] md:w-[48%] lgHome:w-3/12 uppersm:w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-4 sm:p-5 rounded-2xl transition-all duration-500">
           <div>
             <img src="/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-[70px]">
@@ -54,7 +54,7 @@ function HomeReview() {
             duration: 1,
             ease: "easeInOut",
           }}
-          className="flex items-between lgHome:w-3/12 w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
+          className="flex items-between w-full sm:w-[80%] md:w-[48%] lgHome:w-3/12 uppersm:w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-4 sm:p-5 rounded-2xl transition-all duration-500">
           <div>
             <img src="/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-28">
@@ -89,7 +89,7 @@ function HomeReview() {
             duration: 1,
             ease: "easeInOut",
           }}
-          className="flex lgHome:w-3/12 w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-5 rounded-2xl transition-all duration-500">
+          className="flex w-full sm:w-[80%] md:w-[48%] lgHome:w-3/12 uppersm:w-72 bg-offWhite hover:text-offWhite hover:bg-btnsGreen p-4 sm:p-5 rounded-2xl transition-all duration-500">
           <div>
             <img src="/icons/commaGroup.svg" alt="" />
             <div className="flex flex-col gap-28">

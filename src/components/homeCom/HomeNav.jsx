@@ -78,9 +78,9 @@ function HomeNav({ backgroundColor }) {
   return (
     <>
       <nav
-        className={`sticky z-50 ${backgroundColor} top-0 flex justify-around m-auto px-4 h-24 lgHome:py-5 minScreen:py-3 minScreen:h-20 w-full font-nunitoBold  minScreen:justify-between minScreen:px-3`}
+        className={`sticky z-50 ${backgroundColor} top-0 flex items-center justify-between m-auto px-3 sm:px-4 h-16 sm:h-20 lgHome:h-24 w-full font-nunitoBold`}
       >
-        <div className="w-[20%] flex items-center justify-center ">
+        <div className="w-auto flex items-center justify-center">
           <img src="/logo.png" alt="grace cycle" className="w-40" />
         </div>
 
@@ -201,20 +201,25 @@ function HomeNav({ backgroundColor }) {
 
         <button
           onClick={toggleMenu}
-          className="lgHome:hidden text-3xl focus:outline-none"
+          className="lgHome:hidden text-3xl focus:outline-none leading-none"
+          aria-label="Toggle navigation menu"
         >
           ☰
         </button>
       </nav>
 
       {isOpen && (
-        <div className="absolute -top-10 bottom-0 right-0 bg-[#eeeadfb0] minScreen:flex minScreen:flex-col z-40 lgHome:hidden w-4/12 my-auto">
-          <div className="sticky top-40">
-            <ul className="flex justify-between flex-col items-center">
+        <div className="fixed inset-0 bg-black/30 z-40 lgHome:hidden" onClick={toggleMenu}>
+          <div
+            className="absolute right-0 top-16 sm:top-20 h-[calc(100vh-4rem)] sm:h-[calc(100vh-5rem)] w-10/12 max-w-sm bg-[#eeeadf] p-5 overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ul className="flex justify-between flex-col items-start gap-4">
               <li>
                 <NavLink
                   to="/"
                   className={`text-lg hover:text-lightBrownYellow`}
+                  onClick={toggleMenu}
                 >
                   Home
                 </NavLink>
@@ -231,6 +236,7 @@ function HomeNav({ backgroundColor }) {
                 <NavLink
                   to="/about"
                   className={`text-lg hover:text-lightBrownYellow`}
+                  onClick={toggleMenu}
                 >
                   About us
                 </NavLink>
@@ -239,17 +245,18 @@ function HomeNav({ backgroundColor }) {
                 <NavLink
                   to="/contact"
                   className={`text-lg hover:text-lightBrownYellow`}
+                  onClick={toggleMenu}
                 >
                   Contact us
                 </NavLink>
               </li>
             </ul>
 
-            <div className="flex gap-3 h-12 flex-col my-6 items-center">
+            <div className="flex gap-3 flex-col my-6 items-start">
               {isLoggedIn ? (
                 <button
                   onClick={handleLogout}
-                  className="font-nunitoBold border-solid border-red-500 border-2 w-10 text-red-500 rounded-[11px] hover:bg-red-500 hover:text-white transition-all text-center py-2"
+                  className="font-nunitoBold border-solid border-red-500 border-2 w-full text-red-500 rounded-[11px] hover:bg-red-500 hover:text-white transition-all text-center py-2"
                 >
                   Logout
                 </button>
@@ -257,13 +264,15 @@ function HomeNav({ backgroundColor }) {
                 <>
                   <NavLink
                     to="/signup"
-                    className="font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen w-8/12 text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen transition-all text-center py-2"
+                    className="font-nunitoBold border-solid border-btnsGreen border-2 bg-btnsGreen w-full text-white rounded-[11px] hover:bg-transparent hover:text-btnsGreen transition-all text-center py-2"
+                    onClick={toggleMenu}
                   >
                     Organization Sign up
                   </NavLink>
                   <NavLink
                     to="/login"
-                    className="font-nunitoBold border-solid border-btnsGreen border-2 w-8/12 text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center py-2"
+                    className="font-nunitoBold border-solid border-btnsGreen border-2 w-full text-lightBasicGreen rounded-[11px] hover:bg-btnsGreen hover:text-white transition-all text-center py-2"
+                    onClick={toggleMenu}
                   >
                     Log in
                   </NavLink>

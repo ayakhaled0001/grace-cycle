@@ -29,14 +29,14 @@ function HomeAccordion() {
     setOpenIndex(openIndex === index ? null : index);
   };
   return (
-    <section className="flex py-16">
+    <section className="flex py-10 md:py-16">
       <img
         src="/homeMedia/salad.png"
         alt=""
         className="w-2/5 hidden lgHome:block"
       />
-      <div className="px-10 mt-16">
-        <h1 className="font-otoma text-3xl mob560:text-4xl md:text-5xl lgHome:text-6xl">
+      <div className="px-4 sm:px-6 md:px-10 mt-6 md:mt-16 w-full">
+        <h1 className="font-otoma text-2xl sm:text-3xl mob560:text-4xl md:text-5xl lgHome:text-6xl">
           Frequently Asked Questions
         </h1>
         <div className="my-8">
@@ -44,8 +44,8 @@ function HomeAccordion() {
             <div key={index} className=" rounded-lg overflow-hidden py-4">
               <button
                 onClick={() => toggleAccordion(index)}
-                className="flex justify-between items-center w-full  py-2 text-left bg-gray-100 hover:bg-gray-200">
-                <span className="font-bold text-xl mob560:text-2xl ">
+                className="flex justify-between items-center gap-3 w-full px-3 py-3 text-left bg-gray-100 hover:bg-gray-200 rounded-lg">
+                <span className="font-bold text-base sm:text-lg mob560:text-2xl leading-snug">
                   {item.title}
                 </span>
                 {/* <ChevronDown
@@ -68,7 +68,9 @@ function HomeAccordion() {
                 )}
               </button>
               {openIndex === index && (
-                <div className="py-5 border-b">{item.content}</div>
+                <div className="py-4 px-3 border-b text-sm sm:text-base leading-relaxed">
+                  {item.content}
+                </div>
               )}
             </div>
           ))}
